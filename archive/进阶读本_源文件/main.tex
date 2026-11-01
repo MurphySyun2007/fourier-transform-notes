@@ -1,0 +1,296 @@
+\documentclass[11pt,fontset=none,a4paper,oneside]{ctexbook}
+
+% ---- 中文字体：使用系统字体，保证 PDF 文本可检索、可复制 ----
+\setCJKmainfont{Songti SC}[BoldFont={Songti SC Bold}]
+\setCJKsansfont{Heiti SC Medium}
+\setCJKfamilyfont{zhhei}{Heiti SC Medium}
+\providecommand{\heiti}{\CJKfamily{zhhei}}
+
+%========================================================
+%  宏包
+%========================================================
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage{mathtools}
+\usepackage[margin=2.5cm,top=2.6cm,bottom=2.6cm]{geometry}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs,longtable,array,tabularx,multirow}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+%========================================================
+%  颜色
+%========================================================
+\definecolor{mainblue}{RGB}{18,62,120}
+\definecolor{softblue}{RGB}{233,241,251}
+\definecolor{warnred}{RGB}{150,38,38}
+\definecolor{softred}{RGB}{253,237,237}
+\definecolor{okgreen}{RGB}{26,104,76}
+\definecolor{softgreen}{RGB}{234,246,240}
+\definecolor{warmorange}{RGB}{158,84,18}
+\definecolor{softorange}{RGB}{255,245,230}
+\definecolor{notegray}{RGB}{82,82,88}
+\definecolor{softgray}{RGB}{243,243,246}
+\definecolor{rulegray}{RGB}{150,155,165}
+
+%========================================================
+%  版式
+%========================================================
+\linespread{1.32}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{2em}
+
+\ctexset{
+  chapter = {
+    format = \raggedright\huge\heiti\color{mainblue},
+    name = {第,章},
+    number = \arabic{chapter},
+    beforeskip = 0.8em,
+    afterskip = 1.6em,
+  },
+  section = {
+    format = \large\heiti\color{mainblue},
+    beforeskip = 1.6em,
+    afterskip = 0.8em,
+  },
+  subsection = {
+    format = \normalsize\bfseries\color{notegray},
+    beforeskip = 1.1em,
+    afterskip = 0.5em,
+  },
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{rulegray}\nouppercase{\leftmark}}
+\fancyhead[R]{\small\color{rulegray}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
+\fancypagestyle{plain}{\fancyhf{}\fancyhead[R]{\small\color{rulegray}\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+%========================================================
+%  定理环境
+%========================================================
+\theoremstyle{definition}
+\newtheorem{defn}{定义}[chapter]
+\newtheorem{examp}[defn]{例}
+\theoremstyle{plain}
+\newtheorem{thm}[defn]{定理}
+\newtheorem{prop}[defn]{命题}
+\newtheorem{lem}[defn]{引理}
+\theoremstyle{remark}
+\newtheorem{remark}[defn]{说明}
+\numberwithin{equation}{chapter}
+
+%========================================================
+%  提示盒
+%========================================================
+\newtcolorbox{ideabox}[1][直觉]{enhanced,breakable,
+  colback=softblue,colframe=mainblue!60,colbacktitle=mainblue!78,coltitle=white,
+  fonttitle=\small\bfseries,title={#1},boxrule=0pt,arc=1.5pt,
+  left=9pt,right=9pt,top=6pt,bottom=6pt,before skip=9pt,after skip=9pt}
+
+\newtcolorbox{warnbox}[1][讲解禁区]{enhanced,breakable,
+  colback=softred,colframe=warnred!55,colbacktitle=warnred!80,coltitle=white,
+  fonttitle=\small\bfseries,title={#1},boxrule=0pt,arc=1.5pt,
+  left=9pt,right=9pt,top=6pt,bottom=6pt,before skip=9pt,after skip=9pt}
+
+\newtcolorbox{quizbox}[1][自测]{enhanced,breakable,
+  colback=softgreen,colframe=okgreen!55,colbacktitle=okgreen!80,coltitle=white,
+  fonttitle=\small\bfseries,title={#1},boxrule=0pt,arc=1.5pt,
+  left=9pt,right=9pt,top=6pt,bottom=6pt,before skip=9pt,after skip=9pt}
+
+\newtcolorbox{scriptbox}[1][脚本对照]{enhanced,breakable,
+  colback=softorange,colframe=warmorange!55,colbacktitle=warmorange!80,coltitle=white,
+  fonttitle=\small\bfseries,title={#1},boxrule=0pt,arc=1.5pt,
+  left=9pt,right=9pt,top=6pt,bottom=6pt,before skip=9pt,after skip=9pt}
+
+\newtcolorbox{notebox}[1][记一笔]{enhanced,breakable,
+  colback=softgray,colframe=notegray!40,colbacktitle=notegray!70,coltitle=white,
+  fonttitle=\small\bfseries,title={#1},boxrule=0pt,arc=1.5pt,
+  left=9pt,right=9pt,top=6pt,bottom=6pt,before skip=9pt,after skip=9pt}
+
+%========================================================
+%  记号
+%========================================================
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Sv}{\mathcal{S}}
+\newcommand{\dd}{\mathop{}\!\mathrm{d}}
+\newcommand{\PV}{\operatorname{PV}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\Lone}{L^1(\R)}
+\newcommand{\Ltwo}{L^2(\R)}
+\newcommand{\Lonloc}{L^1_{\mathrm{loc}}(\R)}
+\newcommand{\ep}{\varepsilon}
+\newcommand{\fh}{\widehat{f}}
+\newcommand{\gh}{\widehat{g}}
+\newcommand{\ph}{\widehat{\varphi}}
+\newcommand{\hf}{\widehat{H}}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=mainblue,
+  urlcolor=mainblue,
+  citecolor=mainblue,
+  bookmarksnumbered=true,
+}
+
+%========================================================
+\begin{document}
+
+%--------------------------------------------------------
+%  封面
+%--------------------------------------------------------
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+\vspace*{2.2cm}
+
+{\color{rulegray}\rule{\textwidth}{0.6pt}}
+
+\vspace{1.4cm}
+
+{\Huge\bfseries\color{mainblue} 傅里叶变换的另一面}
+
+\vspace{0.5cm}
+
+{\LARGE\bfseries\color{mainblue} 创作者进阶读本}
+
+\vspace{1.0cm}
+
+{\large 六期系列的知识地图、完整推导与讲解边界}
+
+\vspace{0.4cm}
+
+{\large 从零频率的直觉，到温和分布中的严格定义}
+
+\vspace{1.2cm}
+
+\begin{tcolorbox}[colback=softblue,colframe=mainblue!40,boxrule=0pt,arc=2pt,width=0.86\textwidth]
+\centering
+\vspace{0.2em}
+{\large 贯穿全书的三个结果}\\[0.9em]
+$\F[1]=2\pi\delta(\omega)$\\[0.45em]
+$\F[t^{\,n}]=2\pi i^{\,n}\delta^{(n)}(\omega)$\\[0.45em]
+$\F[H]=\pi\delta(\omega)+\PV\dfrac{1}{i\omega}$
+\vspace{0.2em}
+\end{tcolorbox}
+
+\vspace{1.0cm}
+
+{\normalsize
+\begin{tabular}{rl}
+\textbf{配套} & \texttt{background\_knowledge.pdf}（骨架版）\\[0.3em]
+\textbf{本册} & 同一套内容的扩写：补动机、补中间步骤、补边界\\[0.3em]
+\textbf{用途} & 开拍前通读；写脚本时按章查阅\\[0.3em]
+\textbf{版本} & 2026 年 11 月 1 日\\
+\end{tabular}}
+
+\vfill
+
+{\small\color{notegray}
+全书统一使用角频率约定，配对不含复共轭。\\
+不同资料可能采用不同的 $2\pi$ 归一化，引用公式前请先核对约定。}
+
+\vspace{0.8cm}
+{\color{rulegray}\rule{\textwidth}{0.6pt}}
+\end{titlepage}
+
+%--------------------------------------------------------
+%  摘要页
+%--------------------------------------------------------
+\frontmatter
+\thispagestyle{plain}
+\vspace*{0.5cm}
+
+\begin{ideabox}[怎么用这本书（先读这一页）]
+\small
+\textbf{一句话：}这不是一本傅里叶分析教材，而是你拍这六期视频的“后台”。
+
+\vspace{0.4em}
+\textbf{它回答三类问题。}
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.25em,topsep=0.3em]
+\item \textbf{这几期到底在讲什么？} —— 第 0 章。六集的分工、顺序、依赖关系、以及那个把所有内容串起来的一条线。
+\item \textbf{那些公式是怎么来的？} —— 第 1--6 章。每一步都写清楚“为什么这一步合法”，而不只是给结果。
+\item \textbf{哪些话能说、哪些不能说？} —— 每章末的「讲解禁区」与附录 B。这是最省时间的一部分：它把最容易犯的错直接列出来。
+\end{enumerate}
+
+\vspace{0.4em}
+\textbf{建议的三遍读法。}
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.25em,topsep=0.3em]
+\item \textbf{第一遍（两小时）}：只读第 0 章，加上每章开头的“一句话”和“观众的问题链”。目的是拿到全局地图。
+\item \textbf{第二遍（分集）}：动手重算每章的推导。看不懂就停在那里，把卡住的那一步标出来——那通常正是视频里最容易糊弄过去、也最容易翻车的地方。
+\item \textbf{第三遍（开拍前）}：只看每章的「讲解禁区」、附录 B 的对照表和附录 D 的练习题。
+\end{enumerate}
+
+\vspace{0.4em}
+\textbf{一条纪律。}三层内容要分清：
+\begin{center}
+\small
+\begin{tabular}{@{}L{2.0cm}L{5.3cm}L{5.4cm}@{}}
+\toprule
+层次 & 讲的是什么 & 用在哪里 \\
+\midrule
+直觉 & 为什么这个结论应该是对的 & 视频开场、动画旁白 \\
+计算 & 结果一步一步怎么算出来 & 视频主体 \\
+证明 & 为什么这些运算合法、条件是什么 & 视频可省略；\textbf{你不能不知道} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+视频可以省略证明，但不能因为省略了证明，就以为那些计算没有条件。
+\end{ideabox}
+
+\vspace{0.3cm}
+
+\vspace{0.2cm}
+{\noindent\bfseries\color{mainblue} 全书地图}\par
+
+\vspace{0.15cm}
+{\footnotesize\noindent
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}L{1.1cm}Y L{2.4cm}@{}}
+\toprule
+章 & 内容 & 什么时候读 \\
+\midrule
+0 & 导读：全局地图、三条暗线、约定、四个空间 & 开拍前必读 \\
+1 & EP01　常数为什么对应 $\delta$ & 拍 01 前 \\
+2 & EP02　多项式与 $\delta$ 的导数 & 拍 02 前 \\
+3 & EP03　阶跃、主值与多出来的 $\delta$ & 拍 03 前 \\
+4 & EP04　收敛方式与近似恒等核 & 拍 04 前 \\
+5 & EP05　测试函数与连续线性泛函 & 拍 05 前 \\
+6 & EP06　$\Sv$、$\Sv'$ 与对偶定义 & 拍 06 前 \\
+7 & 把六集缝起来：总表与制作落地 & 全部拍完 \\
+附 & A 公式总表／B 能说不能说／C 术语／D 练习 & 随时 \\
+\bottomrule
+\end{tabularx}}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\mainmatter
+\setcounter{chapter}{-1}
+
+\IfFileExists{ch0.tex}{\input{ch0}}{}
+\IfFileExists{ep01.tex}{\input{ep01}}{}
+\IfFileExists{ep02.tex}{\input{ep02}}{}
+\IfFileExists{ep03.tex}{\input{ep03}}{}
+\IfFileExists{ep04.tex}{\input{ep04}}{}
+\IfFileExists{ep05.tex}{\input{ep05}}{}
+\IfFileExists{ep06.tex}{\input{ep06}}{}
+\IfFileExists{ch7.tex}{\input{ch7}}{}
+\IfFileExists{appendix.tex}{\input{appendix}}{}
+
+\end{document}

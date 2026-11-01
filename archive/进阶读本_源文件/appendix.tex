@@ -1,0 +1,655 @@
+\appendix
+
+\chapter{公式与变换总表}
+
+\begin{ideabox}[使用说明]
+本节所有公式\textbf{全部按本书约定}：$\fh(\omega)=\int f(t)e^{-i\omega t}\dd t$，逆变换带 $1/(2\pi)$，配对不含复共轭。
+
+如果你在别处看到一个“差不多但差一个 $2\pi$”的公式，先回到第 0.6 节核对约定，不要直接改系数。
+\end{ideabox}
+
+\section{变换对总表}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.55}
+\begin{tabularx}{\textwidth}{@{}L{4.6cm}L{4.6cm}Y@{}}
+\toprule
+时域对象 & 频域对象 & 出处 / 备注 \\
+\midrule
+$\delta(t)$ & $1$ & EP06，由对偶定义一步得出 \\
+$1$ & $2\pi\delta(\omega)$ & EP01，主结果 \\
+$t^{\,n}$ & $2\pi i^{\,n}\delta^{(n)}(\omega)$ & EP02，递推 \\
+$\delta^{(n)}(t)$ & $(i\omega)^{n}$ & EP06，$\ip{\delta^{(n)}}{e^{-i\omega t}}$ \\
+$\delta(t-a)$ & $e^{-ia\omega}$ & 平移 \\
+$e^{i\omega_0 t}$ & $2\pi\delta(\omega-\omega_0)$ & 调制 \\
+$\cos(\omega_0 t)$ & $\pi\big[\delta(\omega-\omega_0)+\delta(\omega+\omega_0)\big]$ & 两个频率，不能只画一个 \\
+$\sin(\omega_0 t)$ & $(\pi/i)\big[\delta(\omega-\omega_0)-\delta(\omega+\omega_0)\big]$ & 见下方注 \\
+$H(t)$ & $\pi\delta(\omega)-i\,\PV(1/\omega)$ & EP03，主结果 \\
+$\sgn t$ & $-2i\,\PV(1/\omega)$ & EP03，由 $H=\frac12+\frac12\sgn$ \\
+$\PV(1/t)$ & $-i\pi\,\sgn\omega$ & 与上一行互为对偶 \\
+$e^{-\ep|t|}$ & $2\ep/(\ep^{2}+\omega^{2})$ & EP01，主计算 \\
+$H(t)e^{-\ep t}$ & $1/(\ep+i\omega)$ & EP03，主计算 \\
+$e^{-at^{2}/2}$ & $\sqrt{2\pi/a}\,e^{-\omega^{2}/(2a)}$ & $a>0$，附录 A.2 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{notebox}[关于 $\sin$ 那一段的符号]
+用 $\sin(\omega_0t)=\dfrac{1}{2i}\big(e^{i\omega_0t}-e^{-i\omega_0t}\big)$ 现推一遍最稳：
+
+\begin{equation}
+\F[\sin(\omega_0 t)]
+=\frac{1}{2i}\Big[2\pi\delta(\omega-\omega_0)-2\pi\delta(\omega+\omega_0)\Big]
+=\frac{\pi}{i}\big[\delta(\omega-\omega_0)-\delta(\omega+\omega_0)\big].
+\end{equation}
+
+有的表把它写成 $\pi i[\delta(\omega-\omega_0)-\delta(\omega+\omega_0)]$，那是与 $e^{+i\omega t}$ 约定配套的写法。\textbf{两种写法都“看着像”，符号却相反}，所以不要凭记忆抄，用 $\frac{1}{2i}(e^{i}-e^{-i})$ 现推。
+
+同理，$\cos$ 与 $\sin$ 的系数都是 $\pi$（不是 $2\pi$），因为两者各是两个指数项的一半。
+\end{notebox}
+
+\section{运算规则}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{6.4cm}L{5.4cm}Y@{}}
+\toprule
+规则 & 表达式 & 条件 / 出处 \\
+\midrule
+时间平移 & $\F[f(t-a)](\omega)=e^{-ia\omega}\fh(\omega)$ & 处处成立（在相应空间内） \\
+频率平移 & $\F[e^{i\omega_0t}f(t)](\omega)=\fh(\omega-\omega_0)$ & 调制 \\
+尺度 & $\F[f(at)](\omega)=\dfrac{1}{|a|}\fh\!\left(\dfrac{\omega}{a}\right)$ & $a\neq0$ \\
+乘 $t$ & $\F[tf]=i\,\partial_\omega\fh$ & EP02；$f\in\Sv$ \\
+求导 & $\F[f']=i\omega\fh$ & 分部积分，边界项消失 \\
+分布的乘 $t$ & $\F(tT)=i\,\partial_\omega\widehat T$ & EP06，\eqref{eq:mult-t-dist} \\
+分布的求导 & $\F(T')=i\omega\widehat T$ & EP06，\eqref{eq:deriv-dist} \\
+两次变换 & $\F^{2}T=2\pi\,T(-\cdot)$ & EP06，\eqref{eq:F2} 的分布版 \\
+反演 & $T=\dfrac{1}{2\pi}\F^{2}\big(T(-\cdot)\big)$ & $\Sv'$ 上恒成立 \\
+\midrule
+$\delta$ 的尺度 & $\delta(ax)=\dfrac{1}{|a|}\delta(x)$ & $a\neq0$，注意绝对值 \\
+$\delta$ 的复合 & $\delta(g(x))=\sum_j\dfrac{\delta(x-x_j)}{|g'(x_j)|}$ & $g$ 只有简单零点 \\
+$\delta$ 的乘法 & $a\,\delta=a(0)\,\delta$ & $a$ 光滑 \\
+乘 $x$ & $x\,\delta^{(n)}=-n\,\delta^{(n-1)}$ & 特别 $x\delta=0$，$x\delta'=-\delta$ \\
+Leibniz & $(aT)'=a'T+aT'$ & $a$ 光滑 \\
+跳跃 & $Df=f'_{\text{经典}}+\sum_j J_j\delta_{a_j}$ & $f$ 分段 $C^1$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{常用积分}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{6.0cm}L{4.0cm}Y@{}}
+\toprule
+积分 & 结果 & 用途 \\
+\midrule
+$\displaystyle\int_{0}^{\infty}e^{-at}\dd t$ & $1/a$（$\Re a>0$） & 指数正则化 \\
+$\displaystyle\int_{\R}\frac{\dd\omega}{\ep^{2}+\omega^{2}}$ & $\dfrac{\pi}{\ep}$ & EP01 面积 \\
+$\displaystyle\int_{\R}\frac{\ep\,\dd\omega}{\ep^{2}+\omega^{2}}$ & $\pi$ & EP03 实部的面积 \\
+$\displaystyle\int_{\R}\frac{2\ep\,\dd\omega}{\ep^{2}+\omega^{2}}$ & $2\pi$ & EP01 频谱面积 \\
+$\displaystyle\int_{\R}K_\ep\dd\omega$ & $1$ & 归一化核 \\
+$\displaystyle\int_{-a}^{a}K_\ep\dd\omega$ & $\dfrac{2}{\pi}\arctan\dfrac{a}{\ep}$ & 集中性 \\
+$\displaystyle\int_{\R}e^{-x^{2}/2}\dd x$ & $\sqrt{2\pi}$ & 高斯 \\
+$\displaystyle\int_{\R}e^{-\eta\omega^{2}/2}e^{i\omega x}\dd\omega$ & $\sqrt{\dfrac{2\pi}{\eta}}\,e^{-x^{2}/(2\eta)}$ & EP06 反演 \\
+$\displaystyle\int_{-T}^{T}e^{-i\omega t}\dd t$ & $\dfrac{2\sin(\omega T)}{\omega}$（$\omega\neq0$） & EP01 失败现场 \\
+$\displaystyle\int_{\R}\Big|\frac{\sin(T\omega)}{\omega}\Big|\dd\omega$ & $\sim\ln T$ & sinc 不可积 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection*{高斯变换：两种算法}
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.5em]
+\item \textbf{微分方程法。}设 $g_a(t)=e^{-at^{2}/2}$，$G_a=\F[g_a]$。由 $g_a'=-at\,g_a$，两边变换并用 $\F[g']=i\omega\hat g$ 与 $\F[tg]=i\hat g'$：
+\begin{equation}
+i\omega G_a=-a i\,G_a'
+\qquad\Longrightarrow\qquad
+G_a'=-\frac{\omega}{a}G_a .
+\end{equation}
+解这个常微分方程得 $G_a(\omega)=G_a(0)e^{-\omega^{2}/(2a)}$，而 $G_a(0)=\int e^{-at^{2}/2}\dd t=\sqrt{2\pi/a}$。所以
+\begin{equation}
+\F\big[e^{-at^{2}/2}\big](\omega)=\sqrt{\frac{2\pi}{a}}\,e^{-\omega^{2}/(2a)} .
+\end{equation}
+\item \textbf{配方法（直接算）。}把 $e^{-at^{2}/2-i\omega t}$ 的指数配方成 $-\frac{a}{2}\left(t+\frac{i\omega}{a}\right)^{2}-\frac{\omega^{2}}{2a}$，再用 $\int e^{-x^{2}/2}\dd x=\sqrt{2\pi}$。
+\end{enumerate}
+
+\begin{ideabox}[为什么这里可以放心用“经典”方法]
+$g_a$ 光滑、快速衰减，所以 $\F[g_a']=i\omega G_a$、$\F[tg_a]=iG_a'$ 都是经典意义下成立的，\textbf{没有借用任何关于分布或反演的结论}。
+
+这正是 EP06 反演证明能“不循环”的前提：高斯这一块是干净的。
+\end{ideabox}
+
+\section{对象住在哪个空间}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{@{}L{3.2cm}L{1.4cm}L{1.4cm}L{1.4cm}L{1.4cm}Y@{}}
+\toprule
+对象 & $\Lone$ & $\Ltwo$ & $\D'$ & $\Sv'$ & 说明 \\
+\midrule
+$e^{-\ep|t|}$ & \checkmark & \checkmark & \checkmark & \checkmark & 最乖 \\
+$1$ & $\times$ & $\times$ & \checkmark & \checkmark & 有界不衰减 \\
+$t^{\,n}$ & $\times$ & $\times$ & \checkmark & \checkmark & 多项式增长 \\
+$H$ & $\times$ & $\times$ & \checkmark & \checkmark & 有界，两端不衰减 \\
+$\delta,\ \delta^{(n)}$ & $\times$ & $\times$ & \checkmark & \checkmark & 泛函，不是函数 \\
+$\PV\frac1\omega$ & $\times$ & $\times$ & \checkmark & \checkmark & 奇分布 \\
+$1/(1+t^{2})$ & \checkmark & \checkmark & \checkmark & $\times$ & 可积但衰减不够快 \\
+$e^{t^{2}}$ & $\times$ & $\times$ & \checkmark & $\times$ & 有分布，无傅里叶变换 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{三套约定换算速查}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{5.2cm}L{3.6cm}Y@{}}
+\toprule
+约定 & 正变换 & $\F[1]$ & 与本书的关系 \\
+\midrule
+本书（角频率） & $\displaystyle\int f(t)e^{-i\omega t}\dd t$ & $2\pi\delta(\omega)$ & — \\
+对称型 & $\displaystyle\frac{1}{\sqrt{2\pi}}\int f(t)e^{-i\omega t}\dd t$ & $\sqrt{2\pi}\,\delta(\omega)$ & 整体乘 $1/\sqrt{2\pi}$ \\
+频率型 & $\displaystyle\int f(t)e^{-2\pi i\nu t}\dd t$ & $\delta(\nu)$ & 令 $\omega=2\pi\nu$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+换算时只需要记住两条：
+
+\begin{equation}
+\F_\nu[f](\nu)=\F_\omega[f](2\pi\nu),
+\qquad
+\delta(2\pi\nu)=\frac{1}{2\pi}\delta(\nu).
+\end{equation}
+
+\begin{warnbox}[最容易出错的三处]
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.3em]
+\item \textbf{$\delta$ 的系数。}换约定之后 $\F[1]$ 不再是 $2\pi\delta$，而是 $\sqrt{2\pi}\delta$ 或 $\delta$。抄别人公式时先核对这一条。
+\item \textbf{$\cos$ 与 $\sin$ 的系数。}本书里是 $\pi$（不是 $2\pi$），因为余弦是两个指数项的一半。
+\item \textbf{$\sin$ 的符号。}见 A.1 末尾的说明：不同约定下符号会反，用 $\frac{1}{2i}(e^{i}-e^{-i})$ 现推最稳。
+\end{enumerate}
+\end{warnbox}
+
+\chapter{讲解禁区：能说与不能说}
+
+\begin{ideabox}[怎么用这一章]
+写旁白时逐条对照。左列是\textbf{看起来很像对}的说法，中间是它错在哪，右列是可以直接念的说法。
+
+如果时间只够检查三件事，检查这三条：
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.2em]
+\item 有没有把 $\delta$ 说成“无穷高的函数”；
+\item 有没有把“趋于”混成一种；
+\item 有没有把 $2\pi$、$i$、负号互换过。
+\end{enumerate}
+\end{ideabox}
+
+\section{关于 $\delta$ 与尖峰}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{4.9cm}L{4.2cm}Y@{}}
+\toprule
+不能这样说 & 问题 & 可以这样说 \\
+\midrule
+“$\delta$ 是原点无穷高、其余为零的函数” & 它没有取值 & “$\delta$ 是一条规则：取出探针在原点的值” \\
+“$\delta(0)=\infty$” & $\infty$ 不是数 & “$\delta$ 没有‘在某点的值’” \\
+“$\delta$ 的面积是 $1$，所以它是一个峰” & 面积不决定形状 & “$K_\ep$ 的总质量为 $1$，且质量集中到原点” \\
+“$K_\ep$ 处处趋于零” & 原点是例外 & “除原点外，每点趋于零；原点趋于无穷” \\
+“所以整体趋于零” & 推理错误 & “整体不趋于零，它集中到一点” \\
+“$\delta'$ 是一个更尖的峰” & 它有两叶 & “$\delta'$ 有正负两叶，总积分为零” \\
+“$\delta'$ 的面积是 $1$” & 总积分为 $0$ & “$\delta'$ 靠正负分布方式起作用” \\
+“$\delta$ 的能量是 $2\pi$” & $\delta^2$ 没有定义 & “零频率处的权重是 $2\pi$” \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{关于极限与收敛}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{4.9cm}L{4.2cm}Y@{}}
+\toprule
+不能这样说 & 问题 & 可以这样说 \\
+\midrule
+“非零频率处积分等于零” & 积分不存在 & “它持续振荡，没有极限” \\
+“振荡会抵消，所以收敛” & 振荡不是收敛 & “振荡是运动，不是收敛；需要另外的条件” \\
+“这族函数趋于 $\delta$，所以逐点也趋于 $\delta$” & 两种收敛不同 & “在分布意义下趋于 $\delta$” \\
+“一致收敛就能交换极限与积分” & 无界区间反例 & “还需要公共可积控制” \\
+“每一项都可积就够了” & 需要同一个控制 & “需要同一个可积控制函数” \\
+“面积是 $1$，所以极限是 $\delta$” & 可能是 $\to0$ & “面积 $1$ 加尾部集中，才趋于 $\delta$” \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{关于公式与约定}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{4.9cm}L{4.2cm}Y@{}}
+\toprule
+不能这样说 & 问题 & 可以这样说 \\
+\midrule
+“$\F[1]=\delta$” & 漏了 $2\pi$ & “$\F[1]=2\pi\delta$（本约定）” \\
+“$\F[t^{n}]=2\pi\delta^{(n)}$” & 漏了 $i^{n}$ & “$\F[t^{n}]=2\pi i^{n}\delta^{(n)}$” \\
+“$\F[H]=\pi\delta-i\PV\frac{1}{\omega}$ 里符号无所谓” & 符号固定 & “按本约定，是 $\pi\delta-i\PV\frac1\omega$” \\
+“$\delta(ax)=\frac1a\delta(x)$” & 漏绝对值 & “$\delta(ax)=\frac{1}{|a|}\delta(x)$” \\
+“$\delta(g(x))$ 总能用简单零点公式” & 条件 & “只在 $g$ 的零点都是简单零点时成立” \\
+“$\F$ 对所有分布都有定义” & 只在 $\Sv'$ & “在 $\Sv'$ 上成立；$\D'$ 上未必” \\
+“$1$ 在 $\Sv$ 里” & 不衰减 & “$1\in\Sv'$，但 $1\notin\Sv$” \\
+“$1/(1+x^{2})\in\Sv$” & 衰减不够快 & “它属于 $\Lone$，但不属于 $\Sv$” \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{关于运算的合法性}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{4.9cm}L{4.2cm}Y@{}}
+\toprule
+不能这样说 & 问题 & 可以这样说 \\
+\midrule
+“两个分布可以相乘” & 一般不行 & “可以乘光滑函数；两个分布相乘无通用定义” \\
+“$H\delta$ 取 $H(0)=1/2$ 就定义了” & 依赖正则化 & “$H\delta$ 没有内禀定义” \\
+“$\omega\delta=0$ 是错的” & 它是对的 & “$\ip{\omega\delta}{\varphi}=\ip{\delta}{\omega\varphi}=0$” \\
+“$i\omega\hat H=1$ 能唯一确定 $\hat H$” & 可加 $c\delta$ & “只能定非零频率部分” \\
+“$\PV$ 就是忽略奇点” & 规定了对称方式 & “对称地挖掉原点邻域” \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{如果只查三件事}
+
+\begin{center}
+\begin{tcolorbox}[colback=softred,colframe=warnred!55,boxrule=0pt,arc=2pt,width=0.95\textwidth]
+\small
+\textbf{一查 $\delta$ 的身份。}全片有没有出现过“$\delta$ 在某点等于什么”？
+
+\textbf{二查“趋于”的含义。}每一处“趋于”，是逐点、一致、$L^{p}$，还是分布？
+
+\textbf{三查系数。}$2\pi$ 在哪一边？$i$ 的指数对不对？$(-1)^{n}$ 有没有丢？$\frac{1}{i}=-i$ 用对了吗？
+\end{tcolorbox}
+\end{center}
+
+这三条过一遍，剩下的错基本都是笔误；这三条错一条，观众学到的就是错的。
+\chapter{符号与术语}
+
+\section{符号表}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}Y@{}}
+\toprule
+记号 & 含义 \\
+\midrule
+$\F$, $\fh$, $\widehat{T}$ & 傅里叶变换；函数用帽子，分布也用帽子 \\
+$\omega$ & 角频率（本书唯一使用的频率变量） \\
+$\ep$ & 正则化参数，$\ep\downarrow0$ \\
+$H(t)$ & 阶跃函数，$t>0$ 时等于 $1$ \\
+$\sgn t$ & 符号函数 \\
+$\delta$ & Dirac 分布，$\ip{\delta}{\varphi}=\varphi(0)$ \\
+$\delta^{(n)}$ & 第 $n$ 阶分布导数，$\ip{\delta^{(n)}}{\varphi}=(-1)^{n}\varphi^{(n)}(0)$ \\
+$\PV\frac{1}{\omega}$ & Cauchy 主值分布 \\
+$K_\ep$ & 归一化 Cauchy 核，面积 $1$ \\
+$G_\ep$ & 实际频谱 $\F[e^{-\ep|t|}]$，面积 $2\pi$ \\
+$\D=C_c^{\infty}$ & 紧支撑光滑测试函数空间 \\
+$\D'$ & 分布空间 \\
+$\Sv$ & Schwartz 空间（各阶导数快速衰减） \\
+$\Sv'$ & 温和分布空间（本系列的工作空间） \\
+$\ip{T}{\varphi}$ & 分布对测试函数的复线性作用，\textbf{无共轭} \\
+$p_{m,n}(\varphi)$ & $\Sv$ 的半范数，$\sup_x(1+|x|)^{m}|\varphi^{(n)}(x)|$ \\
+$\supp T$ & 支撑 \\
+$T_n\to T$ 于 $\Sv'$ & 对每个 $\varphi\in\Sv$，$\ip{T_n}{\varphi}\to\ip{T}{\varphi}$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{术语对照}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{@{}L{3.6cm}L{4.6cm}Y@{}}
+\toprule
+中文 & 英文 & 一句话说明 \\
+\midrule
+正则化 & regularization & 先让积分收敛，再让参数消失 \\
+近似恒等核 & approximate identity & 质量守恒 + 尾部集中的核族 \\
+测试函数 & test function & 用来“提问”的光滑探针 \\
+分布 & distribution & $\D$ 上的连续线性泛函 \\
+温和分布 & tempered distribution & $\Sv$ 上的连续线性泛函 \\
+主值 & Cauchy principal value & 对称挖掉奇点后取的极限 \\
+支撑 & support & 不能被局部消掉的区域 \\
+控制收敛 & dominated convergence & 交换极限与积分的许可证 \\
+半范数 & seminorm & 衡量 $\Sv$ 中“有多小”的尺子 \\
+快速衰减 & rapid decay & 比任何负幂都快 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\chapter{练习与详解}
+
+\section{十二道题（覆盖六集）}
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.45em]
+\item 对固定 $\omega\neq0$，构造两列 $T\to\infty$，说明 $\dfrac{2\sin(\omega T)}{\omega}$ 没有极限。
+\item 计算 $G_\ep$ 在 $[-a,a]$ 上的面积，并解释“固定小区间最终容纳几乎全部面积”。
+\item 取 $\varphi(x)=e^{-x^{2}}+xe^{-x^{2}}$，求 $\ip{\delta}{\varphi}$、$\ip{\delta'}{\varphi}$、$\ip{\delta''}{\varphi}$。
+\item 求 $\F[3-2t+t^{2}]$，并检查奇偶性与实虚部。
+\item 验证 $x\delta'=-\delta$ 与 $x\,\PV\frac1x=1$，并据此检验 $i\omega\widehat H=1$。
+\item 证明把 $H(0)$ 改成任意有限值不影响它对应的分布。
+\item 为什么 $K_\ep$ 不能被同一个 $\Lone$ 函数控制？换元之后为什么又能用控制收敛？
+\item 给出一个面积为 $1$ 但分布极限为零的核族；这与“质量守恒”矛盾吗？
+\item 用对偶定义证明 $\F[\delta]=1$ 与 $\F[1]=2\pi\delta$。
+\item 求 $\F[H(t-a)]$，并解释为什么 $\delta$ 项不受相位因子影响。
+\item 解释 $\F(tT)=i\partial_\omega\widehat T$ 中的 $i$，与分布导数定义里的负号怎样配合。
+\item 选一条你想放进视频的等式，逐项说明它在哪个空间成立、有没有隐藏的交换极限步骤。
+\end{enumerate}
+
+\section{详解}
+
+\subsection*{1. 两列趋于无穷的 $T$}
+
+设 $a=|\omega|>0$。取
+
+\begin{equation}
+T_n=\frac{\pi/2+2\pi n}{a},
+\qquad
+S_n=\frac{3\pi/2+2\pi n}{a},
+\qquad n=0,1,2,\dots
+\end{equation}
+
+则 $aT_n=\frac{\pi}{2}+2\pi n$，$aT_n'=\frac{3\pi}{2}+2\pi n$，于是 $\sin(aT_n)=1$，$\sin(aS_n)=-1$。而 $\sin(\omega T)=\pm\sin(aT)$，故
+
+\begin{equation}
+\frac{2\sin(\omega T_n)}{\omega}=\pm\frac{2}{a},
+\qquad
+\frac{2\sin(\omega S_n)}{\omega}=\mp\frac{2}{a}
+\end{equation}
+
+（符号取决于 $\omega$ 的正负）。两列都趋于无穷，极限点却不同，所以极限不存在。
+
+\subsection*{2. 固定小区间里的面积}
+
+\begin{equation}
+\int_{-a}^{a}G_\ep(\omega)\dd\omega
+=2\ep\cdot\frac{1}{\ep}\Big[\arctan\frac{\omega}{\ep}\Big]_{-a}^{a}
+=4\arctan\frac{a}{\ep}\;\longrightarrow\;4\cdot\frac{\pi}{2}=2\pi .
+\end{equation}
+
+关键在\textbf{次序}：先固定 $a$，再让 $\ep\downarrow0$。这样 $\arctan(a/\ep)\to\pi/2$，整个区间装下全部面积。
+
+若反过来先让 $a\to\infty$，则对每个固定 $\ep$ 也得到 $2\pi$——但那说明的是“全实轴面积”，与“集中”无关。
+
+\subsection*{3. $\delta$ 及其导数的取样}
+
+$\varphi(0)=1$。求导：
+
+\begin{equation}
+\varphi'(x)=e^{-x^{2}}(-2x)+e^{-x^{2}}+x e^{-x^{2}}(-2x)=e^{-x^{2}}\big(1-2x-2x^{2}\big),
+\end{equation}
+
+所以 $\varphi'(0)=1$。再求导并在 $0$ 处取值，得 $\varphi''(0)=-2$。
+
+因此
+
+\begin{equation}
+\ip{\delta}{\varphi}=1,
+\qquad
+\ip{\delta'}{\varphi}=-\varphi'(0)=-1,
+\qquad
+\ip{\delta''}{\varphi}=\varphi''(0)=-2 .
+\end{equation}
+
+\subsection*{4. $\F[3-2t+t^{2}]$}
+
+由线性性：
+
+\begin{equation}
+\F[3]-2\F[t]+\F[t^{2}]
+=3\cdot2\pi\delta-2\cdot2\pi i\,\delta'+\big(-2\pi\delta''\big)
+=6\pi\delta-4\pi i\,\delta'-2\pi\delta'' .
+\end{equation}
+
+检查：$3+t^{2}$ 是实偶的，对应实的偶分布 $6\pi\delta-2\pi\delta''$；$-2t$ 是实奇的，对应纯虚的奇分布 $-4\pi i\delta'$。
+
+\subsection*{5. 两条乘法恒等式与阶跃}
+
+\begin{align}
+\ip{x\delta'}{\varphi}&=\ip{\delta'}{x\varphi}=-(x\varphi)'(0)=-\varphi(0)=-\ip{\delta}{\varphi},\\
+\left\langle x\,\PV\tfrac1x,\varphi\right\rangle
+&=\left\langle \PV\tfrac1x,x\varphi\right\rangle
+=\int_{0}^{\infty}\frac{x\varphi(x)-(-x)\varphi(-x)}{x}\dd x
+=\int_{0}^{\infty}\big(\varphi(x)+\varphi(-x)\big)\dd x=\int_{\R}\varphi .
+\end{align}
+
+所以 $x\delta'=-\delta$，$x\PV\frac1x=1$。于是
+
+\begin{equation}
+i\omega\Big[\pi\delta-i\,\PV\frac{1}{\omega}\Big]
+=i\pi\,\underbrace{\omega\delta}_{=0}+\underbrace{\omega\,\PV\frac{1}{\omega}}_{=1}=1 .
+\end{equation}
+
+这验证了 $i\omega\widehat H=1$，同时说明为什么它\textbf{不能}唯一确定 $\widehat H$：任何 $\widehat H+c\delta$ 都给同一个结果。
+
+\subsection*{6. $H(0)$ 无关}
+
+$H_1$ 与 $H_2$ 只在 $t=0$ 处不同（例如 $0$ 与 $1$）。对任意 $\varphi\in\D$，
+
+\begin{equation}
+\ip{H_1}{\varphi}-\ip{H_2}{\varphi}=\int_{\R}\big(H_1-H_2\big)\varphi\dd t=0,
+\end{equation}
+
+因为差函数只在单点上非零，而单点集的 Lebesgue 测度为零，积分看不见它。所以两个函数定义同一个分布。
+
+\subsection*{7. 为什么没有公共控制}
+
+反证：若存在 $g\in\Lone$ 使 $K_\ep\le g$ 对一切 $\ep$，则由 $K_\ep(x)\to0$（$x\neq0$）与控制收敛，
+
+\begin{equation}
+1=\int K_\ep\longrightarrow\int 0=0,
+\end{equation}
+
+矛盾。
+
+换元 $x=\ep u$ 之后：
+
+\begin{equation}
+\int_{\R}K_\ep(x)\varphi(x)\dd x=\frac{1}{\pi}\int_{\R}\frac{\varphi(\ep u)}{1+u^{2}}\dd u,
+\end{equation}
+
+被积函数被 $\|\varphi\|_\infty/(\pi(1+u^{2}))$ 控制，\textbf{这个控制与 $\ep$ 无关且可积}。所以控制收敛可以使用——注意控制的对象已经换成了 $\varphi(\ep u)$，而不是原来的 $K_\ep$。
+
+\subsection*{8. 面积 $1$ 但极限为零}
+
+\begin{equation}
+k_n=\frac{1}{2}\mathbf{1}_{[n-1,\,n+1]}.
+\end{equation}
+
+$\int k_n=1$，但对 $\varphi\in\Sv$，
+
+\begin{equation}
+\ip{k_n}{\varphi}=\frac{1}{2}\int_{n-1}^{n+1}\varphi(x)\dd x=O\!\left(\frac{1}{n^{2}}\right)\longrightarrow0 .
+\end{equation}
+
+所以 $k_n\to0$ 于 $\Sv'$。
+
+不矛盾：\textbf{“总质量为 $1$”这个条件在 $\Sv'$ 里不是连续的测试量}，因为常数函数 $1\notin\Sv$。质量守恒了，但它跑到了无穷远，任何快速衰减的探针都摸不到它。
+
+\subsection*{9. 对偶定义证两个结果}
+
+\begin{align}
+\ip{\F\delta}{\varphi}&=\ip{\delta}{\ph}=\ph(0)=\int_{\R}\varphi(t)\dd t=\ip{1}{\varphi}
+&&\Longrightarrow \F\delta=1;\\
+\ip{\F1}{\varphi}&=\ip{1}{\ph}=\int_{\R}\ph(t)\dd t=2\pi\varphi(0)=\ip{2\pi\delta}{\varphi}
+&&\Longrightarrow \F1=2\pi\delta .
+\end{align}
+
+第二个式子用到了\textbf{反演}在 $t=0$ 处的取值：$\varphi(0)=\frac{1}{2\pi}\int\ph\dd t$。\textbf{这是整个证明唯一的“外部输入”}，也是为什么反演必须先证。
+
+\subsection*{10. 平移后的阶跃}
+
+由时间平移规则 $\F[f(t-a)]=e^{-ia\omega}\fh(\omega)$，
+
+\begin{equation}
+\F[H(t-a)](\omega)=e^{-ia\omega}\Big[\pi\delta(\omega)-i\,\PV\frac{1}{\omega}\Big]
+=\pi\delta(\omega)-i\,e^{-ia\omega}\PV\frac{1}{\omega}.
+\end{equation}
+
+$\delta$ 项不受相位影响，因为 $e^{-ia\omega}$ 是光滑乘子，而
+
+\begin{equation}
+e^{-ia\omega}\,\delta(\omega)=e^{-ia\cdot0}\,\delta(\omega)=1\cdot\delta(\omega)=\delta(\omega).
+\end{equation}
+
+一般规律：\textbf{光滑函数乘 $\delta$，只取它在原点的值。}主值项则要整体保留相位因子，因为 $\PV\frac1\omega$ 不是“集中在一点”的对象。
+
+\subsection*{11. 那个 $i$ 与那个负号}
+
+从三步看：
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=0.4em]
+\item 由 $\F[\varphi']=i\omega\ph(\omega)$，把变量写成 $t$：$(\varphi')^{\wedge}(t)=it\,\ph(t)$，所以
+\begin{equation}
+t\,\ph(t)=\frac{1}{i}(\varphi')^{\wedge}(t)=-i\,(\varphi')^{\wedge}(t).
+\end{equation}
+这里出现了第一个负号（来自 $1/i=-i$）。
+
+\item 分布导数的定义带来第二个负号：
+\begin{equation}
+\ip{\widehat T'}{\varphi}=-\ip{\widehat T}{\varphi'} .
+\end{equation}
+
+\item 两个负号相乘得正：
+\begin{equation}
+\ip{\F(tT)}{\varphi}=\ip{T}{t\ph}
+=-i\,\ip{T}{(\varphi')^{\wedge}}
+=-i\,\ip{\widehat T}{\varphi'}
+=i\,\ip{\widehat T'}{\varphi}.
+\end{equation}
+\end{enumerate}
+
+所以最终是 $+i\,\partial_\omega\widehat T$，不是 $-i$。
+
+\subsection*{12. 一条等式的“体检报告”}
+
+以 $\F[H]=\pi\delta+\PV\frac{1}{i\omega}$ 为例，逐项交代：
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{3.6cm}Y@{}}
+\toprule
+要素 & 内容 & 说明 \\
+\midrule
+等号在哪成立 & $\Sv'$ & 两边都是温和分布 \\
+左边的来历 & $H_\ep\to H$ 于 $\Sv'$ & 控制函数 $|\varphi|$ \\
+右边的来历 & $1/(\ep+i\omega)$ 的两项极限 & 实部 $\to\pi\delta$，虚部 $\to-i\PV$ \\
+隐藏的交换 & 极限与变换交换 & 由 $\F:\Sv'\to\Sv'$ 连续（命题 \ref{prop:F-cont}）\\
+隐藏的唯一性 & 两个极限相等 & 分布极限唯一 \\
+不能做的事 & 不能逐点把 $\frac{1}{\ep+i\omega}$ 换成 $\frac{1}{i\omega}$ & 后者在原点不可积，不是函数 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{各章自测的答案要点}
+
+\subsection*{EP01}
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=0.3em]
+\item 见 1.5 节；$\ep>0$ 用在两处边界项消失（$e^{\ep t}\to0$ 于 $-\infty$，$e^{-\ep t}\to0$ 于 $+\infty$）。
+\item 解 $\frac{2\ep}{\ep^{2}+\omega^{2}}=\frac{1}{\ep}$ 得 $\omega^{2}=\ep^{2}$，故半高全宽 $2\ep$。
+\item 用 $\arctan$，得 $2\pi$；不随 $\ep$ 变是因为积分只依赖比值 $\omega/\ep$。
+\item $G_\ep(\omega)=\frac{1}{\ep}\hat g(\omega/\ep)$，其中 $\hat g(\omega)=2/(1+\omega^{2})$。
+\item 峰高 $20$ 超出纵轴上限，峰被裁掉，观众会误以为“没有峰”。
+\item 面积是积分、点值是函数值；这两件事在 $\ep\to0$ 时的行为本来就可以不同。
+\end{enumerate}
+
+\subsection*{EP02}
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=0.3em]
+\item 依次为 $1$、$-1$、$-2$。
+\item $6\pi\delta-4\pi i\delta'-2\pi\delta''$。
+\item $i^{4}=1$，故 $\F[t^{4}]=2\pi\delta^{(4)}$。
+\item $\int K_\ep'=K_\ep(\infty)-K_\ep(-\infty)=0$；总积分为零，故“面积”不能刻画它。
+\item 泰勒展开把 $\varphi$ 拆成“零点值 + 各阶导数项 + $x^{N+1}\psi$”；$T$ 作用在 $x^{N+1}\psi$ 上为零，因为该项在原点邻域内有足够高阶的零点而 $T$ 支撑在 $\{0\}$。
+\item $\omega^{N+1}\widehat p=0$ 只说明频谱住在原点（由支撑命题），不给出各 $\delta^{(n)}$ 的系数。
+\item 参考：“$\delta$ 关心值，$\delta'$ 关心斜率；它们都只看原点，但问的不是同一件事。”
+\end{enumerate}
+
+\subsection*{EP03}
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=0.3em]
+\item 改一个点不改变分布（见详解第 6 题）。
+\item $i\pi\omega\delta+\omega\PV\frac1\omega=0+1=1$。
+\item 两个解：$\pi\delta-i\PV\frac1\omega$ 与它加 $c\delta$。
+\item $\varphi(x)-\varphi(-x)=2xe^{-x^{2}}$，故积分 $=\int_0^\infty2e^{-x^{2}}\dd x=\sqrt\pi$。
+\item 差 $\varphi(0)\ln(b/a)$；只有 $b/a\to1$ 才给出主值。
+\item $\F[\sgn t]=2(\widehat H-\pi\delta)=-2i\PV\frac1\omega$。
+\item $\frac{1}{\ep+i\omega}=\frac{-i}{\omega-i\ep}\to\frac{-i}{\omega-i0}=-i\big(\PV\frac1\omega+i\pi\delta\big)=\pi\delta-i\PV\frac1\omega$。
+\end{enumerate}
+
+\subsection*{EP04}
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=0.3em]
+\item $f_n=\frac1n\mathbf{1}_{[0,n]}$：一致趋零，积分恒为 $1$。不违反控制收敛，因为不存在公共可积控制（否则会推出积分趋于零）。
+\item 见详解第 7 题。
+\item 控制函数是 $\|\varphi\|_\infty/(\pi(1+u^{2}))$。
+\item $1\notin\Lone$，控制不可积；乘 $\varphi$ 后控制变成 $|\varphi|\in\Lone$。
+\item 质量 $1$、一致 $\Lone$ 有界、尾部集中；分别防止“变轻”“失控”“变宽”。
+\item 见详解第 8 题；不矛盾，因为 $1\notin\Sv$。
+\item 成立；需要 $\int k_\ep=1$、$\sup_\ep\|k_\ep\|_1<\infty$、尾部集中。估计时把 $k_\ep$ 换成 $|k_\ep|$。
+\end{enumerate}
+
+\subsection*{EP05}
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=0.3em]
+\item 见详解第 5 题；同理 $x\delta''=-\delta'$。
+\item $(2+x)\delta''=2\delta''-2\delta'$；$x^{2}\delta''=2\delta$。
+\item 见 5.5 节；$H$ 不光滑，$H\delta$ 依赖正则化，没有内禀定义。
+\item $\eta$ 紧支撑且所有导数在 $\pm1$ 处趋于零；$e^{-x^{2}}$ 无紧支撑。
+\item $\delta(3x-6)=\delta(3(x-2))=\frac13\delta(x-2)$。
+\item 若探针以“所有低阶导数一致趋零”的方式变小，而响应不趋于零，就违反 \eqref{eq:local-est} 给出的半范数估计。
+\item 见 5.4 节；最后一步用了“单点集测度为零，故 $g=0$ 几乎处处于 $\R$”。
+\end{enumerate}
+
+\subsection*{EP06}
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=0.3em]
+\item 整函数在开集上为零则处处为零；若 $\F\varphi$ 紧支撑则 $\varphi\equiv0$。
+\item 由 $\F[g^{(m)}]=(i\omega)^{m}\hat g$ 直接整理。
+\item 由 \eqref{eq:Schwartz-bound}，$p_{m,n}(\ph)$ 被有限个 $\|t^{k}\partial^{j}\varphi\|_1$ 控制。
+\item 四步：高斯积分 \eqref{eq:gauss-int}、Fubini（高斯因子保证绝对收敛）、写成卷积 \eqref{eq:conv-gauss}、两边分别取极限（左边用控制收敛，右边用近似恒等核）。
+\item $\F^{2}\varphi=2\pi\varphi(-\cdot)$ 就是反演的变形；$\F\delta=1$ 由对偶一步得到，两者结合给出 $\F1=2\pi\delta$。
+\item $\ip{\F1}{\varphi}=\int\ph\dd t=2\pi\varphi(0)$；这一步用的是反演在 $0$ 处的值。
+\item 见命题 \ref{prop:ex2}：指数增长压不过多项式增长的半范数。
+\item sinc 不正、不绝对可积地集中；它靠 $w_T\to1$ 于 $\Sv'$ 加上 $\F$ 连续而收敛。
+\end{enumerate}
+
+\section{延伸阅读}
+
+\begin{ideabox}[与本书框架最接近的两份讲义]
+\begin{enumerate}[leftmargin=1.8em,itemsep=0.3em]
+\item S. Dyatlov, \emph{Lecture Notes for 18.155: Distributions, Elliptic Regularity, and Applications to PDEs}, MIT. 重点看“分布与运算”“傅里叶变换”两部分。\\
+{\small\ttfamily https://math.mit.edu/\~{}dyatlov/18.155/155-notes.pdf}
+\item G. Hörmann, R. Steinbauer, \emph{Lecture Notes on the Theory of Distributions}, University of Vienna, 2009. 测试函数、分布导数、Schwartz 空间；对阶跃变换给了两种推导。\\
+{\small\ttfamily https://www.mat.univie.ac.at/\~{}stein/teaching/courses/SoSem09/distrvo.pdf}
+\end{enumerate}
+\end{ideabox}
+
+\noindent 想再往深处走：Rudin, \emph{Functional Analysis}（严格陈述）；Strichartz, \emph{A Guide to Distribution Theory and Fourier Transforms}（从直觉走向分布）；Gel'fand--Shilov, \emph{Generalized Functions} Vol.~1（正则化思路）；Lighthill, \emph{Introduction to Fourier Analysis and Generalised Functions}（篇幅小、物理味重）。
+
+\begin{warnbox}[引用前必做的一件事]
+各资料的 $2\pi$ 归一化、$\delta$ 系数、$\sin$ 符号可能不同。\textbf{引用前先算一遍该资料的 $\F[1]$}，用它对齐约定（见 0.6 节）。差一个常数时，先怀疑约定，再怀疑内容。
+\end{warnbox}

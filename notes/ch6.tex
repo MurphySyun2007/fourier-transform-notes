@@ -1,0 +1,470 @@
+\chapter{Tempered Distributions and the Generalized Transform}
+\label{ch:tespered}
+
+\begin{quote}
+\itshape
+The transform cannot be transplanted to $\D'$ because it does not preserve $\D$. It is preserved by
+a smaller but more regular space, the Schwartz space, and on the dual of that space the transform is
+defined by moving it to the probe. Inversion is proved independently by Gaussian regularization, so
+nothing circular enters. The three results of the preceding chapters then become theorems.
+\end{quote}
+
+\section{Why the naive definition fails}
+
+The natural attempt is
+\begin{equation}
+\ip{\F T}{\varphi}:=\ip{T}{\F\varphi},
+\label{eq:naive}
+\end{equation}
+which requires $\F\varphi$ to be a test function whenever $\varphi$ is. It is not.
+
+\begin{proposition}\label{prop:FnotD}
+If $\varphi\in C_{c}^{\infty}$ and $\varphi\not\equiv0$, then $\F\varphi\notin C_{c}^{\infty}$.
+\end{proposition}
+
+\begin{proof}
+For complex $\zeta$ the integral $\ph(\zeta)=\int\varphi(t)e^{-i\zeta t}\dd t$ converges absolutely
+because $\varphi$ is compactly supported, and it defines an entire function of $\zeta$. An entire
+function vanishing on a nonempty open set vanishes identically, whence $\varphi\equiv0$ by inversion.
+So $\ph$ cannot have compact support unless $\varphi\equiv0$.
+\end{proof}
+
+\begin{example}
+The rectangular window $w_{T}=\mathbf{1}_{[-T,T]}$ has transform $2\sin(T\omega)/\omega$, which
+oscillates along the whole real line. Smoothing the corners does not shorten its tail; by
+Proposition~\ref{prop:FnotD} no nonzero smooth compactly supported $\varphi$ has a compactly supported
+transform.
+\end{example}
+
+The conclusion is structural: a space of probes on which $\F$ acts must be invariant under the
+transform, and $C_{c}^{\infty}$ is not.
+
+\section{The Schwartz space}
+
+\begin{definition}\label{def:S}
+$\Sw(\R)$ is the set of $\varphi\in C^{\infty}(\R)$ such that for all $m,n\in\mathbb{N}$,
+\begin{equation}
+p_{m,n}(\varphi):=\sup_{x\in\R}(1+|x|)^{m}\big|\varphi^{(n)}(x)\big|<\infty .
+\label{eq:seminorm}
+\end{equation}
+The $p_{m,n}$ are seminorms, and $\varphi_{j}\to\varphi$ in $\Sw$ means
+$p_{m,n}(\varphi_{j}-\varphi)\to0$ for all $m,n$.
+\end{definition}
+
+Equivalently: every derivative decays faster than any negative power of $|x|$.
+
+\begin{example}\label{ex:S}
+$e^{-x^{2}}\in\Sw$; every element of $C_{c}^{\infty}$ belongs to $\Sw$; but $1$ and $x^{n}$ do not
+(they do not decay), $e^{x^{2}}$ does not (it grows), and $1/(1+x^{2})$ does not, although it is
+integrable: it decays only like $x^{-2}$, and its derivatives decay more slowly still. Integrability
+and rapid decay are different requirements.
+\end{example}
+
+\section{The transform acts on the Schwartz space}
+
+Two identities carry the whole proof.
+
+\begin{lemma}\label{lem:two-identities}
+For $\varphi\in\Sw$ and $n,m\in\mathbb{N}$,
+\begin{equation}
+\partial_{\omega}^{\,n}\ph(\omega)=\F\big[(-it)^{n}\varphi\big](\omega),
+\qquad
+\omega^{m}\,\ph(\omega)=i^{-m}\,\F\big[\varphi^{(m)}\big](\omega).
+\label{eq:two-identities}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The first is Lemma~\ref{lem:diffint} iterated. For the second, Theorem~\ref{thm:derivt} gives
+$\F[\varphi^{(m)}]=(i\omega)^{m}\ph$, and multiplying by $i^{-m}$ yields \eqref{eq:two-identities}.
+\end{proof}
+
+\begin{theorem}\label{prop:F-S}
+$\F$ maps $\Sw$ continuously into $\Sw$; that is, $\ph\in\Sw$ for $\varphi\in\Sw$, and for all
+$m,n$ there are $C$ and finitely many indices $(m_{k},n_{k})$ with
+$p_{m,n}(\ph)\le C\sum p_{m_{k},n_{k}}(\varphi)$.
+\end{theorem}
+
+\begin{proof}
+Combining the two identities,
+\begin{equation}
+\omega^{m}\partial_{\omega}^{\,n}\ph(\omega)
+=i^{-m}\int_{\R}\partial_{t}^{m}\big(t^{n}\varphi(t)\big)e^{-i\omega t}\dd t ,
+\end{equation}
+hence
+\begin{equation}
+\big|\omega^{m}\partial_{\omega}^{\,n}\ph(\omega)\big|
+\le\big\|\partial_{t}^{m}(t^{n}\varphi)\big\|_{1} .
+\label{eq:Fbound}
+\end{equation}
+The right side does not depend on $\omega$. Since $\varphi\in\Sw$, the function $t^{n}\varphi$ lies in
+$\Sw$, so each of its derivatives is integrable, and the right side of \eqref{eq:Fbound} is finite.
+Taking the supremum over $\omega$ and using $(1+|\omega|)^{m}\le C_{m}\sum_{k\le m+1}|\omega|^{k}$
+yields the stated bound.
+\end{proof}
+
+The proof shows why $\Sw$ is the right space. The two operations that appear in the transform---taking
+a derivative and multiplying by the variable---exchange places under $\F$, and $\Sw$ is closed under
+both.
+
+\section{Inversion}
+
+The inversion formula cannot be obtained from
+$\int e^{i\omega(t-s)}\dd\omega=2\pi\delta(t-s)$ without circularity: that identity is itself a
+distributional statement about $\delta$. The following proof uses only the Gaussian integral, Fubini,
+and the approximate identities of Chapter~\ref{ch:limits}.
+
+\begin{lemma}[Gaussian integral]\label{lem:gauss}
+For $\eta>0$ and $x\in\R$,
+\begin{equation}
+\int_{\R}e^{-\eta\omega^{2}/2}e^{i\omega x}\dd\omega=\sqrt{\frac{2\pi}{\eta}}\;e^{-x^{2}/(2\eta)} .
+\label{eq:gaussint}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Complete the square in the exponent and use $\int e^{-u^{2}/2}\dd u=\sqrt{2\pi}$.
+\end{proof}
+
+\begin{theorem}[Fourier inversion]\label{thm:inversion}
+Let $\varphi\in\Sw$. Then
+\begin{equation}
+\varphi(t)=\frac{1}{2\pi}\int_{\R}\ph(\omega)e^{i\omega t}\dd\omega
+\qquad\text{for every }t\in\R .
+\label{eq:inversion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $\eta>0$ define
+\begin{equation}
+I_{\eta}(t)=\frac{1}{2\pi}\int_{\R}\ph(\omega)e^{i\omega t}e^{-\eta\omega^{2}/2}\dd\omega .
+\end{equation}
+Insert $\ph(\omega)=\int\varphi(s)e^{-i\omega s}\dd s$. The double integral is absolutely convergent,
+because the modulus of the integrand is $|\varphi(s)|e^{-\eta\omega^{2}/2}$ and $\varphi\in\Lone$,
+while the Gaussian is integrable in $\omega$. Fubini therefore applies and
+\begin{align}
+I_{\eta}(t)
+&=\frac{1}{2\pi}\int_{\R}\varphi(s)\left[\int_{\R}e^{-\eta\omega^{2}/2}e^{i\omega(t-s)}\dd\omega
+\right]\dd s \notag\\
+&=\frac{1}{2\pi}\int_{\R}\varphi(s)\sqrt{\frac{2\pi}{\eta}}\,e^{-(t-s)^{2}/(2\eta)}\dd s
+=\big(\rho_{\eta}*\varphi\big)(t),
+\label{eq:conv}
+\end{align}
+where $\rho_{\eta}(u)=(2\pi\eta)^{-1/2}e^{-u^{2}/(2\eta)}$ is the Gaussian approximate identity.
+
+Two limits are now taken. On the left, since $\ph\in\Sw\subset\Lone$ and
+$|e^{-\eta\omega^{2}/2}|\le1$, dominated convergence with the $\eta$-independent bound $|\ph|$ gives
+\begin{equation}
+I_{\eta}(t)\longrightarrow\frac{1}{2\pi}\int_{\R}\ph(\omega)e^{i\omega t}\dd\omega .
+\end{equation}
+On the right, Theorem~\ref{thm:conv} gives $(\rho_{\eta}*\varphi)(t)\to\varphi(t)$. Equating the two
+limits yields \eqref{eq:inversion}.
+\end{proof}
+
+\begin{theorem}[two transforms give a reflection]\label{thm:F2}
+For $\varphi\in\Sw$,
+\begin{equation}
+\F^{2}\varphi(t)=2\pi\,\varphi(-t).
+\label{eq:F2}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By definition $\F^{2}\varphi(t)=\int_{\R}\ph(\omega)e^{-i\omega t}\dd\omega$, and
+\eqref{eq:inversion} with $t$ replaced by $-t$ identifies this with $2\pi\varphi(-t)$.
+\end{proof}
+
+\begin{remark}
+The order of the argument matters. Inversion is proved first, without reference to $\delta$; only
+afterwards may one use $\F^{2}=2\pi\,(\text{reflection})$ to obtain statements about $\delta$ cheaply.
+Using the distributional identity $\int e^{i\omega t}\dd\omega=2\pi\delta(t)$ to prove inversion would
+reverse the implication.
+\end{remark}
+
+\section{Tempered distributions and the dual definition}
+
+\begin{definition}\label{def:Sprime}
+A \emph{tempered distribution} is a continuous linear functional on $\Sw(\R)$. The space is denoted
+$\Sw'(\R)$. Continuity is equivalent to the existence of $C<\infty$ and finitely many indices such
+that
+\begin{equation}
+|\ip{T}{\varphi}|\le C\sum_{m\le M,\ n\le N}p_{m,n}(\varphi)
+\qquad\text{for all }\varphi\in\Sw .
+\label{eq:Sprime-est}
+\end{equation}
+\end{definition}
+
+\begin{example}\label{ex:tempered}
+Bounded functions are tempered, since $|\ip{f}{\varphi}|\le\|f\|_{\infty}\|\varphi\|_{1}$ and
+$\|\varphi\|_{1}$ is controlled by $p_{2,0}$. Functions of polynomial growth are tempered, with the
+index $N$ equal to the growth order plus $2$. $\delta^{(n)}$ is tempered, since
+$|\ip{\delta^{(n)}}{\varphi}|=|\varphi^{(n)}(0)|\le p_{0,n}(\varphi)$. The principal value is
+tempered, the estimate near the origin using one derivative of $\varphi$ and the estimate at
+infinity using rapid decay.
+\end{example}
+
+\begin{proposition}[not every distribution is tempered]\label{prop:ex2}
+The function $e^{x^{2}}$ is locally integrable, hence defines a distribution, but it is not a
+tempered distribution.
+\end{proposition}
+
+\begin{proof}
+Take $0\not\equiv\psi\in C_{c}^{\infty}$ nonnegative and set $\psi_{R}(x)=\psi(x-R)$. The seminorms
+$p_{m,n}(\psi_{R})$ grow at most polynomially in $R$, because translation only multiplies the weight
+$(1+|x|)^{m}$ by a factor $O(R^{m})$. On the other hand
+\begin{equation}
+\ip{e^{x^{2}}}{\psi_{R}}=\int e^{x^{2}}\psi(x-R)\dd x\ge e^{(R-r)^{2}}\int\psi ,
+\end{equation}
+where $r$ is the radius of $\supp\psi$, which grows faster than any polynomial. No estimate of the
+form \eqref{eq:Sprime-est} can hold.
+\end{proof}
+
+\begin{definition}[generalized Fourier transform]\label{def:FTdist}
+For $T\in\Sw'$ define $\F T\in\Sw'$ by
+\begin{equation}
+\ip{\F T}{\varphi}:=\ip{T}{\F\varphi},
+\qquad \varphi\in\Sw .
+\label{eq:dualdef}
+\end{equation}
+\end{definition}
+
+\begin{proposition}[consistency with the classical transform]\label{prop:dual-consistency}
+If $f,\varphi\in\Sw$, then $\ip{\F f}{\varphi}=\ip{f}{\F\varphi}$; consequently \eqref{eq:dualdef}
+extends the classical transform.
+\end{proposition}
+
+\begin{proof}
+By Fubini, justified by absolute convergence,
+\begin{equation}
+\ip{\F f}{\varphi}
+=\iint f(t)e^{-i\omega t}\varphi(\omega)\dd t\dd\omega
+=\int_{\R}f(t)\Big[\int_{\R}\varphi(\omega)e^{-i\omega t}\dd\omega\Big]\dd t
+=\int_{\R}f(t)\ph(t)\dd t=\ip{f}{\F\varphi} . \qedhere
+\end{equation}
+\end{proof}
+
+\begin{remark}[three details that must be checked]
+First, \eqref{eq:dualdef} is well posed because $\varphi\in\Sw$ implies
+$\F\varphi\in\Sw$ (Theorem~\ref{prop:F-S}). Second, the right side defines a continuous linear
+functional of $\varphi$, hence an element of $\Sw'$. Third, there is no factor $1/(2\pi)$ and no
+conjugate on the right; a formula with either present belongs to a different convention.
+\end{remark}
+
+\begin{theorem}[inverse transform]\label{thm:inverse}
+$\F:\Sw'\to\Sw'$ is a linear isomorphism, with inverse
+\begin{equation}
+\F^{-1}T=\frac{1}{2\pi}\,\F\big(T(-\cdot)\big).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:F2} in dual form, $\F^{2}T=2\pi\,T(-\cdot)$; solving gives the stated inverse.
+\end{proof}
+
+\section{Continuity, and the gaps it closes}
+
+\begin{theorem}[the transform is continuous]\label{thm:F-cont}
+If $T_{j}\to T$ in $\Sw'$, then $\F T_{j}\to\F T$ in $\Sw'$.
+\end{theorem}
+
+\begin{proof}
+For fixed $\varphi\in\Sw$,
+$\ip{\F T_{j}}{\varphi}=\ip{T_{j}}{\F\varphi}\to\ip{T}{\F\varphi}=\ip{\F T}{\varphi}$.
+\end{proof}
+
+This is the step missing from Chapters~\ref{ch:constant} and \ref{ch:step}, where a time-domain limit
+and a frequency-domain limit were computed separately without a bridge between them.
+
+\begin{example}[completing the constant]
+For every $\varphi\in\Sw$, $|e^{-\ep|t|}\varphi(t)|\le|\varphi(t)|\in\Lone$ and
+$e^{-\ep|t|}\varphi(t)\to\varphi(t)$ pointwise, so $e^{-\ep|\cdot|}\to1$ in $\Sw'$ by dominated
+convergence. By Theorems~\ref{thm:F-cont} and \ref{prop:F-S},
+\begin{equation}
+\F\big[e^{-\ep|\cdot|}\big]\longrightarrow\F[1]
+\qquad\text{in }\Sw',
+\end{equation}
+while Theorem~\ref{thm:exptransform} and Theorem~\ref{thm:sampling} give
+$\F[e^{-\ep|\cdot|}]=G_{\ep}\to2\pi\delta$. Uniqueness of limits in $\Sw'$ yields
+$\F[1]=2\pi\delta$. Compare \eqref{eq:F1}: the same statement, now proved rather than posited.
+\end{example}
+
+\section{The three results}
+
+\begin{theorem}\label{thm:main}
+In $\Sw'$:
+\begin{align}
+\F[\delta]&=1, \qquad \F[1]=2\pi\delta, \label{eq:Fdelta}\\
+\F[t^{\,n}]&=2\pi i^{\,n}\delta^{(n)},\qquad n=0,1,2,\dots, \label{eq:Ftn}\\
+\F[H]&=\pi\delta+\PV\frac{1}{i\omega}. \label{eq:FHgen}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+\emph{(i) $\delta$ and $1$.} For $\varphi\in\Sw$,
+\begin{equation}
+\ip{\F\delta}{\varphi}=\ip{\delta}{\ph}=\ph(0)=\int_{\R}\varphi(t)\dd t=\ip{1}{\varphi},
+\end{equation}
+so $\F\delta=1$. For the second identity,
+\begin{equation}
+\ip{\F1}{\varphi}=\ip{1}{\ph}=\int_{\R}\ph(t)\dd t=2\pi\varphi(0)=\ip{2\pi\delta}{\varphi},
+\end{equation}
+where the middle equality is \eqref{eq:inversion} at $t=0$. This is the only place where inversion is
+used, and it is the reason inversion had to be proved first.
+
+\emph{(ii) The two differentiation rules.} First, from $\F[\varphi']=i\omega\ph$ evaluated at
+$\omega=t$ one gets $(\varphi')^{\wedge}(t)=it\,\ph(t)$, that is
+$t\,\ph(t)=-i(\varphi')^{\wedge}(t)$. Hence
+\begin{equation}
+\ip{\F(tT)}{\varphi}=\ip{T}{t\ph}
+=-i\ip{T}{(\varphi')^{\wedge}}
+=-i\ip{\widehat T}{\varphi'}
+=i\ip{\widehat T'}{\varphi},
+\end{equation}
+so
+\begin{equation}
+\F(tT)=i\,\partial_{\omega}\widehat T .
+\label{eq:multt-dist}
+\end{equation}
+Second, from $\ph'(\omega)=-i(t\varphi)^{\wedge}(\omega)$,
+\begin{equation}
+\ip{\F(T')}{\varphi}=\ip{T'}{\ph}=-\ip{T}{\ph'}
+=i\ip{\widehat T}{t\varphi}
+=i\ip{t\widehat T}{\varphi},
+\end{equation}
+so
+\begin{equation}
+\F(T')=i\omega\,\widehat T .
+\label{eq:deriv-dist}
+\end{equation}
+Iterating \eqref{eq:multt-dist} on $\F[1]=2\pi\delta$ yields \eqref{eq:Ftn}.
+
+\emph{(iii) The step.} $H_{\ep}=H\,e^{-\ep t}\to H$ in $\Sw'$ because
+$|H_{\ep}\varphi|\le|\varphi|\in\Lone$; and by Theorem~\ref{thm:Heps} together with
+Theorems~\ref{thm:realpart} and \ref{thm:imagpart},
+$\F[H_{\ep}]\to\pi\delta-i\PV\frac{1}{\omega}$. Theorem~\ref{thm:F-cont} identifies the limit of the
+transforms with $\F[H]$, and uniqueness gives \eqref{eq:FHgen}.
+\end{proof}
+
+\section{Other regularizations}
+
+The theory must be independent of the chosen regularizing family. Two checks.
+
+\subsection*{Gaussian}
+
+For $g_{\sigma}(t)=e^{-\sigma t^{2}/2}$ one has, by the differential-equation method or
+Lemma~\ref{lem:gauss},
+\begin{equation}
+\widehat{g_{\sigma}}(\omega)=\sqrt{\frac{2\pi}{\sigma}}\,e^{-\omega^{2}/(2\sigma)} .
+\end{equation}
+Its total mass is
+$\sqrt{2\pi/\sigma}\cdot\sqrt{2\pi\sigma}=2\pi$, and it has width of order $\sqrt{\sigma}$ and height
+of order $\sigma^{-1/2}$; hence $\widehat{g_{\sigma}}\to2\pi\delta$. The Gaussian route is entirely
+independent of the exponential route of Chapter~\ref{ch:constant} and gives the same limit.
+
+\subsection*{Rectangular windows, and sinc}
+
+For $w_{T}=\mathbf{1}_{[-T,T]}$ one has $\widehat{w_{T}}(\omega)=2\sin(T\omega)/\omega$. Since
+$w_{T}\to1$ in $\Sw'$ (dominated convergence with bound $|\varphi|$), Theorem~\ref{thm:F-cont} gives
+\begin{equation}
+\widehat{w_{T}}\longrightarrow\F[1]=2\pi\delta
+\qquad\text{in }\Sw'.
+\end{equation}
+
+\begin{remark}[why Chapter~\ref{ch:limits} does not apply]
+The sinc kernels are not nonnegative, they change sign infinitely often, and
+$\int_{\R}\big|2\sin(T\omega)/\omega\big|\dd\omega$ grows like $\log T$. Neither the hypotheses of
+Theorem~\ref{thm:sampling-general} nor those of Proposition~\ref{prop:general-kernels} hold. Their
+convergence comes instead from the continuity of $\F$ applied to the convergent family $w_{T}\to1$.
+There is no contradiction with the failure of pointwise convergence noted in
+Proposition~\ref{prop:nolimit}: that failure concerns the pointwise behaviour of the truncated
+integrals, this concerns distributional convergence of the transforms.
+\end{remark}
+
+\begin{remark}[what the extension does and does not do]
+It does not assign values to divergent integrals. It does the following: it reinterprets a signal as
+a functional, defines $\F$ on functionals by duality, proves that the definition is continuous and
+invertible, and then observes that the three identities hold simultaneously. The extension is
+conservative---it agrees with the classical transform wherever the latter exists---and it is
+canonical, because inversion together with the pairing leaves no freedom in the definition.
+\end{remark}
+
+\section{Plancherel, and what the delta does not have}
+
+The generalized transform extends the classical one. It does not extend Plancherel's identity to
+$\delta$, and it is worth being precise about why.
+
+\begin{theorem}[Plancherel]\label{thm:plancherel}
+For $f,g\in\Sw$,
+\begin{equation}
+\int_{\R}f(t)\overline{g(t)}\dd t
+=\frac{1}{2\pi}\int_{\R}\fh(\omega)\overline{\gh(\omega)}\dd\omega .
+\label{eq:plancherel-pair}
+\end{equation}
+In particular $\|f\|_{2}^{2}=(2\pi)^{-1}\|\fh\|_{2}^{2}$, and $\F$ extends uniquely to a bounded
+operator $L^{2}(\R)\to L^{2}(\R)$ with $\|\F f\|_{2}=\sqrt{2\pi}\,\|f\|_{2}$.
+\end{theorem}
+
+\begin{proof}
+Since $g=\frac{1}{2\pi}\int\gh(\omega)e^{i\omega\cdot}\dd\omega$ by inversion, and since
+$\gh\in\Sw\subset\Lone$, Fubini gives
+\begin{align}
+\int_{\R}f(t)\overline{g(t)}\dd t
+&=\int_{\R}f(t)\overline{\frac{1}{2\pi}\int_{\R}\gh(\omega)e^{i\omega t}\dd\omega}\dd t \notag\\
+&=\frac{1}{2\pi}\int_{\R}\overline{\gh(\omega)}\Big[\int_{\R}f(t)e^{-i\omega t}\dd t\Big]\dd\omega
+=\frac{1}{2\pi}\int_{\R}\fh(\omega)\overline{\gh(\omega)}\dd\omega .
+\end{align}
+Taking $g=f$ gives the norm identity. The extension: $\Sw$ is dense in $L^{2}$, and on $\Sw$ the map
+$\F/\sqrt{2\pi}$ preserves the norm, so it extends uniquely by continuity to an isometry of $L^{2}$;
+invertibility follows from \eqref{eq:F2}.
+\end{proof}
+
+\begin{corollary}\label{cor:no-energy}
+The constant $1$ and the distribution $\delta$ are not elements of $L^{2}$, and neither can be
+assigned a finite energy. For $f_{\ep}=e^{-\ep|t|}$,
+\begin{equation}
+\|f_{\ep}\|_{2}^{2}=\frac{1}{\ep}\longrightarrow\infty,
+\qquad
+\frac{1}{2\pi}\|G_{\ep}\|_{2}^{2}=\frac{1}{\ep},
+\end{equation}
+so the constant value $2\pi$ of the area of $G_{\ep}$ carries no information about
+\eqref{eq:plancherel-pair} in the limit.
+\end{corollary}
+
+\begin{proof}
+$\int_{\R}1\dd t=\infty$; for $f_{\ep}$ the two sides of
+\eqref{eq:plancherel-pair} are computed by direct integration, using
+$\int_{\R}(\ep^{2}+\omega^{2})^{-2}\dd\omega=\pi/(2\ep^{3})$.
+\end{proof}
+
+\begin{remark}[three layers, and their intersection]
+On $L^{1}$ the transform is an absolutely convergent integral; on $L^{2}$ it is an isometry obtained
+by density; on $\Sw'$ it is defined by duality and exists for objects---$\delta$, $1$, $t^{n}$,
+$H$---that belong to neither $L^{1}$ nor $L^{2}$. The three definitions agree on their common domain,
+which is $\Sw$ at least, and this agreement is the content of
+Proposition~\ref{prop:dual-consistency}. The constructions do not replace one another; they are the
+same operator seen in three topologies.
+\end{remark}
+
+\section{Summary of the chapter}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.4cm}p{9.4cm}@{}}
+\toprule
+Step & Content \\
+\midrule
+Obstruction & $\F$ does not preserve $C_{c}^{\infty}$ (Proposition~\ref{prop:FnotD}) \\
+Replacement & $\Sw$, closed under differentiation and multiplication (Definition~\ref{def:S}) \\
+Closure & $\F:\Sw\to\Sw$ continuous (Theorem~\ref{prop:F-S}) \\
+Inversion & proved by Gaussian regularization, with no appeal to $\delta$
+(Theorem~\ref{thm:inversion}) \\
+Definition & $\ip{\F T}{\varphi}=\ip{T}{\F\varphi}$ on $\Sw'$
+(Definition~\ref{def:FTdist}) \\
+Continuity & $T_{j}\to T$ implies $\F T_{j}\to\F T$ (Theorem~\ref{thm:F-cont}) \\
+Harvest & $\F[\delta]=1$, $\F[1]=2\pi\delta$, $\F[t^{n}]=2\pi i^{n}\delta^{(n)}$,
+$\F[H]=\pi\delta+\PV\frac{1}{i\omega}$ (Theorem~\ref{thm:main}) \\
+Consistency & Gaussian and sinc families give the same limits \\
+\bottomrule
+\end{tabular}
+\end{center}

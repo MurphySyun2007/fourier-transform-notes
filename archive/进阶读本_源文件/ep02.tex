@@ -1,0 +1,585 @@
+\chapter{EP02｜多项式与 $\delta$ 的导数}
+
+\begin{ideabox}[这一集的一句话]
+\textbf{在时间上乘一个 $t$，等于在频率上求一次导。所以多项式只有零频率的支撑——但它记录的不是“一个直流值”，而是零点处的各阶导数。}
+\end{ideabox}
+
+\section{观众的问题链}
+
+第一集留下的钩子是“把水平线掰成斜线”。这一集就从这里开始，但真正的高潮不是算出 $\F[t]$，而是被迫面对一个新问题：\textbf{对一个不是函数的东西求导，是什么意思？}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabularx}{\textwidth}{@{}p{0.8cm}X p{4.4cm}@{}}
+\toprule
+层 & 问题 & 观众此刻的心理 \\
+\midrule
+1 & 常数有频谱，那 $t$ 呢？$t^{2}$ 呢？ & 越大越离谱，应该更算不出来。\\
+2 & 直接代入，果然又发散了。 & 意料之中。\\
+3 & 但能不能从 $\F[1]$ 推出来？ & 怎么推？\\
+4 & 可以：时域乘 $t$ 对应频域求导。 & 这个规则很漂亮。\\
+5 & 可是求导之后出现了 $\delta'$。 & 等等，$\delta'$ 是什么东西？\\
+6 & 它不是尖峰，它有两叶，总积分为零。 & 那它到底“是什么”？\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}Y@{}}
+\toprule
+观众带着什么进来 & 观众带着什么出去 \\
+\midrule
+“$\delta$ 是一个极限的名字” & “$\delta$ 还可以被求导，而求导的含义由它对探针的作用决定。”\\
+把“求导”理解成“看斜率” & “分布求导是把导数转移到探针上，代价是一个负号。”\\
+以为“零频率”意味着“没有信息” & “零频率的 $\delta^{(n)}$ 恰好记录了 $\varphi$ 在零点的第 $n$ 阶导数。”\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{先算一遍：直接代入为什么还是不行}
+
+把 $f(t)=t$ 代进定义：
+
+\begin{equation}
+\int_{-T}^{T}t\,e^{-i\omega t}\dd t .
+\end{equation}
+
+分部积分（取 $u=t$，$\dd v=e^{-i\omega t}\dd t$）：
+
+\begin{equation}
+\int_{-T}^{T}t\,e^{-i\omega t}\dd t
+=\left[\frac{t\,e^{-i\omega t}}{-i\omega}\right]_{-T}^{T}
++\frac{1}{i\omega}\int_{-T}^{T}e^{-i\omega t}\dd t
+=\frac{2T\cos(\omega T)}{i\omega}+\frac{2\sin(\omega T)}{\omega^{2}} .
+\end{equation}
+
+第一项带着因子 $T$，$\cos(\omega T)$ 又不停振荡，所以它的振幅随 $T$ \textbf{线性增长}。这比常数的情况更糟：常数只是“不收敛”，$t$ 是“振荡着发散”。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}p{2.2cm}L{5.0cm}Y@{}}
+\toprule
+对象 & 截断积分的量级 & 失败方式 \\
+\midrule
+$1$ & $\dfrac{2\sin(\omega T)}{\omega}$，振幅恒定 & 不收敛 \\
+$t$ & $\dfrac{2T\cos(\omega T)}{i\omega}+\cdots$，振幅 $\sim T$ & 振荡着发散 \\
+$t^{n}$ & 振幅 $\sim T^{n}$ & 发散得更快 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+结论很清楚：\textbf{这条路走不通，一代比一代更不通。}必须换一条路——从已经得到的 $\F[1]$ 出发。
+
+\section{换一条路：时域乘 $t$，频域求导}
+
+\subsection{在一个足够好的函数上先验一遍}
+
+先假设 $f$ 属于 Schwartz 空间 $\Sv$（光滑、各阶导数都快速衰减）。这样下面每一步都合法，不用边算边担心。对
+
+\begin{equation}
+\fh(\omega)=\int_{\R}f(t)e^{-i\omega t}\dd t
+\end{equation}
+
+关于 $\omega$ 求导。$e^{-i\omega t}$ 对 $\omega$ 的导数是 $-it\,e^{-i\omega t}$，于是
+
+\begin{equation}
+\frac{\dd}{\dd\omega}\fh(\omega)
+=\int_{\R}f(t)\,(-it)\,e^{-i\omega t}\dd t
+=-i\int_{\R}\big(tf(t)\big)e^{-i\omega t}\dd t
+=-i\,\F[tf](\omega).
+\end{equation}
+
+整理一下：
+
+\begin{equation}
+\boxed{\ \F[tf](\omega)=i\,\frac{\dd}{\dd\omega}\fh(\omega)\ }\label{eq:mult-t}
+\end{equation}
+
+\begin{ideabox}[为什么必须写“$f\in\Sv$”]
+如果把求导搬到积分号里面，需要两个条件：
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item 被积函数对 $\omega$ 可导（这里显然），
+\item 导数 $\big|(-it)f(t)e^{-i\omega t}\big|=|tf(t)|$ 能被一个\textbf{与 $\omega$ 无关}的可积函数控制。
+\end{itemize}
+$f\in\Sv$ 时 $|tf(t)|$ 可积，第二条自动满足。如果只假设 $f\in\Lone$，$tf$ 未必可积，这一步就可能是错的。
+\end{ideabox}
+
+\subsection{两条规则，方向相反，最容易记混}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{5.2cm}L{5.4cm}Y@{}}
+\toprule
+时域做什么 & 频域做什么 & 用在哪一集 \\
+\midrule
+$t$ 乘上去 & 求导，再乘 $i$ & \textbf{EP02} \\
+求导 & 乘 $i\omega$ & \textbf{EP03} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+写成公式：
+
+\begin{equation}
+\F[tf]=i\,\partial_\omega\fh,
+\qquad
+\F[f']=i\omega\,\fh .\label{eq:two-rules}
+\end{equation}
+
+第二条的推导只要一次分部积分（边界项因为 $f$ 衰减而消失）：
+
+\begin{equation}
+\int_{\R}f'(t)e^{-i\omega t}\dd t
+=\big[f(t)e^{-i\omega t}\big]_{-\infty}^{\infty}
++i\omega\int_{\R}f(t)e^{-i\omega t}\dd t
+=i\omega\fh(\omega).
+\end{equation}
+
+\begin{notebox}[一个帮助记忆的对照]
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item 时域\textbf{乘} $t$ $\longleftrightarrow$ 频域\textbf{求导}。
+\item 时域\textbf{求导} $\longleftrightarrow$ 频域\textbf{乘} $i\omega$。
+\end{itemize}
+像照镜子：一边“乘”，另一边就“导”。两个 $i$ 的来历不同（一个来自 $e^{-i\omega t}$ 对 $\omega$ 求导，一个来自对 $t$ 分部积分），但都出现在同一位置，这就是它们容易混的原因。
+\end{notebox}
+
+\section{$\delta$ 的导数：负号是从哪里来的}
+
+\subsection{从分部积分说起}
+
+对普通的光滑函数 $f$ 和紧支撑的光滑函数 $\varphi$，
+
+\begin{equation}
+\int_{\R}f'(t)\varphi(t)\dd t
+=-\int_{\R}f(t)\varphi'(t)\dd t .\label{eq:ibp}
+\end{equation}
+
+边界项消失了：$\varphi$ 紧支撑，所以两端都为 $0$。
+
+这个等式本来只是“分部积分”，但它有一个了不起的结构：\textbf{右边的 $f$ 没有再被求导。}导数从 $f$ 身上转移到了 $\varphi$ 身上。
+
+于是可以反过来\textbf{用右边来定义左边}：即使 $f$ 没有导数，甚至 $f$ 根本不是函数，只要它还是一个能作用于 $\varphi$ 的对象，右边就仍然有意义。
+
+\begin{defn}[分布导数]\label{def:dist-deriv}
+设 $T$ 是 $C_c^{\infty}(\R)$ 上的连续线性泛函。定义它的导数 $T'$ 为
+\begin{equation}
+\ip{T'}{\varphi}:=-\ip{T}{\varphi'},
+\qquad
+\ip{T^{(n)}}{\varphi}:=(-1)^{n}\ip{T}{\varphi^{(n)}} .
+\end{equation}
+\end{defn}
+
+\begin{ideabox}[为什么这个定义是“对的”而不是“编的”]
+三条理由，按重要性排列：
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.25em]
+\item \textbf{它和经典导数兼容。}若 $T=T_f$ 且 $f$ 本来就可导，那么由 \eqref{eq:ibp}，新定义的 $T'$ 就是 $T_{f'}$。
+\item \textbf{它不需要 $T$ 有逐点导数。}整个定义只用到 $\varphi$ 的光滑性，完全没问 $T$“在某点是多少”。
+\item \textbf{它自动是连续的。}若 $T_n\to T$，则 $\ip{T_n'}{\varphi}=-\ip{T_n}{\varphi'}\to-\ip{T}{\varphi'}=\ip{T'}{\varphi}$。求导不会破坏收敛。
+\end{enumerate}
+\end{ideabox}
+
+\subsection{$\delta'$ 的作用}
+
+把 $T=\delta$ 代进定义：
+
+\begin{equation}
+\ip{\delta'}{\varphi}=-\ip{\delta}{\varphi'}=-\varphi'(0),
+\qquad
+\ip{\delta''}{\varphi}=(-1)^{2}\ip{\delta}{\varphi''}=\varphi''(0).
+\end{equation}
+
+一般地，
+
+\begin{equation}
+\boxed{\ \ip{\delta^{(n)}}{\varphi}=(-1)^{n}\varphi^{(n)}(0)\ }\label{eq:delta-n}
+\end{equation}
+
+\begin{warnbox}[负号不是笔误]
+$\ip{\delta'}{\varphi}=-\varphi'(0)$ 里的负号，是分部积分的那个负号。它不会因为“对称”而消失。
+
+很多人在这一步丢掉负号，然后整条递推全错：$\F[t]$ 会写成 $-2\pi i\delta'$，$\F[t^{2}]$ 的符号也会翻。
+
+记住它来自哪里，比记住它在不在，更可靠。
+\end{warnbox}
+
+\subsection{一句话读懂每一阶}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}L{4.4cm}Y@{}}
+\toprule
+对象 & 作用 & 用一句人话说 \\
+\midrule
+$\delta$ & $\varphi(0)$ & 读出探针在原点的\textbf{值} \\
+$\delta'$ & $-\varphi'(0)$ & 读出探针在原点的\textbf{斜率}（带负号） \\
+$\delta''$ & $\varphi''(0)$ & 读出探针在原点的\textbf{弯曲程度} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{ideabox}[一句可以直接用的旁白]
+“$\delta$ 关心的是你的函数在原点有多高，$\delta'$ 关心的是它在那里有多斜。它们不是‘一个尖峰’和‘一个更尖的尖峰’，而是\textbf{两种不同的提问方式}。”
+
+这句话说清楚，EP05 的分布定义就有一半已经铺好了。
+\end{ideabox}
+
+\section{把 $\delta'$ 画出来：两叶，而且总积分为零}
+
+\subsection{对第一集的核求导}
+
+第一集的核
+
+\begin{equation}
+K_\ep(x)=\frac{1}{\pi}\frac{\ep}{x^{2}+\ep^{2}},
+\qquad
+\int_{\R}K_\ep\dd x=1
+\end{equation}
+
+对 $x$ 求导：
+
+\begin{equation}
+K_\ep'(x)=\frac{1}{\pi}\cdot\frac{-2\ep x}{(x^{2}+\ep^{2})^{2}}
+=-\frac{2\ep x}{\pi\,(x^{2}+\ep^{2})^{2}} .\label{eq:Keps-prime}
+\end{equation}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{@{}L{4.0cm}L{4.6cm}Y@{}}
+\toprule
+性质 & 结果 & 意味着什么 \\
+\midrule
+零点 & $x=0$ & 中间穿过横轴 \\
+符号 & $x<0$ 为正，$x>0$ 为负 & 左叶朝上，右叶朝下 \\
+极值位置 & $x=\pm\ep/\sqrt{3}$ & 两叶对称，越靠越近 \\
+峰值大小 & $\dfrac{9}{8\sqrt{3}\,\pi\,\ep^{2}}\approx\dfrac{0.207}{\ep^{2}}$ & 按 $\ep^{-2}$ 增长，比 $K_\ep$ 快 \\
+总积分 & $\displaystyle\int_{\R}K_\ep'\dd x=K_\ep(+\infty)-K_\ep(-\infty)=0$ & \textbf{正负面积抵消} \\
+总变差 & $\displaystyle\int_{\R}|K_\ep'|\dd x=\frac{2}{\pi\ep}\to\infty$ & 不是测度 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.46\textwidth,height=4.4cm,
+  domain=-2:2,samples=300,ymin=0,ymax=1.15,
+  xlabel={$x$},ylabel={$K_\ep(x)$},
+  title={\small 核本身：一个非负峰},
+  ticklabel style={font=\scriptsize},label style={font=\small}]
+\addplot[thick,mainblue] {0.5/(pi*(x^2+0.25))};
+\addplot[only marks,mark=*,mark size=1.2pt,mainblue] coordinates {(0,0.6366)};
+\end{axis}
+\end{tikzpicture}\hfill
+\begin{tikzpicture}
+\begin{axis}[width=0.46\textwidth,height=4.4cm,
+  domain=-2:2,samples=300,ymin=-1.1,ymax=1.1,
+  xlabel={$x$},ylabel={$K_\ep'(x)$},
+  title={\small 它的导数：左正右负},
+  ticklabel style={font=\scriptsize},label style={font=\small},
+  axis lines=middle]
+\addplot[thick,warnred] {-2*0.5*x/(pi*(x^2+0.25)^2)};
+\end{axis}
+\end{tikzpicture}
+\caption{$\ep=0.5$ 时的 $K_\ep$ 与 $K_\ep'$。左边那一叶的面积为正，右边为负，两者绝对值相等。\textbf{这不是 $\delta'$ 的点值图像，只是它的一族平滑近似。}}
+\end{figure}
+
+\subsection{为什么 $\delta'$ 不能用“面积”定义}
+
+这是一个关键的观念转折，值得在视频里单独停一下。
+
+$\delta$ 可以用“总质量 $=1$”加上“集中到原点”来描述。但 $\delta'$ 不行：
+
+\begin{equation}
+\int_{\R}K_\ep'(x)\dd x=0
+\qquad\text{对每个 }\ep>0 .
+\end{equation}
+
+所以任何“总质量为 $1$”的说法在这里完全失效。$\delta'$ 的“信息量”不在总量里，而在\textbf{正负两叶的分布方式}里。
+
+看它的作用就明白了：
+
+\begin{equation}
+\ip{K_\ep'}{\varphi}
+=-\ip{K_\ep}{\varphi'}
+\;\longrightarrow\;-\varphi'(0)=\ip{\delta'}{\varphi} .
+\end{equation}
+
+第一行是分部积分（这里 $K_\ep$ 光滑且衰减，合法）。第二行用了 EP01 的取样极限，只是把 $\varphi$ 换成了 $\varphi'$。
+
+\begin{ideabox}[这就是“求导在分布意义下是连续的”]
+$\ip{K_\ep'}{\varphi}=-\ip{K_\ep}{\varphi'}\to-\varphi'(0)$。
+
+整个论证没有用到 $K_\ep'$ 的\textbf{点值}收敛。事实上 $K_\ep'$ 在每一点都不收敛到任何普通函数（在原点是 $0$，但峰值在别处爆炸）。
+
+\textbf{结论：我们不需要“$\delta'$ 的点值图像”，也能严格说清它做什么。}这正是 EP05 要系统化的想法。
+\end{ideabox}
+
+\section{从 $1$ 走到所有多项式}
+
+\subsection{逐步递推}
+
+把 \eqref{eq:mult-t} 用在 $t\cdot1$ 上，并借用第一集的结果 $\F[1]=2\pi\delta$：
+
+\begin{align}
+\F[t]&=i\,\partial_\omega\F[1]=i\,\partial_\omega\big(2\pi\delta\big)=2\pi i\,\delta',\\[2pt]
+\F[t^{2}]&=i\,\partial_\omega\F[t]=i\,\partial_\omega\big(2\pi i\,\delta'\big)=2\pi i^{2}\,\delta''=-2\pi\,\delta'',\\[2pt]
+\F[t^{3}]&=i\,\partial_\omega\F[t^{2}]=i\,\partial_\omega\big(-2\pi\delta''\big)=-2\pi i\,\delta''' .
+\end{align}
+
+规律已经出来了：每乘一次 $t$，频域就求一次导，同时乘一个 $i$。归纳得到
+
+\begin{equation}
+\boxed{\ \F[t^{n}]=2\pi i^{\,n}\,\delta^{(n)}(\omega),\qquad n=0,1,2,\dots\ }\label{eq:tn}
+\end{equation}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{1.4cm}L{3.2cm}L{3.2cm}Y@{}}
+\toprule
+$n$ & $i^{n}$ & $\F[t^{n}]$ & 符号 \\
+\midrule
+$0$ & $1$ & $2\pi\delta$ & $+$ \\
+$1$ & $i$ & $2\pi i\,\delta'$ & 纯虚 \\
+$2$ & $-1$ & $-2\pi\,\delta''$ & 实 \\
+$3$ & $-i$ & $-2\pi i\,\delta'''$ & 纯虚 \\
+$4$ & $1$ & $2\pi\,\delta^{(4)}$ & 实 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+由线性性，对任意多项式 $p(t)=\sum_{n=0}^{N}a_n t^{n}$，
+
+\begin{equation}
+\widehat{p}(\omega)=2\pi\sum_{n=0}^{N}a_n i^{\,n}\,\delta^{(n)}(\omega).\label{eq:poly}
+\end{equation}
+
+\begin{warnbox}[这不是“把多项式塞进一个收敛的积分”]
+多项式不是 $\Lone$ 函数，$\int p(t)e^{-i\omega t}\dd t$ 依然发散。\eqref{eq:poly} 的合法性来自两件事：
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item 多项式通过“对测试函数积分”成为一个温和分布（EP05--EP06 建立）；
+\item 乘 $t$ 的规则 \eqref{eq:mult-t} 在这个更大的空间里仍然成立（EP06 证明）。
+\end{itemize}
+EP02 是\textbf{借用}这两件事。旁白必须说清楚“先借用、后补证”，否则观众会以为我们在偷偷把发散积分当成收敛积分。
+\end{warnbox}
+
+\subsection{一个立刻能做的小检查}
+
+用 \eqref{eq:poly} 算 $\F[3-2t+t^{2}]$：
+
+\begin{equation}
+\F[3]-2\F[t]+\F[t^{2}]
+=3\cdot2\pi\delta-2\cdot2\pi i\,\delta'+(-2\pi\,\delta'')
+=6\pi\delta-4\pi i\,\delta'-2\pi\,\delta'' .
+\end{equation}
+
+检查虚部：只有 $-2t$ 这一项是奇函数，它贡献纯虚的项；$3+t^{2}$ 是偶的，贡献实的项。实虚分开，符合“实信号的频谱满足 $\overline{\fh(\omega)}=\fh(-\omega)$”。
+
+\section{为什么频谱仍然支撑在零}
+
+\subsection{“支撑”是什么意思}
+
+先给一个临时定义（EP05 会正式化）：\textbf{一个分布在某点附近为零}，指的是它对所有支撑在该点附近的测试函数的作用都为零。\textbf{支撑}就是它不能这样“消掉”的区域。
+
+对 $\delta^{(n)}$：若 $\varphi$ 在 $0$ 的某个邻域内恒为 $0$，则 $\varphi^{(n)}(0)=0$，于是
+
+\begin{equation}
+\ip{\delta^{(n)}}{\varphi}=(-1)^{n}\varphi^{(n)}(0)=0 .
+\end{equation}
+
+所以
+
+\begin{equation}
+\supp\delta^{(n)}=\{0\}.
+\end{equation}
+
+\subsection{反过来：支撑在零的对象是什么样}
+
+这一步很多人会含糊过去，但它是本集最值得补上的一个小证明。
+
+\begin{prop}\label{prop:support0}
+若分布 $T$ 满足 $\supp T\subseteq\{0\}$，则存在整数 $N$ 和常数 $c_0,\dots,c_N$，使
+\begin{equation}
+T=\sum_{n=0}^{N}c_n\,\delta^{(n)} .
+\end{equation}
+\end{prop}
+
+\begin{proof}[证明思路：泰勒展开把“零点附近的行为”全部抓出来]
+取 $\chi\in C_c^{\infty}$，$\chi\equiv1$ 于 $|x|\le1$。对任意 $\varphi\in C_c^{\infty}$ 和任意 $N$，由带积分余项的泰勒公式，
+\begin{equation}
+\varphi(x)=\sum_{n=0}^{N}\frac{\varphi^{(n)}(0)}{n!}x^{n}+x^{N+1}\psi(x),
+\end{equation}
+其中 $\psi$ 是光滑函数（余项积分给出）。
+
+把 $T$ 作用上去。第二项里 $T$ 作用在 $x^{N+1}\psi$ 上。由分布的连续性（每个紧集上存在一个有限阶的估计），存在有限的阶 $m$；取 $N+1>m$，则 $x^{N+1}\psi$ 与它的前 $m$ 阶导数在 $0$ 处都为零。把 $x^{N+1}\psi$ 在一小段区间外截断（截断函数在 $0$ 附近恒为 $1$），得到的仍是一个“零点附近行为相同”的函数，而 $T$ 只看得见 $0$ 的邻域，所以这一项为零。
+
+剩下
+\begin{equation}
+\ip{T}{\varphi}=\sum_{n=0}^{N}\frac{\varphi^{(n)}(0)}{n!}\ip{T}{x^{n}}
+=\sum_{n=0}^{N}\tilde c_n\,\varphi^{(n)}(0)
+=\sum_{n=0}^{N}\big((-1)^{n}\tilde c_n\big)\ip{\delta^{(n)}}{\varphi}.
+\end{equation}
+\end{proof}
+
+\begin{ideabox}[这个命题的真正用处]
+它告诉我们：\textbf{“支撑在原点”不是一句空话，它精确地意味着“由 $\delta$ 及其各阶导数线性组合而成”。}
+
+所以“多项式的频谱支撑在零”这句话，等价于“多项式的频谱完全由 $\delta,\delta',\delta'',\dots$ 构成”。这正是 \eqref{eq:poly} 说的事。
+\end{ideabox}
+
+\subsection{另一种检查：用微分方程}
+
+$p$ 是 $N$ 次多项式，则 $p^{(N+1)}=0$。用 \eqref{eq:two-rules} 的第二条，
+
+\begin{equation}
+\F\big[p^{(N+1)}\big]=(i\omega)^{N+1}\widehat{p}=0 .
+\end{equation}
+
+即
+
+\begin{equation}
+\omega^{N+1}\,\widehat{p}=0 .
+\end{equation}
+
+由命题 \ref{prop:support0} 的同类论证（把那里的 $T$ 换成 $\widehat p$），$\widehat p$ 只能由 $\delta,\delta',\dots,\delta^{(N)}$ 组合而成。
+
+\begin{warnbox}[但这个检查只能定“位置”，不能定“系数”]
+$\omega^{N+1}\widehat p=0$ 只说明频谱住在原点，并不告诉你每个 $\delta^{(n)}$ 前面的系数是多少。系数必须靠乘 $t$ 的递推 \eqref{eq:tn} 一步步算出来。
+
+\textbf{两种检查的关系：}微分方程给“支撑”，递推给“系数”。缺一不可。
+\end{warnbox}
+
+\subsection{“支撑在零”不等于“不随时间变化”}
+
+这是本集最容易被误解的一句话。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{3.0cm}L{5.4cm}Y@{}}
+\toprule
+说法 & 对不对 & 为什么 \\
+\midrule
+$\F[t]$ 只用到零频率 & 对 & 支撑是 $\{0\}$ \\
+所以 $t$ 是一个“直流信号” & \textbf{错} & $t$ 随时间线性增长，一点都不“直流” \\
+所以 $t$ 与常数在频域没区别 & \textbf{错} & 常数给 $2\pi\delta$，$t$ 给 $2\pi i\delta'$，作用完全不同 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+正确的说法是：\textbf{多项式的“频率成分”全部堆在零频率这一点上，但它们以“$\delta$ 的哪一阶导数”的形式堆在那里。}阶数越高，记录的信息越“局部”、越“高阶”。
+
+\begin{ideabox}[一个能救场的比喻]
+把 $\delta^{(n)}$ 想成\textbf{不同的探针}：$\delta$ 问“值是多少”，$\delta'$ 问“斜率是多少”，$\delta''$ 问“弯得有多厉害”。
+
+它们都只关心原点，所以都“支撑在零”。但它们问的问题完全不同，所以不能互相替换。就像同一个医生只用听诊器，也可以问出完全不同的三件事。
+\end{ideabox}
+
+\section{数值与动画}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{@{}L{1.4cm}L{3.4cm}L{3.2cm}L{3.0cm}Y@{}}
+\toprule
+$\ep$ & $K_\ep(0)=1/(\pi\ep)$ & $K_\ep'$ 峰值 $\approx0.207/\ep^{2}$ & 极值位置 $\ep/\sqrt3$ & 画面 \\
+\midrule
+$1$ & $0.318$ & $0.207$ & $0.577$ & 纵轴 $\pm0.3$ \\
+$0.5$ & $0.637$ & $0.827$ & $0.289$ & 纵轴 $\pm1$ \\
+$0.2$ & $1.59$ & $5.17$ & $0.115$ & 纵轴 $\pm6$，采样加密 \\
+$0.1$ & $3.18$ & $20.7$ & $0.058$ & 纵轴 $\pm22$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{warnbox}[三个动画陷阱]
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.3em]
+\item \textbf{用单箭头画 $\delta'$。}单箭头只能表达“权重为正”。$\delta'$ 有正负两叶、总积分为零，用单箭头画它等于把这一集的核心讲反了。
+\item \textbf{把 $K_\ep'$ 说成 $\delta'$ 的图像。}它只是近似。$\ep\to0$ 时它不逐点收敛到任何函数；收敛只在“对测试函数的作用”这个意义下成立。
+\item \textbf{把峰值当成“权重”。}$K_\ep'$ 的峰值按 $\ep^{-2}$ 爆炸，总积分却恒为 $0$。这两个数都不是 $\delta'$ 的“大小”。
+\end{enumerate}
+\end{warnbox}
+
+\begin{scriptbox}[动画要点 02-D]
+给测试函数 $\varphi$ 加一个可控的局部斜率（例如 $\varphi(x)=e^{-x^{2}}+\lambda x e^{-x^{2}}$），让 $\lambda$ 连续变化。
+
+观众会看到：$\ip{K_\ep'}{\varphi}=-\varphi'(0)$ 的读数随 $\lambda$ 线性变化，而且\textbf{方向相反}（$\lambda$ 增大，读数变小）。
+
+这一下就把“负号”和“读斜率”两件事同时讲清楚了。
+\end{scriptbox}
+
+\section{讲解禁区（EP02）}
+
+\begin{warnbox}[逐条对照]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.28em]
+\item 不说“$\delta'$ 是另一个更尖的非负峰”。它有两叶，一正一负。
+\item 不说“$\delta'$ 的面积是 $1$”。它的总积分是 $0$。
+\item 不说“对 $\delta$ 求导就是看它的斜率”——$\delta$ 没有图像，谈不上斜率；要讲“把导数转移到探针上”。
+\item 不丢 \eqref{eq:delta-n} 里的 $(-1)^{n}$。
+\item 不说“多项式只有零频率，所以它是直流/不变的”。
+\item 不说“$K_\ep'$ 逐点收敛到 $\delta'$”；只说分布意义收敛。
+\item 不说“$\F[t^{n}]$ 是把这个多项式代进积分算出来的”。
+\item 不把“乘 $t$”与“求导”两条规则的方向搞反：乘 $t$ $\to$ 频域求导；求导 $\to$ 频域乘 $i\omega$。
+\item 不在没有说明“广义意义”的情况下直接写 $\F[t]=2\pi i\delta'$。
+\item 不声称“任意分布都可以随便再求导又随便乘东西”——乘光滑函数可以，乘另一个分布不行（EP05 讲）。
+\end{enumerate}
+\end{warnbox}
+
+\section{与前后集的接口}
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.45em]
+\item \textbf{回头看}：这一集两次用到 EP01 的结果（$\F[1]=2\pi\delta$ 与 $K_\ep\to\delta$）。如果第一集的“$\delta$ 是极限的名字”没讲透，这里的求导会显得像魔术。
+\item \textbf{往前看}：$\delta'$ 已经让观众不舒服了。但真正让他们\textbf{必须}要一个定义的时刻，是下一集——因为阶跃的频谱里会出现一个“除以 $\omega$”的麻烦，而微分规则给不出唯一答案。
+\end{enumerate}
+
+\begin{scriptbox}[最后 30 秒的旁白骨架]
+“我们发现了一条很漂亮的规则：时间上乘 $t$，频率上就求导。
+
+可是这条规则让我们写出了一个更奇怪的东西：$\delta$ 的导数。
+
+而且它不像 $\delta$ 那样只有一根箭头——它有两叶，总面积为 $0$。
+
+那么，‘对 $\delta$ 求导’到底是什么意思？
+
+在回答这个问题之前，我们先看一个更麻烦的例子。”
+\end{scriptbox}
+
+
+\section{本集回顾卡}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}Y@{}}
+\toprule
+项目 & 内容 \\
+\midrule
+主结果 & $\F[t^{\,n}]=2\pi i^{\,n}\delta^{(n)}(\omega)$ \\
+核心规则 & $\F[tf]=i\,\partial_\omega\fh$；对照 $\F[f']=i\omega\fh$ \\
+$\delta$ 的导数 & $\ip{\delta^{(n)}}{\varphi}=(-1)^{n}\varphi^{(n)}(0)$，负号来自分部积分 \\
+可视化 & $K_\ep'$ 左正右负，极值在 $\pm\ep/\sqrt3$，总积分恒为 $0$ \\
+安全话术 & “$\delta'$ 记录探针在原点的斜率” \\
+危险话术 & “$\delta'$ 是更尖的峰”“$\delta'$ 的面积是 $1$” \\
+下一集的钩子 & 时域求导对应频域做什么？能否由 $H'=\delta$ 反求 $\hf$？ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{quizbox}[EP02 自测]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.35em]
+\item 取 $\varphi(x)=e^{-x^{2}}+xe^{-x^{2}}$，求 $\ip{\delta}{\varphi}$、$\ip{\delta'}{\varphi}$、$\ip{\delta''}{\varphi}$。
+\item 求 $\F[3-2t+t^{2}]$，并检查实虚与奇偶。
+\item 写出 $\F[t^{4}]$，说明 $i^{4}$ 与符号。
+\item 证明 $\int_{\R}K_\ep'\dd x=0$，并解释为什么这使“面积”不能用来定义 $\delta'$。
+\item 复述命题 \ref{prop:support0} 的证明思路：泰勒展开在哪一步起作用？为什么 $T$ 作用在 $x^{N+1}\psi$ 上会消失？
+\item 为什么“$\omega^{N+1}\widehat p=0$”只能定支撑、不能定系数？
+\item 用一句话向观众解释“$\delta'$ 记录斜率”这件事，不许出现“面积”这个词。
+\end{enumerate}
+\end{quizbox}

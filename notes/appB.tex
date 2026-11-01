@@ -1,0 +1,268 @@
+\chapter{Exercises with Solutions}
+\label{app:exercises}
+
+Each exercise certifies one specific step rather than a topic. Solutions are complete enough to be
+checked line by line.
+
+\begin{exercise}\label{ex1}
+Fix $\omega\neq0$ and show that $I_{T}(\omega)=2\sin(\omega T)/\omega$ has no limit as
+$T\to\infty$.
+\end{exercise}
+
+\begin{proof}[Solution]
+Let $a=|\omega|$ and set $T_{n}=(\pi/2+2\pi n)/a$, $S_{n}=(3\pi/2+2\pi n)/a$. Then
+$\sin(aT_{n})=1$ and $\sin(aS_{n})=-1$. Since $\sin(\omega T)=\operatorname{sgn}(\omega)\sin(aT)$,
+\begin{equation}
+I_{T_{n}}(\omega)=\operatorname{sgn}(\omega)\frac{2}{a},
+\qquad
+I_{S_{n}}(\omega)=-\operatorname{sgn}(\omega)\frac{2}{a},
+\end{equation}
+and both $T_{n},S_{n}\to\infty$. Two subsequences with distinct limits preclude convergence.
+\end{proof}
+
+\begin{exercise}\label{ex2}
+Compute $\int_{-a}^{a}G_{\ep}(\omega)\dd\omega$ and explain why a fixed interval eventually contains
+almost all the mass.
+\end{exercise}
+
+\begin{proof}[Solution]
+\begin{equation}
+\int_{-a}^{a}\frac{2\ep}{\ep^{2}+\omega^{2}}\dd\omega
+=2\left[\arctan\frac{\omega}{\ep}\right]_{-a}^{a}
+=4\arctan\frac{a}{\ep}\longrightarrow4\cdot\frac{\pi}{2}=2\pi .
+\end{equation}
+The order of quantifiers is the point: $a$ is fixed and $\ep\downarrow0$, so $\arctan(a/\ep)\to\pi/2$.
+Sending $a\to\infty$ first would instead compute the total mass of each fixed member, which is a
+different statement.
+\end{proof}
+
+\begin{exercise}\label{ex3}
+For $\varphi(x)=(1+x)e^{-x^{2}}$ compute $\ip{\delta}{\varphi}$, $\ip{\delta'}{\varphi}$,
+$\ip{\delta''}{\varphi}$.
+\end{exercise}
+
+\begin{proof}[Solution]
+$\varphi(0)=1$. Differentiating,
+$\varphi'(x)=e^{-x^{2}}\big(1-2x-2x^{2}\big)$, so $\varphi'(0)=1$. A second differentiation at $0$
+gives $\varphi''(0)=-2$. Hence, by \eqref{eq:deltan},
+\begin{equation}
+\ip{\delta}{\varphi}=1,\qquad
+\ip{\delta'}{\varphi}=-1,\qquad
+\ip{\delta''}{\varphi}=-2 .
+\end{equation}
+\end{proof}
+
+\begin{exercise}\label{ex4}
+Compute $\F[3-2t+t^{2}]$ and verify the symmetry statement of
+Proposition~\ref{prop:symmetries} in distributional form.
+\end{exercise}
+
+\begin{proof}[Solution]
+By Theorem~\ref{thm:tn} and linearity,
+\begin{equation}
+\F[3-2t+t^{2}]=6\pi\delta-4\pi i\,\delta'-2\pi\,\delta'' .
+\end{equation}
+The function $3+t^{2}$ is real and even; it contributes $6\pi\delta-2\pi\delta''$, which is real and
+even as a distribution. The term $-2t$ is real and odd and contributes $-4\pi i\delta'$, which is
+purely imaginary and odd. Since $\delta^{(n)}$ is even for $n$ even and odd for $n$ odd
+(it reads off $\varphi^{(n)}(0)$, and reflection changes $n$-th derivatives by $(-1)^{n}$), the
+elementary symmetries are reproduced exactly.
+\end{proof}
+
+\begin{exercise}\label{ex5}
+Prove $x\delta'=-\delta$ and $x\,\PV\frac{1}{x}=1$, and deduce $i\omega\hf=1$ for
+$\hf=\pi\delta-i\PV\frac{1}{\omega}$.
+\end{exercise}
+
+\begin{proof}[Solution]
+For the first, $\ip{x\delta'}{\varphi}=\ip{\delta'}{x\varphi}=-(x\varphi)'(0)=-\varphi(0)$.
+For the second, by \eqref{eq:PVint} with $x\varphi$ in place of $\varphi$,
+\begin{equation}
+\left\langle x\PV\tfrac{1}{x},\varphi\right\rangle
+=\int_{0}^{\infty}\frac{x\varphi(x)+x\varphi(-x)}{x}\dd x
+=\int_{0}^{\infty}\big(\varphi(x)+\varphi(-x)\big)\dd x=\int_{\R}\varphi .
+\end{equation}
+Applying multiplication by $i\omega$ to the candidate spectrum,
+\begin{equation}
+i\omega\Big[\pi\delta-i\PV\tfrac{1}{\omega}\Big]
+=i\pi\underbrace{\omega\delta}_{=0}+\underbrace{\omega\PV\tfrac{1}{\omega}}_{=1}=1 ,
+\end{equation}
+which is \eqref{eq:iomegaH}. This also displays the ambiguity: adding $c\delta$ changes nothing.
+\end{proof}
+
+\begin{exercise}\label{ex6}
+Show that the value assigned to $H(0)$ does not affect the distribution it defines.
+\end{exercise}
+
+\begin{proof}[Solution]
+Let $H_{1},H_{2}$ differ only at $t=0$, with $|H_{1}(0)-H_{2}(0)|=c<\infty$. For
+$\varphi\in C_{c}^{\infty}$,
+\begin{equation}
+\ip{H_{1}}{\varphi}-\ip{H_{2}}{\varphi}
+=\int_{\R}(H_{1}-H_{2})\varphi\dd t=0 ,
+\end{equation}
+because the integrand vanishes except at a single point and the Lebesgue integral ignores null sets.
+\end{proof}
+
+\begin{exercise}\label{ex7}
+Explain why no single $\Lone$ function dominates the family $K_{\ep}$, and why the substitution
+$x=\ep u$ repairs the situation.
+\end{exercise}
+
+\begin{proof}[Solution]
+If $K_{\ep}\le g\in\Lone$ for all $\ep$, then $K_{\ep}\to0$ pointwise off the origin and dominated
+convergence gives $\int K_{\ep}\to0$, contradicting $\int K_{\ep}=1$.
+
+The substitution does not produce a dominator for $K_{\ep}$; it changes the object being integrated:
+\begin{equation}
+\int_{\R}K_{\ep}(x)\varphi(x)\dd x=\frac{1}{\pi}\int_{\R}\frac{\varphi(\ep u)}{1+u^{2}}\dd u ,
+\end{equation}
+and now the integrand is dominated by $\|\varphi\|_{\infty}/(\pi(1+u^{2}))$, independent of $\ep$ and
+integrable. The varying kernel has been replaced by a fixed weight, at the cost of letting the test
+function depend on $\ep$.
+\end{proof}
+
+\begin{exercise}\label{ex8}
+Exhibit a family with unit mass whose distributional limit is $0$, and reconcile this with mass
+conservation.
+\end{exercise}
+
+\begin{proof}[Solution]
+Take $k_{n}=\tfrac12\mathbf{1}_{[n-1,n+1]}$. For $\varphi\in\Sw$,
+$|\ip{k_{n}}{\varphi}|\le\tfrac12\int_{n-1}^{n+1}|\varphi|=O(n^{-2})\to0$. There is no contradiction:
+$\int k_{n}=1$ is a statement about the functional $\varphi\equiv1$, and $1\notin\Sw$. Total mass is
+therefore not a continuous functional on $\Sw'$; the mass is conserved but escapes to infinity, where
+no rapidly decaying probe can detect it.
+\end{proof}
+
+\begin{exercise}\label{ex9}
+Using only the dual definition, prove $\F[\delta]=1$ and $\F[1]=2\pi\delta$, and identify where
+inversion enters.
+\end{exercise}
+
+\begin{proof}[Solution]
+\begin{equation}
+\ip{\F\delta}{\varphi}=\ip{\delta}{\ph}=\ph(0)=\int_{\R}\varphi=\ip{1}{\varphi},
+\end{equation}
+because $\ph(0)=\int\varphi(t)\dd t$. For the second,
+\begin{equation}
+\ip{\F1}{\varphi}=\ip{1}{\ph}=\int_{\R}\ph(t)\dd t=2\pi\varphi(0)=\ip{2\pi\delta}{\varphi},
+\end{equation}
+and the middle equality is exactly \eqref{eq:inversion} evaluated at $t=0$.
+\end{proof}
+
+\begin{exercise}\label{ex10}
+Compute $\F[H(\cdot-a)]$ and explain why the $\delta$ term is unaffected by the shift.
+\end{exercise}
+
+\begin{proof}[Solution]
+By \eqref{eq:timeshift},
+\begin{equation}
+\F[H(\cdot-a)](\omega)=e^{-ia\omega}\Big[\pi\delta(\omega)-i\PV\frac{1}{\omega}\Big]
+=\pi\delta(\omega)-i\,e^{-ia\omega}\PV\frac{1}{\omega}.
+\end{equation}
+The factor $e^{-ia\omega}$ is a smooth multiplier and $e^{-ia\cdot0}=1$, so by \eqref{eq:adelta}
+\begin{equation}
+e^{-ia\omega}\,\delta(\omega)=\delta(\omega).
+\end{equation}
+The principal value term keeps the factor, because $\PV(1/\omega)$ is not concentrated at a point.
+\end{proof}
+
+\begin{exercise}\label{ex11}
+Locate the two sign changes that produce the $+i$ in $\F(tT)=i\,\partial_{\omega}\widehat T$.
+\end{exercise}
+
+\begin{proof}[Solution]
+First, from $\F[\varphi']=i\omega\ph(\omega)$ with the variable renamed,
+$t\ph(t)=-i(\varphi')^{\wedge}(t)$; the factor $1/i=-i$ is the first sign. Second, the definition of
+the distributional derivative gives
+$\ip{\widehat T'}{\varphi}=-\ip{\widehat T}{\varphi'}$, a second minus. Then
+\begin{equation}
+\ip{\F(tT)}{\varphi}=\ip{T}{t\ph}
+=-i\ip{T}{(\varphi')^{\wedge}}
+=-i\ip{\widehat T}{\varphi'}
+=i\ip{\widehat T'}{\varphi}.
+\end{equation}
+The two negatives cancel, leaving $+i$.
+\end{proof}
+
+\begin{exercise}\label{ex12}
+For $K_{\ep}'(x)=-2\ep x/(\pi(x^{2}+\ep^{2})^{2})$ determine the location and size of the extrema,
+and compute $\int|K_{\ep}'|$.
+\end{exercise}
+
+\begin{proof}[Solution]
+Differentiating $\log|K_{\ep}'|$ gives the condition
+$\frac{\dd}{\dd x}\big(\log x-2\log(x^{2}+\ep^{2})\big)=1/x-4x/(x^{2}+\ep^{2})=0$, that is
+$\ep^{2}-3x^{2}=0$, so $x=\pm\ep/\sqrt3$. Substituting,
+\begin{equation}
+|K_{\ep}'(\ep/\sqrt3)|
+=\frac{2\ep\cdot\ep/\sqrt3}{\pi\big(\ep^{2}+\ep^{2}/3\big)^{2}}
+=\frac{2\ep^{2}/\sqrt3}{\pi\cdot 16\ep^{4}/9}
+=\frac{9}{8\sqrt3\,\pi\ep^{2}} .
+\end{equation}
+For the total variation, use symmetry and the substitution $u=x^{2}+\ep^{2}$:
+\begin{equation}
+\int_{\R}|K_{\ep}'|\dd x
+=2\int_{0}^{\infty}\frac{2\ep x}{\pi(x^{2}+\ep^{2})^{2}}\dd x
+=\frac{4\ep}{\pi}\cdot\frac{1}{2\ep^{2}}
+=\frac{2}{\pi\ep}.
+\end{equation}
+Since $\int K_{\ep}'=0$, the positive and negative masses are each $1/(\pi\ep)$, both diverging.
+\end{proof}
+
+\begin{exercise}\label{ex13}
+Show that $e^{x^{2}}$ defines a distribution but not a tempered distribution.
+\end{exercise}
+
+\begin{proof}[Solution]
+Local integrability is clear, so Theorem~\ref{thm:embedding} applies. Suppose it were tempered, so
+that \eqref{eq:Sprime-est} held. Fix $0\not\equiv\psi\in C_{c}^{\infty}$ nonnegative and set
+$\psi_{R}(x)=\psi(x-R)$. Then $p_{m,n}(\psi_{R})=O(R^{m})$ for each fixed $m,n$, so the right side of
+\eqref{eq:Sprime-est} is $O(R^{M})$, whereas
+\begin{equation}
+\ip{e^{x^{2}}}{\psi_{R}}\ge e^{(R-r)^{2}}\int\psi
+\end{equation}
+grows faster than any polynomial. Contradiction.
+\end{proof}
+
+\begin{exercise}\label{ex14}
+Prove the second identity of Lemma~\ref{lem:two-identities}, namely
+$\omega^{m}\ph(\omega)=i^{-m}\F[\varphi^{(m)}](\omega)$.
+\end{exercise}
+
+\begin{proof}[Solution]
+By Theorem~\ref{thm:derivt} applied to $\varphi^{(m)}$,
+$\F[\varphi^{(m)}]=(i\omega)^{m}\ph(\omega)$. Multiplying both sides by $i^{-m}$ and using
+$i^{-m}i^{m}=1$ gives the claim.
+\end{proof}
+
+\begin{exercise}\label{ex15}
+Show that if $f$ is real and even then $\fh$ is real and even, and verify this for
+$G_{\ep}=\F[e^{-\ep|\cdot|}]$.
+\end{exercise}
+
+\begin{proof}[Solution]
+Evenness of $f$ gives, after $t\mapsto-t$,
+\begin{equation}
+\fh(-\omega)=\int f(t)e^{i\omega t}\dd t=\int f(-s)e^{-i\omega s}\dd s=\int f(s)e^{-i\omega s}\dd s=\fh(\omega),
+\end{equation}
+and $f$ real gives $\overline{\fh(\omega)}=\int f(t)e^{i\omega t}\dd t=\fh(-\omega)$, hence
+$\fh=\overline{\fh}$. For $f_{\ep}=e^{-\ep|t|}$, which is real and even, one gets
+$G_{\ep}=2\ep/(\ep^{2}+\omega^{2})$, visibly real and even.
+\end{proof}
+
+\begin{exercise}\label{ex16}
+Where exactly does the proof of Theorem~\ref{thm:inversion} use Fubini, and what makes the double
+integral absolutely convergent?
+\end{exercise}
+
+\begin{proof}[Solution]
+Fubini is used to pass from
+$\frac{1}{2\pi}\iint\varphi(s)e^{-i\omega s}e^{i\omega t}e^{-\eta\omega^{2}/2}\dd s\dd\omega$ to the
+iterated integral with the inner integral over $\omega$. Absolute convergence holds because the modulus
+of the integrand factors as $|\varphi(s)|\,e^{-\eta\omega^{2}/2}$, and the product of two integrable
+functions is integrable on the product space: $\varphi\in\Lone$ since $\varphi\in\Sw$, and
+$e^{-\eta\omega^{2}/2}$ is integrable in $\omega$. The Gaussian factor is indispensable; without it the
+double integral is not absolutely convergent and the interchange is unjustified.
+\end{proof}

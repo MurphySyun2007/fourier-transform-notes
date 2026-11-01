@@ -1,0 +1,174 @@
+\appendix
+
+\chapter{Tables}
+\label{app:tables}
+
+All formulas use the convention
+$\F[f](\omega)=\int f(t)e^{-i\omega t}\dd t$ with $2\pi$ on the inverse transform, and pairings
+without complex conjugation.
+
+\section{Transform pairs}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Time domain & Frequency domain & Where proved \\
+\midrule
+$\delta(t)$ & $1$ & \eqref{eq:Fdelta} \\
+$\delta^{(n)}(t)$ & $(i\omega)^{n}$ & \eqref{eq:Fdelta} \\
+$1$ & $2\pi\delta(\omega)$ & \eqref{eq:Fdelta} \\
+$t^{\,n}$ & $2\pi i^{\,n}\delta^{(n)}(\omega)$ & \eqref{eq:Ftn} \\
+$\delta(t-a)$ & $e^{-ia\omega}$ & \eqref{eq:timeshift} \\
+$e^{i\omega_{0}t}$ & $2\pi\delta(\omega-\omega_{0})$ & \eqref{eq:modulation} \\
+$\cos(\omega_{0}t)$ & $\pi\big[\delta(\omega-\omega_{0})+\delta(\omega+\omega_{0})\big]$ & linearity \\
+$\sin(\omega_{0}t)$ & $(\pi/i)\big[\delta(\omega-\omega_{0})-\delta(\omega+\omega_{0})\big]$ & linearity \\
+$H(t)$ & $\pi\delta(\omega)-i\,\PV(1/\omega)$ & \eqref{eq:FHgen} \\
+$\sgn t$ & $-2i\,\PV(1/\omega)$ & \eqref{eq:sgn} \\
+$\PV(1/t)$ & $-i\pi\,\sgn\omega$ & duality, \eqref{eq:F2} \\
+$e^{-\ep|t|}$ & $2\ep/(\ep^{2}+\omega^{2})$ & Theorem~\ref{thm:exptransform} \\
+$H(t)e^{-\ep t}$ & $1/(\ep+i\omega)$ & Theorem~\ref{thm:Heps} \\
+$e^{-at^{2}/2}$, $a>0$ & $\sqrt{2\pi/a}\;e^{-\omega^{2}/(2a)}$ & Lemma~\ref{lem:gauss} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[the sine entry]
+Write $\sin(\omega_{0}t)=\frac{1}{2i}(e^{i\omega_{0}t}-e^{-i\omega_{0}t})$ and transform term by
+term. The coefficient is $\pi$, not $2\pi$, because sine is half the difference of two exponentials.
+Some tables list $\pi i[\delta(\omega-\omega_{0})-\delta(\omega+\omega_{0})]$, which corresponds to
+the opposite sign convention in the exponent; the two differ by a sign, and neither oddness nor
+vanishing at the origin distinguishes them, so the derivation must be redone rather than recalled.
+\end{remark}
+
+\section{Operational rules}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Rule & Formula & Hypothesis \\
+\midrule
+time shift & $\F[f(\cdot-a)]=e^{-ia\omega}\fh$ & \eqref{eq:timeshift} \\
+modulation & $\F[e^{i\omega_{0}t}f]=\fh(\omega-\omega_{0})$ & \eqref{eq:modulation} \\
+dilation & $\F[f(a\,\cdot)]=|a|^{-1}\fh(\omega/a)$ & $a\neq0$ \\
+multiply by $t$ & $\F[tf]=i\,\partial_{\omega}\fh$ & $f\in\Sw$ \\
+differentiate & $\F[f']=i\omega\fh$ & $f\in\Sw$ \\
+distributional & $\F(tT)=i\,\partial_{\omega}\widehat T$ & \eqref{eq:multt-dist} \\
+distributional & $\F(T')=i\omega\widehat T$ & \eqref{eq:deriv-dist} \\
+twice & $\F^{2}T=2\pi\,T(-\cdot)$ & \eqref{eq:F2} \\
+inverse & $\F^{-1}T=(2\pi)^{-1}\F(T(-\cdot))$ & Theorem~\ref{thm:inverse} \\
+\midrule
+scale $\delta$ & $\delta(ax)=|a|^{-1}\delta(x)$ & $a\neq0$ \\
+compose $\delta$ & $\delta(g(x))=\sum_{j}\delta(x-x_{j})/|g'(x_{j})|$ & $g$ has simple zeros \\
+multiply $\delta$ & $a\,\delta=a(0)\,\delta$ & $a\in C^{\infty}$ \\
+multiply by $x$ & $x\,\delta^{(n)}=-n\,\delta^{(n-1)}$ & \eqref{eq:xdeltaN} \\
+Leibniz & $(aT)'=a'T+aT'$ & $a\in C^{\infty}$ \\
+jumps & $Df=f'_{\mathrm{cl}}+\sum_{j}J_{j}\delta_{a_{j}}$ & $f$ piecewise $C^{1}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Integrals used}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Integral & Value & Used in \\
+\midrule
+$\displaystyle\int_{0}^{\infty}e^{-at}\dd t$ & $1/a$ \ ($\Re a>0$) & Theorem~\ref{thm:exptransform} \\
+$\displaystyle\int_{\R}\frac{\dd\omega}{\ep^{2}+\omega^{2}}$ & $\pi/\ep$ & Proposition~\ref{prop:three} \\
+$\displaystyle\int_{\R}\frac{\ep\dd\omega}{\ep^{2}+\omega^{2}}$ & $\pi$ & \eqref{eq:masspi} \\
+$\displaystyle\int_{\R}\frac{2\ep\dd\omega}{\ep^{2}+\omega^{2}}$ & $2\pi$ & \eqref{eq:three} \\
+$\displaystyle\int_{-a}^{a}\frac{\ep\dd\omega}{\pi(\ep^{2}+\omega^{2})}$ &
+$\frac{2}{\pi}\arctan\frac{a}{\ep}$ & \eqref{eq:concentration} \\
+$\displaystyle\int_{\R}e^{-u^{2}/2}\dd u$ & $\sqrt{2\pi}$ & Lemma~\ref{lem:gauss} \\
+$\displaystyle\int_{\R}e^{-\eta\omega^{2}/2}e^{i\omega x}\dd\omega$ &
+$\sqrt{2\pi/\eta}\,e^{-x^{2}/(2\eta)}$ & \eqref{eq:gaussint} \\
+$\displaystyle\int_{-T}^{T}e^{-i\omega t}\dd t$ & $2\sin(\omega T)/\omega$ & \eqref{eq:IT} \\
+$\displaystyle\int_{\R}\frac{2\ep x}{\pi(x^{2}+\ep^{2})^{2}}\dd x$ & $1/(\pi\ep)$ & Proposition~\ref{prop:Kprime} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Which space does an object belong to}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Object & $\Lone$ & $\Ltwo$ & $\D'$ & $\Sw'$ \\
+\midrule
+$e^{-\ep|t|}$ & yes & yes & yes & yes \\
+$1$ & no & no & yes & yes \\
+$t^{\,n}$ & no & no & yes & yes \\
+$H$ & no & no & yes & yes \\
+$\delta$, $\delta^{(n)}$ & no & no & yes & yes \\
+$\PV(1/\omega)$ & no & no & yes & yes \\
+$1/(1+t^{2})$ & yes & yes & yes & no \\
+$e^{t^{2}}$ & no & no & yes & no \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}
+Two rows carry most of the information. The constant $1$ is in neither $\Lone$ nor $\Ltwo$, which is
+why neither the elementary theory nor Plancherel can be applied to it; it is in $\Sw'$, which is why
+the generalized transform can. The function $e^{t^{2}}$ is locally integrable and therefore defines a
+distribution, but it is not tempered and consequently has no Fourier transform in this framework.
+Membership is a property of the space, not of the formula.
+\end{remark}
+
+\section{Conventions in use}
+
+\begin{center}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Convention & Forward transform & $\F[1]$ & Relation to this text \\
+\midrule
+angular (here) & $\displaystyle\int f(t)e^{-i\omega t}\dd t$ & $2\pi\delta(\omega)$ & --- \\
+symmetric & $\displaystyle\frac{1}{\sqrt{2\pi}}\int f(t)e^{-i\omega t}\dd t$ &
+$\sqrt{2\pi}\,\delta(\omega)$ & multiply by $\frac{1}{\sqrt{2\pi}}$ \\
+frequency & $\displaystyle\int f(t)e^{-2\pi i\nu t}\dd t$ & $\delta(\nu)$ & set $\omega=2\pi\nu$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The conversion rule is
+\begin{equation}
+\F_{\nu}[f](\nu)=\F_{\omega}[f](2\pi\nu),
+\qquad
+\delta(2\pi\nu)=\frac{1}{2\pi}\delta(\nu).
+\end{equation}
+
+\clearpage
+\section{Where each statement is proved}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Statement & First obtained & Fully justified \\
+\midrule
+$\F[e^{-\ep|\cdot|}]=2\ep/(\ep^{2}+\omega^{2})$ & Theorem~\ref{thm:exptransform} & same (classical) \\
+$\int K_{\ep}\varphi\to\varphi(0)$ & Theorem~\ref{thm:sampling} & Theorem~\ref{thm:sampling-general} \\
+$\F[1]=2\pi\delta$ & \eqref{eq:F1} & Theorem~\ref{thm:main} \\
+$\ip{\delta^{(n)}}{\varphi}=(-1)^{n}\varphi^{(n)}(0)$ & \eqref{eq:deltan} & \eqref{eq:xdeltaN}--\eqref{eq:leibniz} \\
+$\F[t^{\,n}]=2\pi i^{\,n}\delta^{(n)}$ & Theorem~\ref{thm:tn} & Theorem~\ref{thm:main} \\
+$\F[H]=\pi\delta+\PV(1/i\omega)$ & \eqref{eq:FH} & Theorem~\ref{thm:main} \\
+$\F[\sgn t]=-2i\PV(1/\omega)$ & \eqref{eq:sgn} & Theorem~\ref{thm:main} \\
+$\F[\PV(1/t)]=-i\pi\sgn\omega$ & Proposition~\ref{prop:PVtransform} & Theorem~\ref{thm:F2} \\
+inversion $\varphi=\frac{1}{2\pi}\int\ph e^{i\omega\cdot}$ & Theorem~\ref{thm:inversion} & same \\
+$\F:\Sw\to\Sw$ continuous & Theorem~\ref{prop:F-S} & same \\
+$\ip{\F T}{\varphi}=\ip{T}{\F\varphi}$ & \eqref{eq:dualdef} & Proposition~\ref{prop:dual-consistency} \\
+Plancherel $\|f\|_{2}^{2}=(2\pi)^{-1}\|\fh\|_{2}^{2}$ & Theorem~\ref{thm:plancherel} & same \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The second column records where a statement is first \emph{computed}, the third where it is
+\emph{derived from the definitions}. The gap between them is the content of
+Chapters~\ref{ch:limits}--\ref{ch:tespered}: the early chapters compute with rules that are only
+justified later, and the later ones supply the justification without changing any of the numbers.

@@ -1,0 +1,510 @@
+\chapter{EP05｜$\delta$ 到底是什么：分布理论的最低完整框架}
+
+\begin{ideabox}[这一集的一句话]
+\textbf{一个对象可以不由“它在每一点取什么值”来定义，而由“它怎样作用于每一个探针”来定义。$\delta$ 就是这样被定义的——这就是它“不是函数”却依然严格的全部原因。}
+\end{ideabox}
+
+\section{观众的问题链}
+
+前四集一直在用 $\delta$、$\delta'$、$\PV$，却始终没有给它们下定义。这一集补上这个欠账，而且要用一种让人信服的方式补：\textbf{不是先抛定义再解释，而是先展示“作用”，再说明“这就是定义”。}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabularx}{\textwidth}{@{}p{0.8cm}X p{4.4cm}@{}}
+\toprule
+层 & 问题 & 观众此刻的心理 \\
+\midrule
+1 & 三种完全不同的核，为什么都叫同一个 $\delta$？ & 它们唯一相同的地方是“对探针说的话”。\\
+2 & 那能不能就用这个“说的话”来定义它？ & 听起来可行，但“说的话”要怎么写得严格？\\
+3 & 需要一个探针的集合，以及“连续”的意思。 & 为什么要光滑？为什么要限制远处？\\
+4 & 于是分布 = 连续线性泛函。 & 这个定义能装下普通函数吗？\\
+5 & 能。$f\mapsto\int f\varphi$ 就是一个这样的泛函。 & 那 $\delta$ 呢？\\
+6 & $\delta$ 不在其中——它不能由任何局部可积函数给出。 & 所以它是“新东西”，不是“旧东西的别名”。\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}Y@{}}
+\toprule
+观众带着什么进来 & 观众带着什么出去 \\
+\midrule
+“$\delta$ 是一个函数，只是很奇怪” & “$\delta$ 是一个泛函；普通函数只是它的一个子类。”\\
+“分布是数学家造出来救场的” & “分布是把‘作用于探针’这件事本身当作对象；它是被逼出来的。”\\
+“什么都能乘、什么都能求导” & “能求导、能乘光滑函数；但两个分布不能随便相乘。”\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{从“作用”认识对象}
+
+\subsection{普通函数也有“作用”}
+
+对一个局部可积的函数 $f$，取一条光滑、紧支撑的曲线 $\varphi$，算
+
+\begin{equation}
+\varphi\longmapsto\int_{\R}f(x)\varphi(x)\dd x .
+\end{equation}
+
+这是一个规则：\textbf{输入一条探针，输出一个数。}
+
+现在看 $\delta$：
+
+\begin{equation}
+\varphi\longmapsto\varphi(0).
+\end{equation}
+
+这也是一个规则：输入一条探针，输出一个数。
+
+\begin{ideabox}[关键的一步观念转换]
+平时我们说“$f$ 是函数”，是把它想成一张图：每个 $x$ 对应一个高度。
+
+但换一个角度看，$f$ 也可以被完全刻画成“它对所有探针的响应”：知道 $\int f\varphi$ 对每个 $\varphi$ 是多少，就等于知道了 $f$（几乎处处）。
+
+\textbf{那就干脆把这个“响应规则”本身当成对象。}这样，即使某个对象的“响应规则”不能由任何函数给出，它依然是一个合法的对象。
+
+$\delta$ 就是这样的对象：它的响应规则极其简单——把探针在原点的值取出来。
+\end{ideabox}
+
+\subsection{一张对照表}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.55}
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.6cm}Y@{}}
+\toprule
+ & 普通函数 $f$ & 分布 $T$ \\
+\midrule
+怎样描述 & 每个 $x$ 对应一个值 $f(x)$ & 每条探针 $\varphi$ 对应一个数 $\ip{T}{\varphi}$ \\
+能不能画图 & 能 & 一般不能（$\delta$ 就没有图） \\
+怎样求导 & 差商 / 逐点 & 把导数转移到探针上（带负号） \\
+能不能乘 & 一般能 & 只能乘光滑函数，不能乘另一个分布 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{测试函数：为什么既要光滑，又要限制远处}
+
+\subsection{两个要求，各管一件事}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{5.4cm}Y@{}}
+\toprule
+要求 & 数学说法 & 它负责什么 \\
+\midrule
+光滑 & 无限次可微 & 让“把导数搬过去”可以无限次进行；分部积分不产生边界项以外的麻烦 \\
+紧支撑 & 在某个有限区间外恒为零 & 让分部积分的边界项消失；也让“局部观察”成为可能 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{defn}[测试函数空间]\label{def:D}
+\begin{equation}
+\D(\R):=C_c^{\infty}(\R)=\{\varphi:\R\to\C\ ;\ \varphi\in C^{\infty},\ \supp\varphi\text{ 紧}\}.
+\end{equation}
+\end{defn}
+
+\subsection{一个标准的非零例子}
+
+\begin{equation}
+\eta(x)=\begin{cases}
+\exp\!\left(-\dfrac{1}{1-x^{2}}\right), & |x|<1,\\[8pt]
+0, & |x|\ge1 .
+\end{cases}\label{eq:bump}
+\end{equation}
+
+\begin{ideabox}[为什么这个函数是“光滑拼接”的典范]
+当 $x\to\pm1$ 时，$1-x^{2}\to0^{+}$，所以 $-\frac{1}{1-x^{2}}\to-\infty$，于是 $e^{-\frac{1}{1-x^{2}}}\to0$。
+
+关键在于\textbf{不只是函数值趋于零，所有阶导数都趋于零}。可以验证：$\eta$ 的每阶导数都含有因子 $e^{-\frac{1}{1-x^{2}}}$ 乘上一个关于 $\frac{1}{1-x^{2}}$ 的多项式，而指数衰减压倒多项式增长。
+
+所以拼上 $|x|\ge1$ 处的零之后，$\eta$ 仍然是 $C^{\infty}$ 的。
+
+\textbf{这一句要在视频里出现：}“它可以平白无故地在边界停下来，而且停得非常光滑，连斜率、曲率都一起停住。”普通的多项式做不到这一点——这正是 $\eta$ 值得单独介绍的原因。
+\end{ideabox}
+
+\subsection{高斯为什么不在 $\D$ 里}
+
+$e^{-x^{2}}$ 光滑、衰减极快，但它在整个实轴上都不为零，\textbf{没有紧支撑}。所以
+
+\begin{equation}
+e^{-x^{2}}\in\Sv
+\qquad\text{但}\qquad
+e^{-x^{2}}\notin\D .
+\end{equation}
+
+\begin{notebox}[这个区别在 EP06 会变成主角]
+$\D$ 适合“局部观察”，$\Sv$ 适合“整体变换”。
+
+傅里叶变换会把紧支撑的东西变成不紧支撑的东西（矩形窗变 sinc），所以 $\D$ 在傅里叶变换下不封闭，而 $\Sv$ 封闭。这就是 EP06 必须换空间的原因。
+\end{notebox}
+
+\subsection{$\D$ 里的收敛}
+
+$\varphi_j\to\varphi$ 于 $\D$，意思是：存在一个公共的紧集 $K$ 包含所有 $\supp\varphi_j$，并且对每个多重指标 $\alpha$，
+
+\begin{equation}
+\sup_{x\in K}\big|\varphi_j^{(\alpha)}(x)-\varphi^{(\alpha)}(x)\big|\longrightarrow0 .
+\end{equation}
+
+注意“公共紧集”这个要求：\textbf{不能让探针一边趋于零一边往无穷远跑}。
+
+\section{分布的定义}
+
+\begin{defn}[分布]\label{def:dist}
+$\D'(\R)$ 中的元素 $T$ 是 $\D(\R)$ 上的连续线性泛函：给每个 $\varphi\in\D$ 分配一个复数 $\ip{T}{\varphi}$，并满足
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.25em]
+\item \textbf{线性}：$\ip{T}{a\varphi+b\psi}=a\ip{T}{\varphi}+b\ip{T}{\psi}$；
+\item \textbf{连续性}：若 $\varphi_j\to\varphi$ 于 $\D$，则 $\ip{T}{\varphi_j}\to\ip{T}{\varphi}$。
+\end{enumerate}
+\end{defn}
+
+\subsection{线性不够，为什么还要连续}
+
+\begin{ideabox}[一个“线性但不连续”的怪物]
+在 $\D$ 上定义 $T$：把 $\varphi$ 展开成某种级数，然后取一个“不听话”的线性泛函。它可以线性，却对越来越小的探针给出越来越大的响应。
+
+连续性就是用来禁止这种事的：\textbf{探针越小，响应必须越小。}
+\end{ideabox}
+
+连续性的一个等价刻画（局部估计）：
+
+\begin{equation}
+|\ip{T}{\varphi}|\le C_K\max_{0\le j\le m_K}\|\varphi^{(j)}\|_\infty,
+\qquad \supp\varphi\subset K .\label{eq:local-est}
+\end{equation}
+
+也就是说：在每个紧集上，响应被\textbf{有限阶}导数的最大值控制。阶数 $m_K$ 可以依赖紧集，但必须是有限的。
+
+\begin{notebox}[配对不是内积]
+$\ip{T}{\varphi}$ 是\textbf{复线性}的：对 $\varphi$ 线性，对 $T$ 也线性。\textbf{没有复共轭。}
+
+所以不要把它写成 $\langle T,\varphi\rangle=\int T\bar\varphi$ 那种 Hilbert 空间内积的形式。这一条在 EP06 定义傅里叶变换时会直接影响 $2\pi$ 与符号的位置。
+\end{notebox}
+
+\section{普通函数怎样住进这个新世界}
+
+\subsection{嵌入}
+
+\begin{prop}\label{prop:embed}
+若 $f\in\Lonloc$，则
+\begin{equation}
+\ip{T_f}{\varphi}:=\int_{\R}f(x)\varphi(x)\dd x
+\end{equation}
+定义一个分布 $T_f$。而且 $T_f=T_g$ 当且仅当 $f=g$ 几乎处处。
+\end{prop}
+
+\begin{proof}[证明要点]
+因为 $\varphi$ 紧支撑，积分只在一个有界区间上进行，所以由 $f$ 的局部可积性，积分存在。估计：
+\begin{equation}
+|\ip{T_f}{\varphi}|\le\|f\|_{L^{1}(K)}\|\varphi\|_\infty,
+\qquad \supp\varphi\subset K .
+\end{equation}
+这正好是 \eqref{eq:local-est} 的形式（取 $m_K=0$），所以连续。
+\end{proof}
+
+\begin{ideabox}[这个嵌入解释了 EP03 的一个旧疑问]
+$H(0)$ 取 $0$、$\frac12$ 还是 $1$？都不影响 $H$ 对应的分布，因为这些改值只发生在一个点上，而\textbf{一个点对积分没有贡献}。
+
+所以“$H(0)$ 无关”不是含糊其辞，而是“分布只认几乎处处等价类”的直接后果。
+\end{ideabox}
+
+\subsection{$\delta$ 不在这个家族里}
+
+\begin{prop}\label{prop:delta-not-L1loc}
+不存在 $g\in\Lonloc$ 使 $T_g=\delta$。
+\end{prop}
+
+\begin{proof}[证明]
+假设有。取任意支撑在 $\R\setminus\{0\}$ 内的 $\varphi\in\D$，则 $\ip{\delta}{\varphi}=0$，于是
+
+\begin{equation}
+\int_{\R}g(x)\varphi(x)\dd x=0
+\qquad\text{对所有这样的 }\varphi .
+\end{equation}
+
+由局部可积函数的识别性（若 $\int g\varphi=0$ 对所有支撑在开集 $U$ 内的测试函数成立，则 $g=0$ 几乎处处于 $U$），得
+
+\begin{equation}
+g=0\ \text{几乎处处于}\ \R\setminus\{0\}.
+\end{equation}
+
+而 $\{0\}$ 是零测集，所以 $g=0$ 几乎处处于 $\R$，于是 $T_g=0\neq\delta$。矛盾。
+\end{proof}
+
+\begin{ideabox}[这一步的意义]
+它证明 $\delta$ 是\textbf{真正的新对象}，不是“某个很奇怪但仍然是函数的函数”。
+
+如果 $\delta$ 只是“在原点改一个值”，那么由上面的论证它必然几乎处处为零；但几乎处处为零的函数不可能满足 $\int g\varphi=\varphi(0)$。
+
+\textbf{所以 $\delta$ 的出现不是技巧问题，是语言问题：旧的语言装不下它。}
+\end{ideabox}
+
+\subsection{但 $\delta$ 是测度}
+
+$\delta$ 也可以理解为 Dirac 点质量：对集合 $A$，
+
+\begin{equation}
+\delta(A)=\begin{cases}1,&0\in A,\\0,&0\notin A .\end{cases}
+\end{equation}
+
+积分就写成 $\int\varphi\,\dd\delta=\varphi(0)$。
+
+\begin{notebox}[“不是函数”$\neq$“没有严格定义”]
+这是两句完全不同的话，写旁白时务必分开。
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item $\delta$ 不是（局部可积）函数——这是对的，命题 \ref{prop:delta-not-L1loc} 证明了。
+\item $\delta$ 没有严格定义——这是错的。它是测度，也是分布，有两种严格的解释。
+\end{itemize}
+\end{notebox}
+
+\section{运算：能做什么}
+
+\subsection{求导}
+
+\begin{equation}
+\ip{T'}{\varphi}=-\ip{T}{\varphi'} .
+\end{equation}
+
+定义良好的理由：$\varphi\in\D\Rightarrow\varphi'\in\D$；且 $\varphi_j\to\varphi$ 于 $\D$ 时 $\varphi_j'\to\varphi'$ 于 $\D$。
+
+\begin{prop}\label{prop:deriv-cont}
+若 $T_j\to T$ 于 $\D'$，则 $T_j'\to T'$ 于 $\D'$。
+\end{prop}
+
+\begin{proof}
+$\ip{T_j'}{\varphi}=-\ip{T_j}{\varphi'}\to-\ip{T}{\varphi'}=\ip{T'}{\varphi}$。
+\end{proof}
+
+\begin{ideabox}[这条性质解释了 EP02 的做法]
+EP02 里我们“先证明 $K_\ep\to\delta$，再直接对核求导，得到 $\delta'$ 的近似”。
+
+这个操作之所以合法，正是命题 \ref{prop:deriv-cont}：\textbf{分布收敛对求导是封闭的。}不需要额外验证 $K_\ep'$ 的点值收敛——事实上它根本没有点值极限。
+\end{ideabox}
+
+\subsection{乘光滑函数}
+
+对 $a\in C^{\infty}(\R)$，定义
+
+\begin{equation}
+\ip{aT}{\varphi}:=\ip{T}{a\varphi} .
+\end{equation}
+
+定义良好的理由：$a\varphi\in\D$。
+
+由此立刻得到几条“代数式”：
+
+\begin{align}
+a\,\delta&=a(0)\,\delta, \label{eq:adelta}\\
+x\,\delta&=0, \label{eq:xdelta}\\
+x\,\delta'&=-\delta, \label{eq:xdelta'}\\
+x\,\delta^{(n)}&=-n\,\delta^{(n-1)} . \label{eq:xdeltaN}
+\end{align}
+
+\begin{proof}[逐条验证]
+式 \eqref{eq:adelta}：$\ip{a\delta}{\varphi}=\ip{\delta}{a\varphi}=a(0)\varphi(0)=a(0)\ip{\delta}{\varphi}$。
+
+式 \eqref{eq:xdelta'}：$\ip{x\delta'}{\varphi}=\ip{\delta'}{x\varphi}=-(x\varphi)'(0)=-\big(\varphi(0)+0\big)=-\varphi(0)$。
+
+式 \eqref{eq:xdeltaN}：因为 $(x\varphi)^{(n)}=x\varphi^{(n)}+n\varphi^{(n-1)}$，在 $0$ 处取值只剩 $n\varphi^{(n-1)}(0)$，于是
+\begin{equation}
+\ip{x\delta^{(n)}}{\varphi}=(-1)^{n}n\varphi^{(n-1)}(0)=-n\cdot(-1)^{n-1}\varphi^{(n-1)}(0)=-n\ip{\delta^{(n-1)}}{\varphi}.
+\end{equation}
+\end{proof}
+
+\begin{ideabox}[$x\delta=0$ 与 $x\delta'=-\delta$ 是两道最好的练习题]
+它们看起来像“用零乘一个无穷大”，其实是完全严格的。
+
+先用 \eqref{eq:xdelta} 检查 EP03 的歧义：$\omega\delta=0$，所以加一项 $c\delta$ 不影响 $\omega\hat H=1$。这一步现在有了严格依据。
+
+再用 \eqref{eq:xdeltaN} 检查 EP03 的“为什么不能再加 $\delta'$”：$x\delta'=-\delta\neq0$，所以 $\delta'$ 不满足“乘 $\omega$ 为零”。
+\end{ideabox}
+
+\subsection{Leibniz 规则}
+
+\begin{equation}
+(aT)'=a'T+aT' .
+\end{equation}
+
+证明：$\ip{(aT)'}{\varphi}=-\ip{aT}{\varphi'}=-\ip{T}{a\varphi'}=-\ip{T}{(a\varphi)'-a'\varphi}=\ip{T}{a'\varphi}+\ip{aT'}{\varphi}$。
+
+\subsection{支撑}
+
+\begin{defn}[在开集上为零]
+若 $T$ 对一切 $\supp\varphi\subset U$（$U$ 开）的 $\varphi$ 都给出 $\ip{T}{\varphi}=0$，就说 $T$ 在 $U$ 上为零。$T$ 的\textbf{支撑} $\supp T$ 是不能这样“消掉”的最小闭集。
+\end{defn}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.3em]
+\item $\supp\delta=\{0\}$，$\supp\delta^{(n)}=\{0\}$。
+\item $\supp H=[0,\infty)$：在 $(-\infty,0)$ 上 $H=0$，在 $0$ 的任何右邻域内都不能被消掉。
+\item 若 $\varphi\equiv0$ 于 $0$ 的邻域，则 $\ip{\delta^{(n)}}{\varphi}=0$，所以支撑在 $\{0\}$。
+\end{itemize}
+
+\subsection{平移、缩放、复合}
+
+平移：$\ip{\delta_a}{\varphi}=\varphi(a)$，常写 $\delta(x-a)$。
+
+缩放（$a\neq0$）：
+
+\begin{equation}
+\delta(ax)=\frac{1}{|a|}\delta(x).\label{eq:scaling-delta}
+\end{equation}
+
+\begin{ideabox}[为什么是 $1/|a|$ 而不是 $1/a$]
+因为这是换元的 Jacobian 因子，不是代数倒数。直观上：把自变量压缩 $|a|$ 倍，点质量要相应地“变浓” $|a|$ 倍，才能保持总质量 $1$。
+
+\textbf{这是最容易写成 $1/a$ 的地方}，而 $a<0$ 时符号就错了。
+\end{ideabox}
+
+复合：若光滑函数 $g$ 的零点 $x_j$ 都是\textbf{简单零点}（$g'(x_j)\neq0$）且局部有限，则
+
+\begin{equation}
+\delta\big(g(x)\big)=\sum_{j}\frac{\delta(x-x_{j})}{|g'(x_{j})|} .\label{eq:delta-compose}
+\end{equation}
+
+\begin{warnbox}[简单零点这个条件不能省]
+$g(x)=x^{2}$ 在 $0$ 处是二重零点，$g'(0)=0$，\eqref{eq:delta-compose} 的分母为零，公式失效。此时 $\delta(x^{2})$ 根本不是这个形式的对象。
+
+讲这一条时，务必把“简单零点”说出口。
+\end{warnbox}
+
+\subsection{跳跃公式（回顾 EP03）}
+
+若 $f$ 分段 $C^{1}$、在 $a_j$ 处有局部有限个跳跃 $J_j$，则
+
+\begin{equation}
+Df=f'_{\text{经典}}+\sum_{j}J_j\,\delta_{a_j} .
+\end{equation}
+
+例：$D|t|=\sgn t$，$D^{2}|t|=2\delta$。
+
+\section{哪些运算不能随便做}
+
+这是本集最“值钱”的一节，因为它决定了观众以后会不会乱用公式。
+
+\begin{warnbox}[四条禁令]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.4em]
+\item \textbf{两个任意分布不能相乘。}$\delta^{2}$ 在经典分布理论中没有通用的规范定义。不要写 $|\delta|^{2}$，更不要算它的“能量”。
+\item \textbf{$H\delta$ 没有内禀定义。}因为 $H$ 不是光滑乘子（它不连续），不同的正则化约定可能给出不同结果。用 $H(0)$ 的某个取值来“定义”它是靠不住的。
+\item \textbf{卷积有存在条件。}紧支撑分布与任意分布可以卷积；两个任意分布未必可以。
+\item \textbf{“分布”不是“概率分布”的同义词。}$\delta$ 是两者交集中的例子，但 $\delta'$ 不是正测度，$\PV\frac1\omega$ 也不是。
+\end{enumerate}
+\end{warnbox}
+
+\begin{ideabox}[为什么要专门列“不能做什么”]
+因为视频里最容易被观众模仿的，是公式的\textbf{形式}，而不是它的\textbf{条件}。
+
+如果 EP02 出现了 $\F[t^{n}]=2\pi i^{n}\delta^{(n)}$，就会有人问：“那 $\F[t^{n}\cdot t^{m}]$ 是不是两个 $\delta$ 相乘？”
+
+提前把“不能乘”说清楚，比事后解释便宜得多。
+\end{ideabox}
+
+\section{两个能检验理解的例子}
+
+\subsection{例一：$x\delta'=-\delta$}
+
+\begin{align}
+\ip{x\delta'}{\varphi}
+&=\ip{\delta'}{x\varphi}=-\big(x\varphi\big)'(0)
+=-\big(\varphi(0)+0\cdot\varphi'(0)\big)=-\varphi(0)=-\ip{\delta}{\varphi}.
+\end{align}
+
+\subsection{例二：$(1+x)\delta'$}
+
+\begin{align}
+\ip{(1+x)\delta'}{\varphi}
+&=\ip{\delta'}{(1+x)\varphi}
+=-\big((1+x)\varphi\big)'(0)
+=-\Big(\varphi(0)+(1+0)\varphi'(0)\Big)\notag\\
+&=-\varphi(0)-\varphi'(0)
+=\ip{-\delta+\delta'}{\varphi}.
+\end{align}
+
+所以 $(1+x)\delta'=\delta'-\delta$。这个结果可以用 Leibniz 检查：$(1+x)'\delta'+(1+x)\delta''=\delta'+\delta''+x\delta''=\delta'-\delta$（最后一步用了 $x\delta''=-\delta'$）。
+
+\section{动画要点}
+
+\begin{scriptbox}[动画要点 05-A / 05-C / 05-E]
+\textbf{05-A}：一条测试函数曲线“走进去”，一个数字“出来”。同一个对象，换不同的探针，给不同的数。
+
+\textbf{05-C}：把探针平移，或改变它在原点的值，看输出跟着 $\varphi(0)$ 变。这是 $\delta$ 的“指纹”。
+
+\textbf{05-E}：分部积分的可视化——导数像接力棒一样从对象传递到探针，同时出现一个负号。
+
+\textbf{05-F}：把第三集的跳变重新解释一次：$H$ 的跳跃强度为 $1$，所以在 $0$ 处留下权重为 $1$ 的 $\delta$。观众应当有“原来如此”的感觉。
+\end{scriptbox}
+
+\section{讲解禁区（EP05）}
+
+\begin{warnbox}[逐条对照]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.28em]
+\item 不说“$\delta$ 是原点处无穷高、其余为零的函数”。
+\item 不说“分布是一种更奇怪的函数”。它是泛函。
+\item 不把 $\ip{T}{\varphi}$ 写成含复共轭的内积。
+\item 不说“任意两个分布都能相乘/卷积”。
+\item 不写 $\delta^{2}$，不写 $\|\delta\|^{2}$，不把 $\delta$ 当概率密度以外的“普通密度”。
+\item 不说“局部可积函数都可以定义分布，所以 $\delta$ 也可以”。$\delta$ 恰恰是反例。
+\item 不说“$H(0)$ 的取值影响了 $H$ 这个分布”。
+\item 不把 $\delta(ax)$ 写成 $\frac1a\delta(x)$（漏绝对值）。
+\item 不省略 $\delta(g(x))$ 公式中的“简单零点”条件。
+\item 不在 $\D'$ 上随意做“乘一个不光滑的函数”的操作。
+\item 不把“支撑在 $\{0\}$”讲成“$\delta$ 只影响原点”这种含糊说法；要说“对任何在原点邻域为零的探针，作用为零”。
+\end{enumerate}
+\end{warnbox}
+
+\section{与前后集的接口}
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.45em]
+\item \textbf{回头看}：EP01--EP04 里所有的“趋于”，现在有了名字：\textbf{分布收敛}。EP02 的“求导”现在有了定义。EP03 的 $\PV$ 现在可以写成一个分布。
+\item \textbf{往前看}：还差最后一块——傅里叶变换。$\F$ 是在积分里定义的，而分布没有积分。怎么办？
+\end{enumerate}
+
+\begin{scriptbox}[最后 30 秒的旁白骨架]
+“现在我们终于知道 $\delta$ 是什么了：它是一条规则，一条‘取出你函数在原点值’的规则。
+
+也知道它能求导，能乘光滑函数，不能和别的分布相乘。
+
+但还剩一个问题。
+
+从第一集开始，我们一直在说 $\delta$ 的‘频谱’、说 $\F[1]=2\pi\delta$。可傅里叶变换是一个积分，而 $\delta$ 根本没有积分。
+
+下一集，我们把这个变换也搬到这个世界里来。”
+\end{scriptbox}
+
+
+\section{本集回顾卡}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}Y@{}}
+\toprule
+项目 & 内容 \\
+\midrule
+定义 & 分布 $=$ $\D$ 上的连续线性泛函；配对不含共轭 \\
+嵌入 & 每个 $f\in\Lonloc$ 定义 $\ip{T_f}{\varphi}=\int f\varphi$ \\
+$\delta$ 的身份 & $\ip{\delta}{\varphi}=\varphi(0)$；不由任何局部可积函数给出 \\
+关键恒等式 & $x\delta=0$，$x\delta'=-\delta$，$x\delta^{(n)}=-n\delta^{(n-1)}$ \\
+禁区 & 两个分布相乘、$\delta^{2}$、$H\delta$ 都没有通用定义 \\
+安全话术 & “由它做什么来定义，不由它多高来定义” \\
+下一集的钩子 & 傅里叶变换是一个积分，可它没有积分 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{quizbox}[EP05 自测]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.35em]
+\item 独立验证 $x\delta'=-\delta$ 与 $x\delta''=-\delta'$。
+\item 计算 $(2+x)\delta''$ 与 $x^{2}\delta''$。
+\item 证明 $a\delta=a(0)\delta$，并解释为什么 $H\delta$ 不能这样处理。
+\item 说明为什么 $\eta$ 在 \eqref{eq:bump} 中定义后属于 $\D$，而 $e^{-x^{2}}$ 不属于。
+\item 写出 $\delta(3x-6)$ 的化简结果。
+\item 用 \eqref{eq:local-est} 说明：为什么“连续性”排除了“探针越小、响应越大”的泛函。
+\item 证明命题 \ref{prop:delta-not-L1loc}，并指出证明中哪一步用了“单点集是零测集”。
+\end{enumerate}
+\end{quizbox}

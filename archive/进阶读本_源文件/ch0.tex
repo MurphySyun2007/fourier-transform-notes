@@ -1,0 +1,453 @@
+\chapter{导读：六期到底在讲什么}
+
+\begin{ideabox}[这一章的作用]
+如果你只有两小时，读这一章就够了。它不推导任何公式，只回答四个问题：
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.2em,topsep=0.2em]
+\item 这六期合起来在回答哪一个问题？
+\item 为什么这个问题必须拆成六集，而且必须按这个顺序？
+\item 六集之间靠什么串起来？（三条暗线）
+\item 每一集的结论，是在哪一集被真正证明的？（欠账与还账）
+\end{enumerate}
+读完这一章，你应该能不看笔记，用三分钟把整个系列讲给一个朋友听。
+\end{ideabox}
+
+\section{这一系列要回答的唯一问题}
+
+傅里叶变换的通常说法是：\textbf{看一个信号里包含哪些频率，各占多少}。这句话在工程上极其好用，因为大多数真实信号都满足一个不起眼的前提——它们“足够快地衰减”，所以那个积分真的收敛。
+
+现在把最普通的一个信号放进去：永远等于 $1$ 的常数。
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.3em]
+\item 从直觉上说，它完全不变，所以它\textbf{只包含零频率}。这个直觉几乎不可能错。
+\item 从计算上说，把 $f(t)=1$ 代进定义，得到 $\int_{\R}e^{-i\omega t}\dd t$，这个积分对任何 $\omega$ 都不收敛。
+\end{itemize}
+
+直觉与计算在这里正面冲突。冲突不是出在“频率”这个想法上，而是出在“积分”这个工具上：积分只肯为衰减得足够快的信号工作，而常数一点都不衰减。
+
+于是整个系列真正要回答的问题是：
+
+\begin{center}
+\begin{tcolorbox}[colback=softblue,colframe=mainblue!50,boxrule=0pt,arc=2pt,width=0.93\textwidth]
+\centering
+\textbf{当一个信号的傅里叶积分按普通意义根本不存在时，\\[0.25em]
+我们还能不能在“频率”这套语言里继续谈论它？\\[0.25em]
+如果能，那句话的数学内容到底是什么？}
+\end{tcolorbox}
+\end{center}
+
+后面六集的所有内容，都是这一个问题的展开。三个“主结果”是三条不同的进攻路线：
+
+\begin{align}
+\F[1]&=2\pi\delta(\omega), \label{eq:main1}\\
+\F[t^{n}]&=2\pi i^{\,n}\delta^{(n)}(\omega),\qquad n=0,1,2,\dots \label{eq:main2}\\
+\F[H]&=\pi\delta(\omega)+\PV\frac{1}{i\omega}. \label{eq:main3}
+\end{align}
+
+它们分别对应三类“不衰减”的信号：\textbf{完全不变}（常数）、\textbf{越涨越快}（多项式）、\textbf{突然跳一下然后停住}（阶跃）。这三类恰好是普通傅里叶积分最无能为力的三类。
+
+\begin{notebox}[这三条式子为什么值得拍六集]
+不是因为它们难算，而是因为它们各自暴露了一种不同的“失败方式”：
+\begin{itemize}[leftmargin=1.4em,itemsep=0.15em,topsep=0.2em]
+\item 常数暴露的是\textbf{振幅不衰减}：被积函数的模恒等于 $1$，振荡再剧烈也不会抵消。
+\item 多项式暴露的是\textbf{增长更快}：$|t|^{n}$ 越来越大，连振荡都压不住。
+\item 阶跃暴露的是\textbf{局部奇性}：积分在无穷远处勉强能救，却在 $\omega=0$ 处留下一个不可积的 $1/\omega$。
+\end{itemize}
+三种病，三种药。如果只用一种药，观众学不到东西。
+\end{notebox}
+
+\section{一张“病历表”：四类对象为什么都算不出来}
+
+先做一个冷静的诊断。把定义式 $\fh(\omega)=\int_{\R}f(t)e^{-i\omega t}\dd t$ 拿去试，看看每一类对象是怎么失败的。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{1.5cm}L{4.6cm}L{5.4cm}L{3.2cm}@{}}
+\toprule
+对象 & 代入定义后发生什么 & 卡在哪里 & 广义结果 \\
+\midrule
+$1$ & $\int_{-T}^{T}e^{-i\omega t}\dd t=\dfrac{2\sin(\omega T)}{\omega}$（$\omega\neq0$） & 振幅 $2/|\omega|$ 不随 $T$ 衰减，永远在振荡；$\omega=0$ 处则 $=2T\to\infty$ & $2\pi\delta$ \\
+$t^{n}$ & 被积函数的模是 $|t|^{n}$，无界增长 & 比常数更糟：连“振荡抵消”的指望都没有 & $2\pi i^{n}\delta^{(n)}$ \\
+$H$ & $\int_{0}^{T}e^{-i\omega t}\dd t=\dfrac{1-e^{-i\omega T}}{i\omega}$ & 端点项 $e^{-i\omega T}$ 不收敛；即使取极限，$1/\omega$ 在原点不可积 & $\pi\delta+\PV\dfrac{1}{i\omega}$ \\
+$\delta$ & 根本不是函数，代不进去 & 没有“每点取值”这回事 & $1$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+这张表里最要紧的一行其实是最后一列的\textbf{共同点}：
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.3em]
+\item 这四类对象\textbf{都不属于} $\Lone$。所以“$\int|f|<\infty$ 则傅里叶积分绝对收敛”这条定理一律用不上。
+\item 它们\textbf{也都不属于} $\Ltwo$。所以 Plancherel 定理那条“保能量”的退路也走不通。
+\item 但它们\textbf{全都属于} $\Sv'$（温和分布）。在这个空间里，傅里叶变换是一个连续可逆的线性算子，三条式子同时成立。
+\end{itemize}
+
+\begin{ideabox}[这就是整个系列的“剧情大纲”]
+第一幕（EP01--EP03）：\textbf{看见病}。用三个具体信号，让观众亲手撞上三堵墙。
+
+第二幕（EP04）：\textbf{停下来问诊断标准}。“我们说的极限，到底是哪一种极限？”——从“算出有趣结果”转向“研究结果为何合理”。
+
+第三幕（EP05--EP06）：\textbf{换一间更大的手术室}。定义分布，在 $\Sv'$ 上重做傅里叶变换，然后回头把前三集的账全部结清。
+\end{ideabox}
+
+\section{六集分工：谁提出问题，谁负责收账}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{1.0cm}L{4.2cm}L{4.4cm}L{4.9cm}@{}}
+\toprule
+集 & 观众的问题 & 本集真正建立的东西 & 故意留给后面的 \\
+\midrule
+EP01 & 一条水平线的频谱为什么是 $\delta$？ & 零频率直觉；经典积分失败的现场；双边指数正则化；面积集中 & $\delta$ 的严格定义；极限的严格含义 \\
+EP02 & 不断增长的多项式也有频谱？ & 时域乘 $t$ $\leftrightarrow$ 频域求导；$\delta$ 的导数靠“取样导数”理解 & 分布导数的合法性（借用规则） \\
+EP03 & 阶跃的频谱为什么多一个 $\delta$？ & $H'=\delta$；主值；微分规则为什么会丢信息 & 主值极限的完整估计；歧义为何恰好是 $c\delta$ \\
+EP04 & 点值都趋于零，积分为什么还在？ & 三种收敛；控制收敛；近似恒等核；质量集中 & 用“作用”定义对象的合法性 \\
+EP05 & $\delta$ 到底是不是函数？ & 测试函数；连续线性泛函；嵌入；导数与光滑乘法 & 傅里叶变换怎么办 \\
+EP06 & 发散的积分怎样被严格定义？ & $\Sv$ 与 $\Sv'$；对偶定义；连续性；统一证明 & （本系列不展开）PDE、卷积代数 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection*{每一集在观众脑子里留下的那一句话}
+
+把六句话连起来读，就是整个系列。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{1.3cm}Y@{}}
+\toprule
+EP01 & 信号在时间上铺得越开，频谱就聚得越紧；常数的频谱全部堆在零频率，权重是 $2\pi$。 \\
+EP02 & 在时间上乘一个 $t$，等于在频率上求一次导；所以多项式只有零频率，但它记录的是零点的各阶导数。 \\
+EP03 & 微分规则只能定出“除掉零频率以外”的部分；零频率那一项被乘 $\omega$ 抹掉了，必须另外补回来。 \\
+EP04 & “每一点都不为零”与“整体不为零”是两件事；核之所以变成 $\delta$，是因为它的质量向一点集中，而不是因为它变小。 \\
+EP05 & 一个对象可以不由“每点取值”定义，而由“它怎样作用于探针”定义；$\delta$ 就是这样被定义的。 \\
+EP06 & 只要把探针换成 $\Sv$，傅里叶变换就能整体搬到分布上，并且保持极限；前三集的所有计算在这一步同时获得合法性。 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection*{为什么必须是这个顺序}
+
+顺序不是按数学难度排的，而是按\textbf{悬念}排的。每一集结束时留下的问题，正好是下一集的开场。
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.45em]
+\item \textbf{EP01 结尾}：常数对应 $2\pi\delta$。可是 $\delta$ 不是一个函数，凭什么能出现在公式右边？——先按下不表，因为观众此刻还没有非问不可的理由。
+\item \textbf{EP02 结尾}：既然乘 $t$ 可以，那对 $t$ 求导会怎样？更尖锐的是，$\delta'$ 是什么？“对一个不是函数的东西求导”这句话本身就该被质疑。到这里，观众第一次\textbf{主动}想问 $\delta$ 是什么。
+\item \textbf{EP03 结尾}：我们一直在说“趋于一个尖峰”“趋于主值”。这些“趋于”到底是哪一种趋近？为什么可以把极限搬进积分？——问题从“对象是什么”升级为“命题是什么意思”。
+\item \textbf{EP04 结尾}：不同的尖峰形状给出同一个取样作用。既然如此，能不能干脆\textbf{用这个作用来定义}那个极限对象？
+\item \textbf{EP05 结尾}：$\delta$ 定义好了，导数也定义好了。但傅里叶变换呢？把一个分布塞进普通积分显然不行。
+\item \textbf{EP06 结尾}：全部结清，回到第一集那条水平线。
+\end{enumerate}
+
+\begin{scriptbox}[写作时可以直接用的一句总纲]
+\textbf{用具体信号提出问题，用动画和计算建立理解，再逐步走向分布理论，解释那些普通傅里叶积分无法直接处理的结果。}
+\end{scriptbox}
+
+\section{三条暗线：观众看的是六个问题，你铺的是三条线索}
+
+明线是六个具体信号。但真正让系列“成为一个系列”而不是“六个科普视频”的，是三条贯穿始终的暗线。写脚本时，每隔一集就该让其中一条线往前挪一格。
+
+\subsection*{暗线一：正则化——先让积分收敛，再让参数消失}
+
+这是全系列最常用的手法，五集里出现了五次，而且每次外形都不一样：
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{2.9cm}L{2.5cm}L{4.6cm}L{4.4cm}@{}}
+\toprule
+参数族 & 时域极限 & 频域极限 & 出现于 \\
+\midrule
+$e^{-\ep|t|}$ & $\to 1$（逐点） & $2\ep/(\ep^{2}+\omega^{2})\to 2\pi\delta$ & EP01 \\
+$e^{-\ep t}H(t)$ & $\to H$（逐点） & $1/(\ep+i\omega)\to\pi\delta-i\PV(1/\omega)$ & EP03 \\
+$e^{-\sigma t^{2}/2}$ & $\to 1$（逐点） & $\sqrt{2\pi/\sigma}\,e^{-\omega^{2}/(2\sigma)}\to 2\pi\delta$ & EP06 \\
+$\mathbf{1}_{[-T,T]}$ & $\to 1$（逐点） & $2\sin(T\omega)/\omega\to 2\pi\delta$ & EP01 提过 / EP06 收尾 \\
+$K_{\ep}=\frac{1}{\pi}\frac{\ep}{\ep^{2}+x^{2}}$ & （无普通极限） & $\to\delta$ & EP01 借用 / EP04 证明 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+请盯住这张表的第二列和第三列：\textbf{五个完全不同的函数族，在频域收敛到同一个对象}（差一个 $2\pi$ 的比例）。指数核、高斯核、矩形窗，一个比一个不像，极限却是同一个 $\delta$。
+
+\begin{ideabox}[这条暗线的意义]
+它直接给出了“$\delta$ 不该由形状定义”的全部理由。如果五种形状都通向同一个终点，那么这个终点就不能是“某种特别的形状”，它只能是\textbf{一种共同的作用}。
+
+这就是 EP04 结尾的问题，也是 EP05 开场的入口。观众不需要被告知“分布理论很重要”，他们会自己得出结论。
+\end{ideabox}
+
+\subsection*{暗线二：从“代入积分”到“配对”}
+
+整部系列在偷偷更换“计算”这个词的含义：
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{1.5cm}L{4.4cm}L{9.0cm}@{}}
+\toprule
+集数 & 计算的形式 & 这句话在做什么 \\
+\midrule
+EP01 & $\displaystyle\int_{\R}K_{\ep}(\omega)\varphi(\omega)\dd\omega\to\varphi(0)$ & 借一个平滑探针 $\varphi$，观察核的作用（先说清楚，EP04 才证明）\\
+EP04 & 同上，但给出证明 & 用“近处靠连续性、远处靠尾部”的估计把极限算出来 \\
+EP05 & $\ip{\delta}{\varphi}=\varphi(0)$ & 把这个作用\textbf{提升为定义}：$\delta$ 就是“取 $\varphi(0)$”这个泛函 \\
+EP06 & $\ip{\F T}{\varphi}:=\ip{T}{\F\varphi}$ & 把变换也搬到这个框架里：不知道 $T$ 是什么，但知道它对每个探针的响应 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+从“算一个数”到“描述一种作用”，这是全系列唯一的观念跃迁。所有技术细节都是为它服务的。
+
+\subsection*{暗线三：$\delta$ 的身份升级}
+
+观众对 $\delta$ 的理解，每一集都要更新一次。注意这个升级是\textbf{单向}的：后面的理解包含前面的，但前面的理解不足以支撑后面的。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{1.3cm}L{4.2cm}L{9.4cm}@{}}
+\toprule
+集数 & 此刻 $\delta$ 被当成 & 这一集的观众应该能做的判断 \\
+\midrule
+EP01 & 一族尖峰的极限 & “它不是某点很高，而是权重堆在一点。”\\
+EP02 & 可以求导的对象 & “$\delta'$ 不是另一个尖峰，它有两叶、总积分为零，探测的是斜率。”\\
+EP03 & 公式里的一个加项 & “零频率那一项是可以被 $c\delta$ 平移的，所以要额外定系数。”\\
+EP05 & 一个连续线性泛函 & “$\delta$ 不是函数，但它有严格定义；它也\textbf{不能}和另一个分布随便相乘。”\\
+EP06 & $\Sv'$ 的一个元素 & “它有傅里叶变换，而且那个变换就是常数 $1$。”\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{warnbox}[这条暗线的反面教材]
+如果 EP01 就把 $\delta$ 定义成“原点无穷高、其余为零”的东西，后面五集全部崩盘：EP02 的 $\delta'$ 画不出来，EP03 的系数说不清，EP05 的分布定义变成多余，EP06 的对偶公式变成天书。
+
+\textbf{EP01 必须把 $\delta$ 说成“一个极限的名字”，而不是“一个形状的名字”。}这是整个系列最重要的一次讲解设计。
+\end{warnbox}
+
+\section{欠账与还账：哪一集建立，哪一集证明}
+
+这是全系列的结构性承诺，也是它区别于“六个独立科普视频”的地方：前三集\textbf{大量借用}规则，后三集\textbf{逐条追认}。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{4.6cm}L{1.8cm}L{2.0cm}Y@{}}
+\toprule
+结论 & 何时出现 & 何时证明 & 证明依赖什么 \\
+\midrule
+$\F[1]=2\pi\delta$ & EP01 & EP06 & 对偶定义 + 反演公式（在 $\varphi(0)$ 处取值）\\
+取样极限 $\int K_{\ep}\varphi\to\varphi(0)$ & EP01（借用） & EP04 & 换元 + 控制收敛；或“近处/远处”估计 \\
+$\ip{\delta'}{\varphi}=-\varphi'(0)$ & EP02（借用） & EP05 & 分部积分把导数转移到探针 \\
+$\F[t^{n}]=2\pi i^{n}\delta^{(n)}$ & EP02 & EP06 & 乘 $t$ 规则在 $\Sv'$ 上成立 \\
+$H'=\delta$ & EP03 & EP05 & 分布导数的定义 \\
+$\F[H]=\pi\delta+\PV(1/i\omega)$ & EP03 & EP06 & $H_{\ep}\to H$ 于 $\Sv'$ + 连续性 \\
+$\ep/(\ep^{2}+\omega^{2})\to\pi\delta$ & EP03 & EP05、EP06 & 即 EP01 的核极限 \\
+$\omega/(\ep^{2}+\omega^{2})\to\PV(1/\omega)$ & EP03 & EP06 & 控制收敛 + 中值估计 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{ideabox}[讲解上的用法]
+这张表可以直接变成叙事节奏。每当前三集借了一条规则，就明说一句：
+
+\begin{center}
+\itshape
+“这条规则我们现在先用着，它的合法性要到后面某一集才能说清楚。”
+\end{center}
+
+这句话有两个作用：一是诚实，二是\textbf{制造欠账感}。观众会带着“到底欠了什么”继续看下去。等 EP05、EP06 把账还上时，那种“原来前面那些奇怪的记号真的有出处”的快感，是整个系列最大的回报。
+\end{ideabox}
+
+\section{统一约定：一套记号，一条命}
+
+全系列（以及这本书）只用一套约定：
+
+\begin{equation}
+\fh(\omega)=\F[f](\omega)=\int_{\R}f(t)e^{-i\omega t}\dd t,
+\qquad
+f(t)=\frac{1}{2\pi}\int_{\R}\fh(\omega)e^{i\omega t}\dd\omega. \label{eq:conv}
+\end{equation}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.3em]
+\item $\omega$ 是\textbf{角频率}，单位是弧度/秒。时间轴一律写 $t$，频率轴一律写 $\omega$。
+\item $2\pi$ 全部放在\textbf{逆变换}上。正变换前面没有系数。
+\item 第二个等式（反演）需要条件；在 $\Sv$ 上它总成立，这是 EP06 的事。
+\end{itemize}
+
+\subsection*{三种常见约定的对照}
+
+这是最容易出事的地方：不同教材的 $\delta$ 系数完全不一样，抄错一个 $2\pi$，整集公式全废。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.55}
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}L{4.3cm}L{3.4cm}L{3.6cm}@{}}
+\toprule
+约定 & 正变换 & $\F[1]$ & 常见于 \\
+\midrule
+角频率（\textbf{本书}） & $\displaystyle\int f(t)e^{-i\omega t}\dd t$ & $2\pi\delta(\omega)$ & 数学、物理 \\
+对称型 & $\displaystyle\frac{1}{\sqrt{2\pi}}\int f(t)e^{-i\omega t}\dd t$ & $\sqrt{2\pi}\,\delta(\omega)$ & 泛函分析、量子力学 \\
+频率型 & $\displaystyle\int f(t)e^{-2\pi i\nu t}\dd t$ & $\delta(\nu)$ & 信号处理、工程 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+换算关系（用来快速自检）：设 $\F_\nu$ 是频率型、$\F_\omega$ 是本书的角频率型，则
+
+\begin{equation}
+\F_\nu[f](\nu)=\F_\omega[f](2\pi\nu),
+\qquad
+\delta(2\pi\nu)=\frac{1}{2\pi}\delta(\nu). \label{eq:conversion}
+\end{equation}
+
+验证：$\F_\nu[1](\nu)=\F_\omega[1](2\pi\nu)=2\pi\delta(2\pi\nu)=2\pi\cdot\frac{1}{2\pi}\delta(\nu)=\delta(\nu)$。两边对上了。
+
+\begin{warnbox}[一句话自检法]
+如果你换了一套约定，先算 $\F[1]$。它等于 $2\pi\delta$、$\sqrt{2\pi}\delta$ 还是 $\delta$，直接告诉你 $2\pi$ 被放在了哪里。这个方法在查别人给的公式时，比逐项核对快得多。
+\end{warnbox}
+
+\subsection*{五条硬规则}
+
+这五条是全书通用的“物理学定律”，违反任何一条都会在某一集翻车。
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.45em]
+\item \textbf{$\delta$ 是分布，不是函数。}它没有“在某点的取值”。任何“$\delta(0)=\infty$”的说法都要避免。
+\item \textbf{箭头表示权重，不是高度。}$\F[1]=2\pi\delta$ 里的箭头，说的是“零频率处的权重是 $2\pi$”，不是说频谱在那里高到 $2\pi$。
+\item \textbf{本例频谱曲线的面积不是能量。}EP01 里 $\int G_{\ep}=2\pi$ 是这条特定曲线的性质，不是“所有频谱都守恒”。真正守恒的是 $\|f\|_2^2=\frac{1}{2\pi}\|\fh\|_2^2$（Plancherel），而常数连 $\Ltwo$ 都不属于。
+\item \textbf{出现 $\delta$、$\delta^{(n)}$、$\PV$ 时，必须声明“在广义函数意义下”。}这不是免责声明，这是数学内容的一部分。
+\item \textbf{$2\pi$、$i$、负号三者联立。}改一个就要改全部。EP03 里 $\F[H]$ 的 $\pi$ 与 $\frac{1}{i}=-i$ 尤其容易错。
+\end{enumerate}
+
+\section{四个空间：一个对象该住在哪儿}
+
+同一个“信号”，放在不同的空间里，能问的问题完全不同。这是整个系列的技术骨架。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{1.7cm}L{4.4cm}L{4.2cm}Y@{}}
+\toprule
+空间 & 里的元素 & 傅里叶变换 & 关键性质 \\
+\midrule
+$\Lone$ & $\int|f|<\infty$ & 一定有，且 $\|\fh\|_\infty\le\|f\|_1$ & 积分绝对收敛；$\fh$ 连续且趋于零 \\
+$\Ltwo$ & $\int|f|^{2}<\infty$ & 有（Plancherel 延拓） & 保能量：$\|f\|_2^{2}=\frac{1}{2\pi}\|\fh\|_2^{2}$ \\
+$\D'$ & 分布（EP05） & \textbf{不一定有} & 可以求导、乘光滑函数；适合局部观察 \\
+$\Sv'$ & 温和分布（EP06） & \textbf{一定有}，且连续可逆 & 本系列的工作空间 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection*{把六集里出现的对象，一个个安置好}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{1.5cm}L{1.5cm}L{1.5cm}L{1.5cm}L{4.3cm}@{}}
+\toprule
+对象 & $\Lone$ & $\Ltwo$ & $\D'$ & $\Sv'$ & 说明 \\
+\midrule
+$e^{-\ep|t|}$ & \checkmark & \checkmark & \checkmark & \checkmark & 最乖的对象，EP01 全靠它 \\
+$1$ & $\times$ & $\times$ & \checkmark & \checkmark & 不衰减，但增长有界 \\
+$t^{n}$ & $\times$ & $\times$ & \checkmark & \checkmark & 多项式增长 \\
+$H(t)$ & $\times$ & $\times$ & \checkmark & \checkmark & 有界，但两端不衰减 \\
+$1/(1+t^{2})$ & \checkmark & \checkmark & \checkmark & $\times$ & 可积但只按固定幂次衰减 \\
+$\delta,\ \delta^{(n)}$ & $\times$ & $\times$ & \checkmark & \checkmark & 不是函数，是泛函 \\
+$e^{t^{2}}$ & $\times$ & $\times$ & \checkmark & $\times$ & 有分布，但\textbf{没有}温和分布 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{ideabox}[这张表最值得记住的两行]
+\textbf{一行是 $1$：}它不在 $\Lone$，也不在 $\Ltwo$。这解释了为什么 EP01 的两条经典路线（普通积分、Plancherel）都救不了它。
+
+\textbf{一行是 $e^{t^{2}}$：}它虽然“是函数”，却没有傅里叶变换（在这个框架内）。这提醒观众：能不能做变换，不是看“它像不像函数”，而是看它住在哪个空间。
+\end{ideabox}
+
+\begin{notebox}[换空间不是作弊]
+初学者常有一个误解：觉得“先加衰减再取极限”是在绕开困难，甚至是在耍花招。
+
+不是的。真实的逻辑是：\textbf{原来的工具只在一个小房间里够用}（$\Lone$ 或 $\Ltwo$），而你要处理的信号在房间外面。你有两条路：要么放弃，要么把房间扩大。数学选择了后者，而且扩大的方式非常克制——它不改变任何原有结论，只增加新的对象。
+
+这一点在 EP06 结尾必须说清楚，否则观众会觉得整套理论是“为了自圆其说而发明出来的”。
+\end{notebox}
+
+\section{三张许可证：什么时候可以把极限搬进积分}
+
+整个系列里，凡是出现“把极限、导数、求和搬进积分号”的地方，都必须掏出下面三张许可证之一。没有许可证的动作，就是错的。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{2.2cm}L{5.8cm}Y@{}}
+\toprule
+许可证 & 内容 & 什么时候失效 \\
+\midrule
+控制收敛 & 若 $f_n\to f$，且存在\textbf{同一个}可积 $g$ 使 $|f_n|\le g$，则 $\int f_n\to\int f$ & 找不到公共控制函数时。EP04 会证明：对 $K_{\ep}$ 根本不存在这样的 $g$ \\
+Fubini & 双重积分绝对收敛时，可以交换积分次序 & 只有条件收敛时。EP06 的反演证明专门用高斯因子制造绝对收敛 \\
+分部积分 & $\int f'\varphi=-\int f\varphi'$，边界项必须为零 & 边界项不消失时。$f$ 有跳跃（EP03）、$f$ 不衰减（EP02 的分布版本）都要重新处理 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection*{全书的“许可证使用记录”}
+
+写脚本时如果记不清某个交换是否合法，查这张表。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{5.4cm}L{3.6cm}Y@{}}
+\toprule
+正在做的事 & 需要哪张 & 条件 \\
+\midrule
+对 $\omega$ 求导搬进积分 & 控制收敛（局部） & $f\in\Sv$，故 $|tf|$ 可积 \\
+$\ip{K_{\ep}}{\varphi}\to\varphi(0)$ & 控制收敛（换元后） & $\varphi$ 有界、在 $0$ 连续 \\
+对偶公式的推导 & Fubini & $f,\varphi\in\Sv$（或都在 $\Lone$） \\
+反演公式 & Fubini $+$ 近似恒等核 & $\varphi\in\Sv$ \\
+$H'=\delta$ & 分部积分 & $\varphi\in\D$，边界项为零 \\
+$\PV\frac{1}{\omega}$ 的存在性 & 中值估计 $+$ 尾部衰减 & $\varphi\in\Sv$ \\
+$\F[H]$ 的两项极限 & 控制收敛 $+$ 上述全部 & $\varphi\in\Sv$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{warnbox}[全系列最大的一处陷阱]
+\textbf{不要用还没证明的 $\delta$ 公式，去证明反演。}
+
+这条循环论证非常诱人：既然 $\int e^{i\omega t}\dd\omega=2\pi\delta(t)$，那反演公式不就一眼看出来了？
+
+问题在于：那个“等式”本身就是在分布意义下、并且依赖对偶定义才能写出来的。用它证反演，等于用结论证前提。EP06 里反演的证明必须走高斯正则化这条“干净”的路——先造一个绝对收敛的双重积分，再用近似恒等核。这条纪律必须守住。
+\end{warnbox}
+
+\section{六集速查卡}
+
+把这一页打印出来贴在显示器边上，写脚本时随时对照。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{1.0cm}L{1.6cm}L{3.9cm}Y L{3.8cm}@{}}
+\toprule
+集 & 时长 & 主公式 & 必须出现的画面 & 结尾留下的问题 \\
+\midrule
+01 & 8--10 & $\F[1]=2\pi\delta$ & 时频双面板，$\ep$ 同步变化 & 乘以 $t$ 会怎样？\\
+02 & 10--12 & $\F[t^{n}]=2\pi i^{n}\delta^{(n)}$ & 正负两叶的 $\delta'$ 近似 & 求导对应什么？\\
+03 & 10--14 & $\F[H]=\pi\delta+\PV\frac{1}{i\omega}$ & 实部成峰、虚部成奇 & 这些极限是什么？\\
+04 & 12--15 & $\int K_{\ep}\varphi\to\varphi(0)$ & 三种核同时收缩 & 能否用作用定义对象？\\
+05 & 12--15 & $\ip{\delta}{\varphi}=\varphi(0)$ & 探针进出、数值输出 & 怎么对分布做变换？\\
+06 & 12--18 & $\ip{\F T}{\varphi}=\ip{T}{\F\varphi}$ & 三条公式并列回收 & 回到那条水平线 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{quizbox}[读完这一章的自测]
+不看上面任何一页，回答：
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.35em]
+\item 为什么常数 $1$ 既不在 $\Lone$ 也不在 $\Ltwo$？这分别挡住了哪两条路？
+\item 三条主公式各自暴露的是哪一类“失败方式”？
+\item 哪一集是“从算结果转向问意义”的转折点？为什么它必须放在第三集之后？
+\item 三条暗线分别是什么？各自在哪一集“往前挪一格”？
+\item 如果有人在 EP01 就把 $\delta$ 说成“原点处无穷高的函数”，后面哪几集会出问题？各出什么问题？
+\item 为什么不能用 $\int e^{i\omega t}\dd\omega=2\pi\delta(t)$ 去证明反演公式？
+\end{enumerate}
+\end{quizbox}

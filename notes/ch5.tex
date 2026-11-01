@@ -1,0 +1,352 @@
+\chapter{Distributions}
+\label{ch:dist}
+
+\begin{quote}
+\itshape
+An object may be described by what it does to probes rather than by what value it takes at each
+point. Once that shift is made, $\delta$ stops being a paradox: it is a perfectly ordinary element of
+a space whose definition requires nothing more than smoothness and compact support of the probes.
+\end{quote}
+
+\section{Test functions}
+
+\begin{definition}\label{def:D}
+The space of test functions is
+\begin{equation}
+\D(\R)=C_{c}^{\infty}(\R)=\{\varphi:\R\to\C \;:\; \varphi\in C^{\infty},\ \supp\varphi
+\text{ compact}\}.
+\end{equation}
+\end{definition}
+
+The two requirements do different work. Smoothness allows derivatives of arbitrary order to be
+transferred from the object to the probe, which is how differentiation will be defined. Compact
+support makes boundary terms vanish in every integration by parts, and it confines the observation to
+a bounded region, which is what allows $\Lonloc$ functions to act.
+
+\begin{example}[a smooth function with compact support]\label{ex:bump}
+\begin{equation}
+\eta(x)=\begin{cases}\exp\!\left(-\dfrac{1}{1-x^{2}}\right),&|x|<1,\\[8pt] 0,&|x|\ge1 .\end{cases}
+\end{equation}
+As $x\to\pm1$ the exponent tends to $-\infty$ faster than any power, so $\eta$ and all its
+derivatives tend to $0$ at the boundary, and the piecewise definition is $C^{\infty}$. The function
+is positive on $(-1,1)$ and vanishes identically outside.
+\end{example}
+
+\begin{example}
+$e^{-x^{2}}$ is smooth and decays rapidly, but its support is all of $\R$; it belongs to the Schwartz
+space of Chapter~\ref{ch:tespered} and not to $\D$.
+\end{example}
+
+\begin{definition}[convergence in $\D$]
+$\varphi_{j}\to\varphi$ in $\D$ means: there is a compact $K$ containing every $\supp\varphi_{j}$ and
+$\supp\varphi$, and for every $k\ge0$,
+\begin{equation}
+\sup_{x\in K}\big|\varphi_{j}^{(k)}(x)-\varphi^{(k)}(x)\big|\longrightarrow0 .
+\end{equation}
+\end{definition}
+
+The common compact set is part of the definition. A sequence of probes that shrinks while moving off
+to infinity is not convergent in $\D$, and admitting such sequences would destroy the continuity
+properties the theory needs.
+
+\section{Distributions}
+
+\begin{definition}\label{def:distribution}
+A \emph{distribution} on $\R$ is a map $T:\D(\R)\to\C$, written $\varphi\mapsto\ip{T}{\varphi}$,
+which is
+\begin{enumerate}
+\item \emph{linear}: $\ip{T}{a\varphi+b\psi}=a\ip{T}{\varphi}+b\ip{T}{\psi}$ for $a,b\in\C$;
+\item \emph{continuous}: $\varphi_{j}\to\varphi$ in $\D$ implies $\ip{T}{\varphi_{j}}\to\ip{T}{\varphi}$.
+\end{enumerate}
+The space of distributions is denoted $\D'(\R)$.
+\end{definition}
+
+\begin{remark}[the pairing is bilinear, not Hermitian]
+There is no complex conjugation in $\ip{T}{\varphi}$. It is linear in each slot over $\C$. In
+particular $\ip{T}{\varphi}$ is not an inner product, and statements such as ``$\F$ is unitary'' have
+no meaning in this framework. The absence of conjugation is what fixes the position of the factors
+$2\pi$ in Chapter~\ref{ch:tespered}.
+\end{remark}
+
+\begin{proposition}[local estimate]\label{prop:localest}
+A linear $T:\D\to\C$ is a distribution if and only if for every compact $K$ there exist $C_{K}<\infty$
+and $m_{K}\in\mathbb{N}$ such that
+\begin{equation}
+|\ip{T}{\varphi}|\le C_{K}\max_{0\le k\le m_{K}}\|\varphi^{(k)}\|_{\infty}
+\qquad\text{whenever }\supp\varphi\subset K .
+\label{eq:localest}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Sketch]
+Sufficiency: \eqref{eq:localest} makes continuity immediate, since convergence in $\D$ forces every
+derivative to converge uniformly on $K$. Necessity: if no such estimate existed, one could construct
+$\varphi_{j}\to0$ in $\D$ with $|\ip{T}{\varphi_{j}}|\ge1$, contradicting continuity.
+\end{proof}
+
+The estimate expresses the only kind of control required: on a fixed region, the response is bounded
+by finitely many derivatives of the probe. The integer $m_{K}$ is the \emph{order} of $T$ on $K$.
+
+\section{Ordinary functions as distributions}
+
+\begin{theorem}[embedding]\label{thm:embedding}
+Let $f\in\Lonloc$. Then
+\begin{equation}
+\ip{T_{f}}{\varphi}:=\int_{\R}f(x)\varphi(x)\dd x
+\end{equation}
+defines a distribution. Moreover $T_{f}=T_{g}$ if and only if $f=g$ almost everywhere.
+\end{theorem}
+
+\begin{proof}
+Since $\varphi$ is supported in a compact $K$, the integral is over $K$ and is finite by local
+integrability. The estimate
+\begin{equation}
+|\ip{T_{f}}{\varphi}|\le\|f\|_{L^{1}(K)}\|\varphi\|_{\infty}
+\end{equation}
+is \eqref{eq:localest} with $m_{K}=0$. For the last statement, if $\int(f-g)\varphi=0$ for all
+$\varphi\in\D$ supported in $K$, then $f-g=0$ almost everywhere on $K$; this is the standard
+duality between locally integrable functions and test functions. Taking a sequence of compact sets
+exhausting $\R$ gives the result.
+\end{proof}
+
+\begin{remark}[values at a point are invisible]
+The theorem says that a distribution sees only the almost-everywhere class of an $\Lonloc$ function.
+In particular the value $H(0)$ is irrelevant: changing it changes the function on a null set, hence
+not the distribution. This is not vagueness; it is a precise statement, and it removes a question
+that would otherwise be unanswerable.
+\end{remark}
+
+\section{\texorpdfstring{$\delta$}{delta} is not a function}
+
+\begin{theorem}\label{thm:delta-not-L1}
+There is no $g\in\Lonloc$ with $T_{g}=\delta$.
+\end{theorem}
+
+\begin{proof}
+Suppose $T_{g}=\delta$. Let $\varphi\in C_{c}^{\infty}$ be supported in $\R\setminus\{0\}$. Then
+$\ip{\delta}{\varphi}=0$, so $\int g\varphi=0$. As $\varphi$ ranges over test functions supported in
+$\R\setminus\{0\}$, Theorem~\ref{thm:embedding} gives $g=0$ almost everywhere on $\R\setminus\{0\}$.
+Since $\{0\}$ is a null set, $g=0$ almost everywhere on $\R$, hence $T_{g}=0\neq\delta$, a
+contradiction.
+\end{proof}
+
+So $\delta$ is a genuinely new object: it is not a function with a strange value at one point, it is
+not any function at all. Two remarks prevent over-reading this.
+
+\begin{enumerate}
+\item ``Not a function'' does not mean ``not defined''. $\delta$ is defined by
+\eqref{eq:deltadef}, and it is also a measure: the Dirac point mass, assigning $1$ to a set
+containing $0$ and $0$ otherwise. Measures embed into distributions, and $\delta$ is the simplest
+member of the intersection.
+\item The failure in Theorem~\ref{thm:delta-not-L1} is a failure of \emph{representation}, not of
+existence. Every $\Lonloc$ function gives a distribution; $\delta$ is a distribution that no
+$\Lonloc$ function gives.
+\end{enumerate}
+
+\section{Operations}
+
+\subsection*{Differentiation}
+
+\begin{definition}
+$\ip{T'}{\varphi}:=-\ip{T}{\varphi'}$, and $\ip{T^{(n)}}{\varphi}:=(-1)^{n}\ip{T}{\varphi^{(n)}}$.
+\end{definition}
+
+This is well defined because $\varphi\in\D$ implies $\varphi'\in\D$, and because
+$\varphi_{j}\to\varphi$ in $\D$ implies $\varphi_{j}'\to\varphi'$ in $\D$.
+
+\begin{proposition}[differentiation preserves convergence]\label{prop:derivcont}
+If $T_{j}\to T$ in $\D'$, then $T_{j}'\to T'$ in $\D'$.
+\end{proposition}
+
+\begin{proof}
+$\ip{T_{j}'}{\varphi}=-\ip{T_{j}}{\varphi'}\to-\ip{T}{\varphi'}=\ip{T'}{\varphi}$ for every
+$\varphi$.
+\end{proof}
+
+\subsection*{Multiplication by a smooth function}
+
+For $a\in C^{\infty}(\R)$ define
+\begin{equation}
+\ip{aT}{\varphi}:=\ip{T}{a\varphi},
+\end{equation}
+which is well defined because $a\varphi\in\D$. The operation is associative and compatible with
+differentiation.
+
+\begin{proposition}\label{prop:mult-rules}
+For $a\in C^{\infty}$ and any distribution $T$,
+\begin{align}
+a\,\delta&=a(0)\,\delta, \label{eq:adelta}\\
+x\,\delta&=0, \label{eq:xdelta}\\
+x\,\delta'&=-\delta, \label{eq:xdelta'}\\
+x\,\delta^{(n)}&=-n\,\delta^{(n-1)}, \label{eq:xdeltaN}\\
+(aT)'&=a'T+aT' . \label{eq:leibniz}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+For \eqref{eq:adelta}: $\ip{a\delta}{\varphi}=\ip{\delta}{a\varphi}=a(0)\varphi(0)=a(0)\ip{\delta}{\varphi}$.
+
+For \eqref{eq:xdelta'}: $\ip{x\delta'}{\varphi}=\ip{\delta'}{x\varphi}=-(x\varphi)'(0)=-\varphi(0)$.
+
+For \eqref{eq:xdeltaN}: since $(x\varphi)^{(n)}=x\varphi^{(n)}+n\varphi^{(n-1)}$, evaluating at $0$
+leaves $n\varphi^{(n-1)}(0)$, so
+\begin{equation}
+\ip{x\delta^{(n)}}{\varphi}=(-1)^{n}n\varphi^{(n-1)}(0)
+=-n\,(-1)^{n-1}\varphi^{(n-1)}(0)=-n\ip{\delta^{(n-1)}}{\varphi}.
+\end{equation}
+
+For \eqref{eq:leibniz}: using $(a\varphi)'=a'\varphi+a\varphi'$,
+\begin{equation}
+\ip{(aT)'}{\varphi}=-\ip{T}{(a\varphi)'}
+=-\ip{T}{a'\varphi}-\ip{T}{a\varphi'}
+=\ip{a'T}{\varphi}+\ip{aT'}{\varphi}. \qedhere
+\end{equation}
+\end{proof}
+
+\begin{remark}
+Formula \eqref{eq:xdeltaN} explains Proposition~\ref{prop:keromega} a second time: multiplying by
+$\omega$ lowers the order of $\delta^{(n)}$ by one, so among the $\delta^{(n)}$ only $\delta$ itself
+is annihilated.
+\end{remark}
+
+\subsection*{Support}
+
+Definition~\ref{def:support} applies verbatim to distributions, with $\supp\varphi\subset U$. The
+support of $\delta^{(n)}$ is $\{0\}$ (Proposition~\ref{prop:suppdelta}); the support of $H$ is
+$[0,\infty)$; the support of a polynomial is all of $\R$ as a function, but its \emph{spectrum} is
+supported at the origin, and the two uses of the word must not be confused.
+
+\section{Translation, scaling, composition}
+
+\begin{proposition}\label{prop:affine}
+Let $a\neq0$ and $b\in\R$. Then
+\begin{equation}
+\ip{\delta_{b}}{\varphi}=\varphi(b),
+\qquad
+\delta(ax)=\frac{1}{|a|}\,\delta(x),
+\qquad
+\delta(x-b)=\delta_{b}(x).
+\label{eq:delta-scale}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For the scaling, test against $\varphi$ and substitute $u=ax$:
+\begin{equation}
+\ip{\delta(a\cdot)}{\varphi}=\left\langle\delta,\frac{1}{|a|}\varphi\!\left(\frac{\cdot}{a}\right)\right\rangle
+=\frac{1}{|a|}\varphi(0)=\left\langle\frac{1}{|a|}\delta,\varphi\right\rangle . \qedhere
+\end{equation}
+\end{proof}
+
+The factor $|a|^{-1}$ is a Jacobian, not an algebraic reciprocal; the absolute value matters when
+$a<0$.
+
+\begin{proposition}[composition]\label{prop:composition}
+Let $g\in C^{\infty}$ have only simple zeros $x_{j}$, locally finite in number. Then
+\begin{equation}
+\delta\big(g(x)\big)=\sum_{j}\frac{\delta(x-x_{j})}{|g'(x_{j})|} .
+\label{eq:compose}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Sketch]
+Near a simple zero $x_{j}$, write $g(x)=(x-x_{j})h_{j}(x)$ with $h_{j}(x_{j})=g'(x_{j})\neq0$; the
+change of variable $u=g(x)$ on a small interval around $x_{j}$ has Jacobian
+$1/|g'(x_{j})|$, and outside the union of these intervals the test function is annihilated because
+$g$ does not vanish there. Summing the contributions gives \eqref{eq:compose}.
+\end{proof}
+
+\begin{remark}
+The hypothesis of simple zeros cannot be dropped. For $g(x)=x^{2}$ the derivative vanishes at the
+zero, the formula divides by zero, and indeed $\delta(x^{2})$ is not of this form.
+\end{remark}
+
+\section{Operations that are not available}
+
+\begin{enumerate}
+\item \textbf{Products of distributions.} There is no general definition of $ST$ for
+$S,T\in\D'$. In particular $\delta^{2}$ has no canonical meaning, and expressions such as
+$\|\delta\|^{2}$ or ``the energy of $\delta$'' are meaningless.
+\item \textbf{Multiplication by nonsmooth functions.} $H\delta$ has no intrinsic definition: $H$ is
+not smooth, and different regularizations of the product give different answers. Choosing $H(0)$
+does not resolve this.
+\item \textbf{Convolutions of arbitrary distributions.} A compactly supported distribution may be
+convolved with any distribution; two arbitrary distributions need not admit a convolution.
+\item \textbf{Confusion with measures.} Distributions are not signed measures. $\delta$ is both, but
+$\delta'$ is not a measure, and neither is $\PV\frac{1}{\omega}$ in the sense of positive or signed
+measure with finite local variation (Proposition~\ref{prop:Kprime}(iv) makes this visible: the
+total variation diverges).
+\end{enumerate}
+
+\section{Regularization: every distribution is a limit of smooth functions}
+
+One structural fact remains, and it explains why the method of \emph{approximating by ordinary
+functions} never loses information.
+
+Let $\rho\in C_{c}^{\infty}$ with $\rho\ge0$, $\int\rho=1$, and set
+$\rho_{\ep}(x)=\ep^{-1}\rho(x/\ep)$.
+
+\begin{theorem}\label{thm:regularization}
+Let $T$ be a distribution with compact support. For $\ep>0$ define
+\begin{equation}
+T_{\ep}(x):=\big\langle T,\;\rho_{\ep}(x-\cdot)\big\rangle .
+\label{eq:Teps}
+\end{equation}
+Then $T_{\ep}\in C^{\infty}(\R)$, and $T_{\ep}\to T$ in $\D'(\R)$ as $\ep\downarrow0$.
+\end{theorem}
+
+\begin{proof}
+\emph{Smoothness.} Let $K$ be a compact set containing $\supp T$ in its interior. For $x$ in a
+bounded set, the map $y\mapsto\rho_{\ep}(x-y)$ is supported in a fixed compact neighbourhood of $K$, so
+the pairing is legitimate. Differentiation under the pairing is allowed because
+$\partial_{x}^{\alpha}\rho_{\ep}(x-y)=(-\partial_{y})^{\alpha}\rho_{\ep}(x-y)$ is again a test
+function, and $T$ is continuous; hence $T_{\ep}\in C^{\infty}$.
+
+\emph{Convergence.} Let $\varphi\in C_{c}^{\infty}$. Interchanging the pairing with the integration in
+$x$ (a finite sum after expanding on a compact set),
+\begin{equation}
+\ip{T_{\ep}}{\varphi}
+=\int_{\R}\big\langle T,\rho_{\ep}(x-\cdot)\big\rangle\varphi(x)\dd x
+=\Big\langle T,\;\int_{\R}\rho_{\ep}(x-\cdot)\varphi(x)\dd x\Big\rangle
+=\big\langle T,\;\rho_{\ep}*\varphi\big\rangle ,
+\end{equation}
+where the last step uses the symmetry $\rho_{\ep}(-y)=\rho_{\ep}(y)$. By
+Theorem~\ref{thm:conv}, $\rho_{\ep}*\varphi\to\varphi$ in $C^{\infty}$ uniformly on compact sets, hence
+in $\D$, and continuity of $T$ gives $\ip{T_{\ep}}{\varphi}\to\ip{T}{\varphi}$.
+\end{proof}
+
+\begin{remark}
+The hypothesis of compact support is what allows the mollification to be tested against $T$ without
+worrying about behaviour at infinity. For general $T$ a localization argument---multiply by a smooth
+cutoff equal to one on a large set---reduces to this case, at the cost of a statement that holds on
+compact subsets only, which is exactly what convergence in $\D'$ means.
+\end{remark}
+
+\begin{corollary}\label{cor:approx}
+Every result in this book that was obtained by regularizing with a specific family
+($e^{-\ep|t|}$, $H e^{-\ep t}$, $g_{\sigma}$, $w_{T}$, $K_{\ep}$) is an instance of a single
+mechanism: convolving, or pairing, against a mollifier.
+\end{corollary}
+
+\section{Summary of the chapter}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.4cm}p{9.4cm}@{}}
+\toprule
+Notion & Content \\
+\midrule
+Test functions & $C_{c}^{\infty}$: smooth (to move derivatives) and compactly supported (to kill
+boundary terms) \\
+Distribution & continuous linear functional on $\D$; continuity estimated by
+\eqref{eq:localest} \\
+Embedding & $\Lonloc\hookrightarrow\D'$, injective modulo null sets
+(Theorem~\ref{thm:embedding}) \\
+$\delta$ & a distribution, not an $\Lonloc$ function
+(Theorem~\ref{thm:delta-not-L1}); also a measure \\
+Derivative & transfer to the probe with $(-1)^{n}$; continuous for distributional convergence \\
+Multiplication & only by smooth functions; \eqref{eq:adelta}--\eqref{eq:leibniz} \\
+Forbidden & products of distributions, $\delta^{2}$, $H\delta$, unrestricted convolution \\
+\bottomrule
+\end{tabular}
+\end{center}

@@ -1,0 +1,281 @@
+\chapter{把六集缝起来：总回顾与制作落地}
+
+\begin{ideabox}[这一章的作用]
+前面六章是“分集精讲”。这一章把六集重新压缩成一张可以随时查阅的总图，并且把数学结论翻译成\textbf{制作动作}：哪一集必须出现哪个画面、哪句话必须说、哪个坑必须躲。
+\end{ideabox}
+
+\section{一张总表}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{1.0cm}L{3.4cm}L{4.2cm}L{3.4cm}Y@{}}
+\toprule
+集 & 引入的新对象 & 本集真正建立的东西 & 借用了什么 & 留下什么 \\
+\midrule
+01 & $\delta$（作为极限的名字） & 经典积分失败的现场；双边指数正则化；面积集中与取样 & 取样极限（未证） & $\delta$ 是什么？\\
+02 & $\delta'$、$\delta^{(n)}$ & 乘 $t$ 对应频域求导；分布导数的负号 & 分布导数规则 & 求导对应什么？\\
+03 & $\PV\frac1\omega$ & 微分规则会丢零频项；主值；正则化 & $H'=\delta$ & 这些“趋于”是什么意思？\\
+04 & 近似恒等核 & 三种收敛；控制收敛；取样极限的完整证明 & — & 能否用作用定义对象？\\
+05 & 分布、测试函数 & 连续线性泛函；嵌入；运算与禁区 & — & 怎么对分布做变换？\\
+06 & $\Sv$、$\Sv'$ & 对偶定义；反演；连续性；三结果统一 & — & （闭环）\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{依赖树：谁支撑谁}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize,align=center},
+  box/.style={draw=mainblue!55,fill=softblue,rounded corners=1.5pt,
+              inner sep=3pt,minimum height=1.4cm,text width=2.25cm},
+  ar/.style={-{Stealth[length=1.5mm]},draw=notegray,thick},
+  back/.style={-{Stealth[length=1.6mm]},draw=warnred!80,dashed,thick}
+]
+\node[box] (e1) at (0,0)     {\textbf{EP01}\\[1pt]$e^{-\ep|t|}\!\to\!1$\\$G_\ep\to2\pi\delta$};
+\node[box] (e2) at (2.70,0)  {\textbf{EP02}\\[1pt]$K_\ep'\!\to\!\delta'$\\$\F[t^{\,n}]$};
+\node[box] (e3) at (5.40,0)  {\textbf{EP03}\\[1pt]$H_\ep\to H$\\$1/(\ep\!+\!i\omega)$};
+\node[box] (e4) at (8.10,0)  {\textbf{EP04}\\[1pt]三种收敛\\取样极限};
+\node[box] (e5) at (10.80,0) {\textbf{EP05}\\[1pt]定义 $\delta$\\定义 $\delta'$};
+\node[box] (e6) at (13.50,0) {\textbf{EP06}\\[1pt]$\Sv$ 与 $\Sv'$\\对偶定义};
+
+\draw[ar] (e1) -- (e2);
+\draw[ar] (e2) -- (e3);
+\draw[ar] (e3) -- (e4);
+\draw[ar] (e4) -- (e5);
+\draw[ar] (e5) -- (e6);
+
+\draw[back] ($(e6.north)+(0,0.65)$) to[out=160,in=20]
+   node[above,font=\scriptsize,text=warnred!80,pos=0.5] {EP06 回收并结清 EP01--EP03 的全部结论}
+   ($(e1.north)+(0,0.65)$);
+\end{tikzpicture}
+\caption{观众看到的顺序（横向箭头）。而理论支撑的方向是\textbf{反的}：EP01--EP03 的结果要到 EP06 才被真正证明；EP02 的求导规则要到 EP05 才被定义。这条反向的虚线，就是整个系列的结构性承诺。}
+\end{figure}
+
+\begin{ideabox}[这张图最好的用法]
+把它当成\textbf{写作时的良心检查}。
+
+每当你写了一句“所以 $\F[t]=2\pi i\delta'$”，就在心里问：这句话的上游是哪一集？下游哪一集还账？
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item 如果上游不存在（例如第一集就用反演），那就是硬伤。
+\item 如果下游没说清楚（例如从未提到“后面会证”），观众会觉得你在糊弄。
+\end{itemize}
+\end{ideabox}
+
+\section{每一集的三条底线}
+
+所谓“底线”，指的是：\textbf{即使这一集剪短、删掉一半内容，这三件事也必须留下。}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{1.1cm}L{4.6cm}L{5.2cm}Y@{}}
+\toprule
+集 & 底线一 & 底线二 & 底线三 \\
+\midrule
+01 & 常数 $=$ 零频率 & 普通积分确实算不出来（不是“懒得算”） & $\ep$ 变小时面积不变、峰变窄变高 \\
+02 & 乘 $t$ $\leftrightarrow$ 频域求导 & $\delta'$ 的作用是 $-\varphi'(0)$ & $\delta'$ 不是单峰，不能画成一根箭头 \\
+03 & $H'=\delta$ & $\omega\delta=0$ 导致解不唯一 & 主值 $=$ 对称挖掉原点 \\
+04 & 逐点 $\neq$ 分布 & 控制收敛需要公共可积控制 & 形状不同、极限相同 \\
+05 & 分布 $=$ 连续线性泛函 & $\delta$ 不是局部可积函数 & 两个分布不能随便相乘 \\
+06 & $\F$ 不保持 $\D$，保持 $\Sv$ & $\ip{\F T}{\varphi}=\ip{T}{\F\varphi}$ & 三条主结果由此同时成立 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{伏笔与回收：叙事上的六个扣}
+
+数学上讲通，不等于片子好看。片子的节奏靠“扣”：埋下去，吊着，最后解开。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{1.2cm}L{4.4cm}L{4.4cm}Y@{}}
+\toprule
+扣 & 在哪一集埋 & 埋的时候说什么 & 在哪一集解 \\
+\midrule
+A & EP01 & “这个等号是广义意义下的，严格定义我们后面再说。” & EP05、EP06 \\
+B & EP01 & “它没有消失，只是挤到了一起。” & EP04 \\
+C & EP02 & “对一个不是函数的东西求导，是什么意思？” & EP05 \\
+D & EP03 & “这个方程有无穷多个解，我们漏掉了什么？” & EP03 后半（部分）＋EP06（完整）\\
+E & EP04 & “不同的核说了同一句话，为什么不直接用这句话定义它？” & EP05 \\
+F & EP05 & “傅里叶变换是一个积分，可它没有积分。” & EP06 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{warnbox}[关于“扣”的两条纪律]
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.3em]
+\item \textbf{扣必须真的解开。}如果 EP06 只讲“对偶定义”而没有回头把 EP01 的 $2\pi$、EP02 的 $i^{n}$、EP03 的 $\pi$ 一个个对上，观众会觉得被吊了五集。
+\item \textbf{扣不能太多。}六集六个扣已经是上限。再加就会变成“每集都在许诺，每集都不兑现”。
+\end{enumerate}
+\end{warnbox}
+
+\section{从数学到分镜：一张转换表}
+
+写分镜时最容易出的问题是：\textbf{把数学结构直接当成画面结构}。数学上的“一步”不一定是一个镜头；数学上的“显然”可能需要三十秒。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{4.6cm}L{4.8cm}Y@{}}
+\toprule
+数学上的一步 & 画面上的处理 & 为什么 \\
+\midrule
+通分 $\frac{1}{\ep-i\omega}+\frac{1}{\ep+i\omega}$ & 3--4 次显现，配颜色对应左右半轴 & 这是全片唯一要求观众跟的代数 \\
+$\int K_\ep\varphi\to\varphi(0)$ & 一个镜头 + 阴影收缩 + 读数 & 结论可以“看”，证明不必“看” \\
+$\omega\delta=0$ & 单独停 5 秒，配一行字 & 这是整集的转折点，不能滑过去 \\
+换元 $x=\ep u$ & 可省略，或只给一个静态对照 & 它是证明技巧，不是叙事节点 \\
+$\Sv$ 的半范数 & 只给一句“每阶导数都比任何负幂快” & 半范数是工具，不是故事 \\
+反演的高斯正则化 & 给四步流程，不逐行推导 & 观众需要“这条路是干净的”，不需要每个估计 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection*{制作顺序（沿用你的既定流程，补上数学检查点）}
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.5em]
+\item 用本书对应章节确认这一集的数学主线与底线。
+\item 写旁白草稿，自己朗读一遍并录临时音轨。\textbf{检查点：}每出现一个“趋于”，旁边是否交代了是哪种趋于。
+\item 把旁白拆成场景，按动画编号组织。\textbf{检查点：}每个“扣”是否有对应的画面，而不只是台词。
+\item 低画质 Manim 预览。\textbf{检查点：}峰是否越界、采样是否够密、坐标缩放是否可见、面积标签是否写了“全实轴”。
+\item 剪映里按旁白排画面，决定停顿。\textbf{检查点：}三次“预期落空”是否都留了呼吸。
+\item 粗剪通过后高清渲染、正式录音、修字幕。\textbf{检查点：}$2\pi$、$i$、负号、$\PV$ 是否与本书约定一致。
+\end{enumerate}
+
+\section{四类检查清单}
+
+每一集剪完，按四类各过一遍。前两类是“不能错”，后两类是“能更好”。
+
+\subsection*{一、数学正确性}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.25em]
+\item[$\square$] 变换约定统一（$\omega$，$2\pi$ 在逆变换上）。
+\item[$\square$] $\delta$、$\delta^{(n)}$、$\PV$ 出现时都声明了广义意义。
+\item[$\square$] $\delta^{(n)}$ 的 $(-1)^{n}$ 没丢。
+\item[$\square$] $\F[H]$ 的 $\pi$ 与 $-i$ 符号正确。
+\item[$\square$] 说“趋于”时指明了逐点 / 一致 / 分布。
+\item[$\square$] 没有把“面积”当“能量”，没有写 $\delta^{2}$。
+\item[$\square$] 没有用未证的结论去证前提（尤其反演）。
+\end{itemize}
+
+\subsection*{二、教学正确性}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.25em]
+\item[$\square$] 全片有一个核心问题贯穿。
+\item[$\square$] 每个新对象都由前面的具体困难引出，不是“现在我们来定义”。
+\item[$\square$] 观众知道某条规则是“已证明”“直观解释”还是“暂时借用”。
+\item[$\square$] 结尾的悬念来自本集真实留下的问题，不是硬造。
+\item[$\square$] 至少有一次“预期落空”。
+\end{itemize}
+
+\subsection*{三、影像正确性}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.25em]
+\item[$\square$] 尖峰采样足够密，峰顶没有越界。
+\item[$\square$] 坐标缩放时，刻度变化可见。
+\item[$\square$] 有限画框内的面积没有被标成全实轴总面积。
+\item[$\square$] 普通曲线、分布示意、数值近似三者视觉上可区分。
+\item[$\square$] 箭头只表示权重，不表示高度。
+\item[$\square$] 实余弦的频谱画了正负两个频率。
+\end{itemize}
+
+\subsection*{四、节奏}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.25em]
+\item[$\square$] 每 2--3 分钟有一次画面变化（不是连续念公式）。
+\item[$\square$] 关键转折处留了停顿（$\omega\delta=0$、主值、对偶定义）。
+\item[$\square$] 公式不是一屏出完，而是分层显现。
+\item[$\square$] 时长达标（8--18 分钟区间），且没有为了凑时长而重复。
+\end{itemize}
+
+\section{如果要扩展这个系列}
+
+当前六集已经形成闭环。若要继续，下面几条是自然的延伸，而且都能直接接在 EP06 的结尾：
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{5.4cm}Y@{}}
+\toprule
+方向 & 核心问题 & 与本书的接口 \\
+\midrule
+卷积与滤波 & 为什么时域卷积等于频域相乘？ & EP04 的 $\delta*f=f$ 与 EP06 的对偶 \\
+L$^{2}$ 与 Plancherel & 为什么能量守恒？常数为什么不在里面？ & EP01 里“面积不是能量”的伏笔 \\
+偏微分方程 & 用傅里叶变换把微分方程变成代数方程 & EP02、EP06 的两条微分规则 \\
+格林函数 & 为什么“冲激响应”能决定一切？ & EP03 的 $H'=\delta$ 与 EP04 的 $\delta*f=f$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{notebox}[扩展的纪律]
+不要在 EP06 的结尾突然展开这些。EP06 的任务是\textbf{关门}，不是\textbf{再开一扇门}。
+
+如果真要做续集，把它做成独立的第二季，用一个全新的“第一集问题”开场（例如“为什么滤波器的输出是输入的卷积？”），而不是接在 $\Sv'$ 后面继续说。
+\end{notebox}
+
+\section{关键数字速查}
+
+做动画时最常要临时确认的几个量，集中放在这里。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{4.2cm}L{4.0cm}Y@{}}
+\toprule
+量 & 表达式 & 出现在哪一集 \\
+\midrule
+$G_\ep$ 的峰高 & $2/\ep$ & EP01，双面板纵轴 \\
+$G_\ep$ 的半高全宽 & $2\ep$ & EP01，宽度对比 \\
+$G_\ep$ 的全实轴面积 & $2\pi$ & EP01，面积标签 \\
+$K_\ep$ 的原点值 & $1/(\pi\ep)$ & EP01，$\ep=0.1$ 时约 $3.18$ \\
+$K_\ep'$ 的峰值 & $\approx0.207/\ep^{2}$ & EP02，左正右负两叶 \\
+$K_\ep'$ 的极值位置 & $x=\pm\ep/\sqrt3$ & EP02，两叶收缩 \\
+$K_\ep'$ 的总积分 & $0$ & EP02，“面积不能定义 $\delta'$” \\
+$\F[H_\ep]$ 实部峰高 & $1/\ep$ & EP03，实部面板 \\
+$\F[H_\ep]$ 实部面积 & $\pi$ & EP03，$\pi\delta$ 的来源 \\
+$\F[H_\ep]$ 虚部极值 & $\mp1/(2\ep)$ & EP03，奇对称结构 \\
+$\widehat{g_\sigma}$ 的峰高 & $\sqrt{2\pi/\sigma}$ & EP06，高斯路线的对照 \\
+$\widehat{w_T}$ 的零点 & $\omega=k\pi/T$（$k\neq0$ 整数） & EP06，sinc 的振荡 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{notebox}[怎么用这张表]
+它的主要用途\textbf{不是背，而是检查}：
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item 动画里出现的峰高，是否等于表里的数？
+\item 面积标签写的数，是否与画的曲线一致？
+\item 缩放纵轴之后，刻度有没有跟着变？
+\end{itemize}
+三个问题各过一次，图上八成的错就没了。
+\end{notebox}
+
+\section{最后：这一系列到底给了观众什么}
+
+\begin{ideabox}[三句话]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.35em]
+\item \textbf{一个边界。}普通傅里叶积分只对衰减足够快的信号有效；越界之后，它给出的不是“错答案”，而是“没有答案”。
+\item \textbf{一种看法。}一个对象可以不看“每点多高”，而看“对每个问题怎么回答”。这个看法一旦建立，$\delta$、$\delta'$、$\PV$ 都不再神秘。
+\item \textbf{一次统一。}在 $\Sv'$ 上，傅里叶变换是一个连续可逆的整体；常数、多项式、阶跃的公式不是三套技巧，而是同一个定义的三条推论。
+\end{enumerate}
+
+如果观众看完只记住一句话，希望是这一句：
+
+\begin{center}
+\textbf{“算不出来”不等于“没有”，只等于“你用的尺子不够长”。}
+\end{center}
+\end{ideabox}
+
+\vspace{0.6cm}
+\begin{center}
+\begin{tcolorbox}[colback=softblue,colframe=mainblue!45,boxrule=0pt,arc=2pt,width=0.90\textwidth]
+\centering
+\vspace{0.25em}
+{\small\color{notegray} 到这里，六集的知识地图就画完了。}\\[0.45em]
+{\normalsize 剩下的事只有一件：把它压进 8 到 18 分钟里。}
+\vspace{0.25em}
+\end{tcolorbox}
+\end{center}

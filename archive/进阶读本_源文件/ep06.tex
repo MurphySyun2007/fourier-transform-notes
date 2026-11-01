@@ -1,0 +1,720 @@
+\chapter{EP06｜发散的积分怎样被严格定义}
+
+\begin{ideabox}[这一集的一句话]
+\textbf{只要把探针从“紧支撑光滑函数”换成 Schwartz 函数，傅里叶变换就能整体搬到分布上，并且保持极限。前三集的所有计算，在这一步同时获得合法性。}
+\end{ideabox}
+
+\section{观众的问题链}
+
+这一集要还清全部欠账。它的难点不在计算，而在\textbf{为什么必须换一个空间}——这一点如果讲不透，整集就会变成“数学家又定义了一个新东西”。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabularx}{\textwidth}{@{}p{0.8cm}X p{4.4cm}@{}}
+\toprule
+层 & 问题 & 观众此刻的心理 \\
+\midrule
+1 & 有了分布，为什么不直接定义 $\ip{\F T}{\varphi}=\ip{T}{\F\varphi}$？ & 看起来很自然啊。\\
+2 & 因为 $\F\varphi$ 可能不再紧支撑。 & 那又怎样？\\
+3 & 那 $\ip{T}{\F\varphi}$ 就没定义了——$T$ 只认紧支撑的探针。 & 哦，是个技术问题。\\
+4 & 不是技术问题：矩形窗的变换是 sinc，它铺满整条实轴。 & 所以紧支撑这条路走不通。\\
+5 & 换一个在变换下封闭的空间：Schwartz 空间。 & 这个空间凭什么刚好够用？\\
+6 & 因为它对“求导”和“乘多项式”都封闭，而这两件事正好对应变换的两边。 & 那反演呢？\\
+7 & 反演用高斯正则化来证，绕开循环论证。 & 于是三条公式全部落地。\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}Y@{}}
+\toprule
+观众带着什么进来 & 观众带着什么出去 \\
+\midrule
+“前三集的结果是靠技巧凑出来的” & “它们都是同一个定义的三条推论。”\\
+“为什么不能对所有分布做变换？” & “因为 $\F$ 不保持 $\D$；它保持 $\Sv$。”\\
+“$\delta$ 的变换是 $1$ 是怎么来的” & “由对偶定义一步得出，而且和 $2\pi\delta$ 互为反演。”\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{为什么不能直接对 $\D'$ 照搬}
+
+\subsection{想做的那件事}
+
+最自然的想法是：对 $T\in\D'$，定义
+
+\begin{equation}
+\ip{\F T}{\varphi}:=\ip{T}{\F\varphi} .
+\end{equation}
+
+要让这个定义有意义，右边必须能算——也就是必须有 $\F\varphi\in\D$。
+
+\subsection{但它不成立}
+
+\begin{prop}\label{prop:F-not-D}
+若 $\varphi\in\D$ 且 $\varphi\neq0$，则 $\F\varphi\notin\D$。
+\end{prop}
+
+\begin{proof}[证明：解析性]
+对任意复数 $\zeta$，积分
+\begin{equation}
+\widehat{\varphi}(\zeta)=\int_{\R}\varphi(t)e^{-i\zeta t}\dd t
+\end{equation}
+绝对收敛（$\varphi$ 紧支撑），并且对 $\zeta$ 是\textbf{整函数}（在整个复平面上解析）。
+
+整函数有一个硬性质：\textbf{若它在一个开集上为零，则处处为零。}
+
+如果 $\F\varphi$ 有紧支撑，那么它在某个非空开集上为零，于是 $\widehat\varphi\equiv0$，再由反演得 $\varphi\equiv0$。矛盾。
+\end{proof}
+
+\begin{ideabox}[一个不用复分析的直观版本]
+矩形窗 $w_T=\mathbf{1}_{[-T,T]}$ 的变换是
+\begin{equation}
+\widehat{w_T}(\omega)=\frac{2\sin(T\omega)}{\omega},
+\end{equation}
+它\textbf{在整条实轴上一直振荡下去}，根本没有紧支撑。
+
+光滑化一点不会改变这件事：把矩形窗的边缘磨圆，得到的东西仍然“两头都拖得很长”。
+
+\textbf{一句话：时间上被限制住，频率上就必然铺开。}这正是 EP01 的“时域铺开、频域集中”的镜像说法。
+\end{ideabox}
+
+\subsection{所以需要一个“变换下封闭”的探针空间}
+
+要求很明确：
+
+\begin{center}
+\textbf{找到一个函数空间 $\mathcal{X}$，使得 $\F:\mathcal{X}\to\mathcal{X}$ 是连续可逆的，并且 $\D\subset\mathcal{X}$。}
+\end{center}
+
+这样就能对 $\mathcal{X}'$ 定义变换，而 $\mathcal{X}'$ 里包含了我们要的所有对象（常数、多项式、阶跃、$\delta$）。
+
+这个 $\mathcal{X}$ 就是 Schwartz 空间。
+
+\section{Schwartz 空间}
+
+\begin{defn}[Schwartz 空间]\label{def:S}
+$\Sv(\R)$ 由所有满足
+\begin{equation}
+p_{m,n}(\varphi):=\sup_{x\in\R}(1+|x|)^{m}\big|\varphi^{(n)}(x)\big|<\infty,
+\qquad m,n=0,1,2,\dots
+\end{equation}
+的光滑函数 $\varphi$ 组成。
+\end{defn}
+
+换句话说：\textbf{每一阶导数，都比任何负幂衰减得更快。}
+
+\subsection{谁在里面，谁不在}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{4.2cm}L{2.0cm}Y@{}}
+\toprule
+函数 & 是否属于 $\Sv$ & 原因 \\
+\midrule
+$e^{-x^{2}}$ & 是 & 导数带多项式因子，被高斯压住 \\
+$C_c^{\infty}$ 中的函数 & 是 & 紧支撑比快速衰减更强 \\
+$1/(1+x^{2})$ & \textbf{否} & 可积，但只按固定幂次 $x^{-2}$ 衰减 \\
+$1$、$x^{n}$ & \textbf{否} & 根本不衰减 \\
+$e^{x^{2}}$ & \textbf{否} & 增长 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{warnbox}[$1/(1+x^{2})$ 是最有教育意义的一个反例]
+它\textbf{可积}，甚至属于 $\Lone$，但它不在 $\Sv$。
+
+为什么？因为 $\Sv$ 要求的不是“可积”，而是“\textbf{每一阶导数都比任意负幂快}”。$1/(1+x^{2})\sim x^{-2}$ 在无穷远处衰减得太慢，而且它的高阶导数衰减得更慢。
+
+\textbf{“可积”与“快速衰减”是两件不同的事。}这一点在 EP01（$\Lone$ 不够用）和这一集（$\Lone$ 里的东西也未必在 $\Sv$）各出现一次，方向相反。
+\end{warnbox}
+
+\subsection{$\Sv$ 里的收敛}
+
+$\varphi_j\to\varphi$ 于 $\Sv$，意思是\textbf{所有半范数}都趋于零：
+
+\begin{equation}
+p_{m,n}(\varphi_j-\varphi)\longrightarrow0
+\qquad\text{对所有的 }m,n .
+\end{equation}
+
+这比“函数值一致趋近”强得多：\textbf{每一阶导数、在每一个加权尺度上，都必须趋近。}
+
+\section{为什么傅里叶变换保持 $\Sv$}
+
+\subsection{两条关键恒等式}
+
+第一条：对 $\omega$ 求导，等于在时域乘 $-it$。
+
+\begin{equation}
+\partial_\omega^{\,n}\ph(\omega)=\F\big[(-it)^{n}\varphi\big](\omega).\label{eq:d1}
+\end{equation}
+
+第二条：在频域乘 $\omega$，等于在时域求导。
+
+\begin{equation}
+\omega^{m}\,\widehat{g}(\omega)=i^{-m}\,\F\big[g^{(m)}\big](\omega).\label{eq:d2}
+\end{equation}
+
+（第二条来自 $\F[g^{(m)}]=(i\omega)^{m}\hat g$，两边整理即可。）
+
+\subsection{估计}
+
+把两条合起来：对 $\varphi\in\Sv$，
+
+\begin{equation}
+\omega^{m}\,\partial_\omega^{\,n}\ph(\omega)
+=i^{-m}\int_{\R}\partial_t^{m}\big(t^{n}\varphi(t)\big)e^{-i\omega t}\dd t .
+\end{equation}
+
+取绝对值：
+
+\begin{equation}
+\big|\omega^{m}\partial_\omega^{\,n}\ph(\omega)\big|
+\le\int_{\R}\big|\partial_t^{m}\big(t^{n}\varphi(t)\big)\big|\dd t
+=\big\|\partial_t^{m}(t^{n}\varphi)\big\|_1 .\label{eq:Schwartz-bound}
+\end{equation}
+
+右边与 $\omega$ 无关。
+
+\begin{prop}\label{prop:F-S}
+$\F$ 把 $\Sv$ 连续地映到 $\Sv$。
+\end{prop}
+
+\begin{proof}[证明]
+$\varphi\in\Sv$ 时 $t^{n}\varphi\in\Sv$，所以它的每阶导数都在 $\Lone$ 里（快速衰减），于是 \eqref{eq:Schwartz-bound} 右边有限。
+
+对 $\omega$ 取上确界：
+\begin{equation}
+p_{m,n}(\ph)=\sup_\omega(1+|\omega|)^{m}\big|\partial^{n}\ph(\omega)\big|
+\le C\sum_{m'\le m+1}\big\|\partial^{m'}(t^{n}\varphi)\big\|_1 .
+\end{equation}
+右边被有限个 $\Sv$ 半范数控制，所以 $\ph\in\Sv$，且映射连续。
+\end{proof}
+
+\begin{ideabox}[为什么这个证明“正好”能成]
+注意两边的对称性：
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item 频域求导 $\longleftrightarrow$ 时域乘 $t$；
+\item 频域乘 $\omega$ $\longleftrightarrow$ 时域求导。
+\end{itemize}
+$\Sv$ 的定义恰好对这两件事\textbf{都封闭}：乘 $t$ 不破坏快速衰减，求导也不破坏。所以变换后的函数仍然满足所有半范数有界。
+
+\textbf{$\Sv$ 不是随便挑的，它是被这两条恒等式“逼”出来的。}
+\end{ideabox}
+
+\section{反演：用高斯正则化绕开循环论证}
+
+\subsection{不能走的那条捷径}
+
+有一个极诱人的写法：
+
+\begin{equation}
+\int_{\R}e^{i\omega(t-s)}\dd\omega=2\pi\,\delta(t-s)
+\quad\Longrightarrow\quad
+\varphi(t)=\frac{1}{2\pi}\int_{\R}\ph(\omega)e^{i\omega t}\dd\omega .
+\end{equation}
+
+\begin{warnbox}[这是循环论证]
+那个“等式”本身就是在分布意义下、并且要先用对偶定义才写得出来的。用它证反演，等于用结论证前提。
+
+EP06 的证明必须走一条\textbf{不依赖 $\delta$} 的路。这条路就是高斯正则化。
+\end{warnbox}
+
+\subsection{高斯积分}
+
+先用一个可以直接算的经典结果（证明见附录 A.1）：
+
+\begin{equation}
+\int_{\R}e^{-\eta\omega^{2}/2}e^{i\omega x}\dd\omega=\sqrt{\frac{2\pi}{\eta}}\;e^{-x^{2}/(2\eta)},
+\qquad \eta>0 .\label{eq:gauss-int}
+\end{equation}
+
+\subsection{加一个高斯因子}
+
+定义
+
+\begin{equation}
+I_\eta(t):=\frac{1}{2\pi}\int_{\R}\ph(\omega)e^{i\omega t}e^{-\eta\omega^{2}/2}\dd\omega .
+\end{equation}
+
+高斯因子 $e^{-\eta\omega^{2}/2}$ 的作用是：\textbf{把一切都变成绝对收敛的。}
+
+\subsection{交换积分：这一步现在合法了}
+
+把 $\ph(\omega)=\int\varphi(s)e^{-i\omega s}\dd s$ 代进去：
+
+\begin{equation}
+I_\eta(t)=\frac{1}{2\pi}\iint \varphi(s)\,e^{-i\omega s}e^{i\omega t}e^{-\eta\omega^{2}/2}\dd s\,\dd\omega .
+\end{equation}
+
+被积函数的绝对值是 $|\varphi(s)|e^{-\eta\omega^{2}/2}$，对 $(\omega,s)$ 双重可积（$\varphi\in\Sv\subset\Lone$，高斯在 $\omega$ 上可积）。所以 Fubini 定理适用，可以交换次序：
+
+\begin{equation}
+I_\eta(t)=\frac{1}{2\pi}\int_{\R}\varphi(s)\left[\int_{\R}e^{-\eta\omega^{2}/2}e^{i\omega(t-s)}\dd\omega\right]\dd s .
+\end{equation}
+
+用 \eqref{eq:gauss-int}：
+
+\begin{equation}
+I_\eta(t)=\int_{\R}\varphi(s)\,\frac{1}{\sqrt{2\pi\eta}}\,e^{-(t-s)^{2}/(2\eta)}\dd s
+=\big(\rho_\eta*\varphi\big)(t),\label{eq:conv-gauss}
+\end{equation}
+
+其中 $\rho_\eta(u)=\frac{1}{\sqrt{2\pi\eta}}e^{-u^{2}/(2\eta)}$ 正是 EP04 的高斯近似恒等核。
+
+\subsection{两边各取极限}
+
+\textbf{左边：}因为 $\ph\in\Sv\subset\Lone$，且 $|e^{-\eta\omega^{2}/2}|\le1$，由控制收敛（控制函数 $|\ph|$ 可积且与 $\eta$ 无关），
+
+\begin{equation}
+I_\eta(t)\longrightarrow\frac{1}{2\pi}\int_{\R}\ph(\omega)e^{i\omega t}\dd\omega .
+\end{equation}
+
+\textbf{右边：}由 EP04 的近似恒等核定理，$\rho_\eta*\varphi\to\varphi$（逐点，且一致）。
+
+于是
+
+\begin{equation}
+\boxed{\ \varphi(t)=\frac{1}{2\pi}\int_{\R}\ph(\omega)e^{i\omega t}\dd\omega\ }\label{eq:inversion}
+\end{equation}
+
+\begin{ideabox}[这个证明漂亮在哪里]
+它\textbf{只用了三件已经证过的事}：
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.2em]
+\item 高斯积分 \eqref{eq:gauss-int}（可以硬算）；
+\item Fubini（由高斯因子保证绝对收敛）；
+\item 近似恒等核（EP04 已经完整证明）。
+\end{enumerate}
+
+它\textbf{没有}用到 $\delta$、没有用到“$\int e^{i\omega t}\dd\omega$”，所以没有任何循环。
+
+这是整个系列里技术含量最高、也最值得在视频里“给一个完整证明”的地方。
+\end{ideabox}
+
+\subsection{一次变换两次：反射}
+
+由 \eqref{eq:inversion}，把 $t$ 换成 $-t$：
+
+\begin{equation}
+\F^{2}\varphi(t)=\int_{\R}\ph(\omega)e^{-i\omega t}\dd\omega
+=2\pi\,\varphi(-t).\label{eq:F2}
+\end{equation}
+
+\begin{notebox}[记住这个“两次变换 = 反射 + $2\pi$”]
+它是后面所有“反演”计算的发动机。
+
+例如：$\F[\delta]=1$ 立刻给出 $\F[1]=2\pi\delta$。这就是 EP01 的计算不必再重复的原因。
+\end{notebox}
+
+\section{温和分布与对偶定义}
+
+\begin{defn}[温和分布]\label{def:Sprime}
+$\Sv'(\R)$ 是 $\Sv(\R)$ 上的连续线性泛函全体。连续性可写成：存在常数 $C$ 和有限的 $M,N$，使
+\begin{equation}
+|\ip{T}{\varphi}|\le C\sum_{m\le M,\ n\le N}p_{m,n}(\varphi)
+\qquad\text{对一切 }\varphi\in\Sv .\label{eq:Sprime-est}
+\end{equation}
+\end{defn}
+
+\subsection{谁在 $\Sv'$ 里}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{3.6cm}L{4.4cm}Y@{}}
+\toprule
+对象 & 为什么温和 & 用哪个半范数控制 \\
+\midrule
+有界函数 & $|\ip{f}{\varphi}|\le\|f\|_\infty\|\varphi\|_1$ & $p_{2,0}$（因为 $(1+|x|)^{-2}$ 可积）\\
+多项式增长函数 & $|f|\le C(1+|x|)^{N}$ & $p_{N+2,0}$ \\
+$\delta^{(n)}$ & $\ip{\delta^{(n)}}{\varphi}=(-1)^{n}\varphi^{(n)}(0)$ & $p_{0,n}$ \\
+$\PV\frac{1}{\omega}$ & 近处用一阶导估计，远处用衰减 & $p_{0,1}+p_{2,0}$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{一个不温和的例子}
+
+\begin{prop}\label{prop:ex2}
+$e^{x^{2}}$ 是局部可积的，所以定义了一个分布；但它\textbf{不是}温和分布。
+\end{prop}
+
+\begin{proof}[证明思路]
+取固定的非负 $0\neq\psi\in C_c^{\infty}$，令 $\psi_R(x)=\psi(x-R)$。
+
+一方面，$\Sv$ 半范数 $p_{m,n}(\psi_R)$ 随 $R$ 至多按\textbf{多项式}增长（平移只让权重 $(1+|x|)^{m}$ 变大约 $R^{m}$ 倍）。
+
+另一方面，
+\begin{equation}
+\ip{e^{x^{2}}}{\psi_R}=\int e^{x^{2}}\psi(x-R)\dd x\ge e^{(R-r)^{2}}\int\psi
+\end{equation}
+（其中 $r$ 是 $\psi$ 的支撑半径），随 $R$ 按\textbf{指数}增长。
+
+指数增长压不过多项式增长，所以 \eqref{eq:Sprime-est} 不可能成立。
+\end{proof}
+
+\begin{ideabox}[这个反例的意义]
+它回答了观众一个必然会问的问题：“是不是所有东西都能做傅里叶变换？”
+
+\textbf{不是。}能做变换的不是“所有函数”，而是“所有温和分布”。$e^{x^{2}}$ 太大了，连 $\Sv$ 上的连续泛函都做不成。
+
+这句话要说得准确：不是“$e^{x^{2}}$ 没有傅里叶变换”这种笼统说法，而是“在这个框架里它不在工作空间内”。
+\end{ideabox}
+
+\subsection{对偶定义}
+
+先用普通函数把公式推出来。对 $f,\varphi\in\Sv$，由 Fubini（绝对收敛），
+
+\begin{equation}
+\ip{\F f}{\varphi}
+=\iint f(t)e^{-i\omega t}\varphi(\omega)\dd t\dd\omega
+=\int_{\R}f(t)\Big[\int_{\R}\varphi(\omega)e^{-i\omega t}\dd\omega\Big]\dd t
+=\int_{\R}f(t)\ph(t)\dd t
+=\ip{f}{\F\varphi} .
+\end{equation}
+
+这提示我们：
+
+\begin{defn}[分布的傅里叶变换]\label{def:FTdist}
+对 $T\in\Sv'$，定义 $\F T\in\Sv'$ 为
+\begin{equation}
+\boxed{\ \ip{\F T}{\varphi}:=\ip{T}{\F\varphi}\ ,\qquad \varphi\in\Sv .\ }\label{eq:dual}
+\end{equation}
+\end{defn}
+
+\begin{ideabox}[四条必须同时说清的细节]
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.3em]
+\item \textbf{右边有意义}：因为 $\varphi\in\Sv\Rightarrow\F\varphi\in\Sv$（命题 \ref{prop:F-S}），而 $T$ 能吃 $\Sv$。
+\item \textbf{结果仍是温和分布}：$\varphi\mapsto\ip{T}{\F\varphi}$ 是 $\Sv$ 上的连续线性泛函（两次连续映射的复合）。
+\item \textbf{和普通变换一致}：上面那段 Fubini 就是这个一致性。
+\item \textbf{配对里没有复共轭，右边也没有额外的 $1/(2\pi)$}。\eqref{eq:dual} 是一个“干净”的公式；如果你见到的版本多了一个 $2\pi$，那是约定不同。
+\end{enumerate}
+\end{ideabox}
+
+\subsection{逆变换}
+
+由 \eqref{eq:F2} 与对偶定义，可以推出
+
+\begin{equation}
+\F^{-1}T=\frac{1}{2\pi}\,\F\big(T\circ(-1)\big),
+\qquad\text{即}\qquad
+\ip{\F^{-1}T}{\varphi}=\frac{1}{2\pi}\ip{T}{\F\varphi\circ(-1)} .
+\end{equation}
+
+在 $\Sv'$ 上，$\F$ 是一个连续线性同构。
+
+\section{为什么变换保持极限}
+
+\begin{prop}\label{prop:F-cont}
+若 $T_j\to T$ 于 $\Sv'$，则 $\F T_j\to\F T$ 于 $\Sv'$。
+\end{prop}
+
+\begin{proof}
+对每个固定的 $\varphi\in\Sv$，
+\begin{equation}
+\ip{\F T_j}{\varphi}=\ip{T_j}{\F\varphi}\longrightarrow\ip{T}{\F\varphi}=\ip{\F T}{\varphi} .
+\end{equation}
+\end{proof}
+
+\begin{ideabox}[这三行补上了前三集缺的那一环]
+第一集我们做了两件事：
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.2em]
+\item 证明 $e^{-\ep|t|}\to1$ 于 $\Sv'$（用 $|\varphi|$ 控制，控制收敛）；
+\item 算出一族频谱 $G_\ep\to2\pi\delta$。
+\end{enumerate}
+
+但“时域的极限”和“频域的极限”是两条独立的陈述，中间缺一座桥：\textbf{为什么时域极限的变换，等于变换的极限？}
+
+命题 \ref{prop:F-cont} 就是这座桥。有了它：
+\begin{equation}
+e^{-\ep|t|}\to1\ \text{于}\ \Sv'
+\quad\Longrightarrow\quad
+\F\big[e^{-\ep|t|}\big]\to\F[1]
+\quad\Longrightarrow\quad
+2\pi\delta=\F[1] .
+\end{equation}
+（最后一步用了极限的唯一性。）
+
+\textbf{第一集的结论，到这里才真正被证明。}
+\end{ideabox}
+
+\section{统一证明三个主结果}
+
+\subsection{$\delta$ 与常数}
+
+\begin{align}
+\ip{\F\delta}{\varphi}&=\ip{\delta}{\ph}=\ph(0)=\int_{\R}\varphi(t)\dd t=\ip{1}{\varphi}
+&&\Longrightarrow\quad \F[\delta]=1 .\label{eq:Fdelta}\\[4pt]
+\ip{\F1}{\varphi}&=\ip{1}{\ph}=\int_{\R}\ph(t)\dd t=2\pi\varphi(0)=\ip{2\pi\delta}{\varphi}
+&&\Longrightarrow\quad \F[1]=2\pi\delta .\label{eq:Fone}
+\end{align}
+
+\begin{ideabox}[注意第二个式子用了什么]
+它用了 \eqref{eq:inversion} 在 $t=0$ 处的取值：$\varphi(0)=\frac{1}{2\pi}\int\ph(t)\dd t$。
+
+\textbf{这就是为什么反演必须在前面证。}如果反演还没证，\eqref{eq:Fone} 就悬空了。
+
+也是为什么不能用 \eqref{eq:Fone} 去证反演——顺序不能反。
+\end{ideabox}
+
+\subsection{两条微分规则（严格版）}
+
+要证 $\F(tT)=i\partial_\omega\widehat T$。关键是先算清 $t\ph(t)$ 与 $\varphi$ 的关系。
+
+由 $\F[\varphi']=i\omega\ph(\omega)$，把变量写成 $t$：
+
+\begin{equation}
+(\varphi')^{\wedge}(t)=it\,\ph(t)
+\qquad\Longrightarrow\qquad
+t\,\ph(t)=-i\,(\varphi')^{\wedge}(t).
+\end{equation}
+
+于是
+
+\begin{align}
+\ip{\F(tT)}{\varphi}
+&=\ip{tT}{\ph}=\ip{T}{t\ph}
+=-i\,\ip{T}{(\varphi')^{\wedge}}
+=-i\,\ip{\widehat T}{\varphi'}
+=i\,\ip{\widehat T'}{\varphi}
+=\ip{i\,\partial_\omega\widehat T}{\varphi} .
+\end{align}
+
+所以
+
+\begin{equation}
+\F(tT)=i\,\partial_\omega\widehat T .\label{eq:mult-t-dist}
+\end{equation}
+
+同理，要证 $\F(T')=i\omega\widehat T$：
+
+由 $\ph'(\omega)=-i\,(t\varphi)^{\wedge}(\omega)$，得
+
+\begin{align}
+\ip{\F(T')}{\varphi}
+&=\ip{T'}{\ph}=-\ip{T}{\ph'}
+=-\ip{T}{-i(t\varphi)^{\wedge}}
+=i\,\ip{\widehat T}{t\varphi}
+=i\,\ip{t\widehat T}{\varphi}
+=\ip{i\omega\widehat T}{\varphi} .
+\end{align}
+
+所以
+
+\begin{equation}
+\F(T')=i\omega\,\widehat T .\label{eq:deriv-dist}
+\end{equation}
+
+\begin{ideabox}[这两段证明的“技巧”都在同一步]
+把 $t\ph(t)$（或 $\ph'(\omega)$）\textbf{换成某个东西的傅里叶变换}，然后把它推给 $\widehat T$。
+
+这一步依赖两条恒等式：
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item $t\ph(t)=-i(\varphi')^{\wedge}(t)$；
+\item $\ph'(\omega)=-i(t\varphi)^{\wedge}(\omega)$。
+\end{itemize}
+两个负号配合两个 $i$，最后给出正的 $i\partial_\omega\widehat T$ 与 $i\omega\widehat T$。
+
+\textbf{如果符号算错，这两条规则会同时错。}建议用 $\varphi=e^{-x^{2}/2}$ 数值检查一次。
+\end{ideabox}
+
+\subsection{阶跃}
+
+$H_\ep(t)=H(t)e^{-\ep t}\to H$ 于 $\Sv'$（因为 $|H_\ep\varphi|\le|\varphi|\in\Lone$，控制收敛）。
+
+而 $\F[H_\ep]=\dfrac{1}{\ep+i\omega}\to\pi\delta-i\PV\dfrac{1}{\omega}$（EP03 的两条极限）。
+
+由命题 \ref{prop:F-cont}，$\F[H_\ep]\to\F[H]$。由极限唯一性，
+
+\begin{equation}
+\F[H]=\pi\delta-i\,\PV\frac{1}{\omega}=\pi\delta+\PV\frac{1}{i\omega} .\label{eq:FH-final}
+\end{equation}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{4.4cm}L{4.0cm}Y@{}}
+\toprule
+结果 & 在哪一集“算出来” & 在哪一集“被证明” \\
+\midrule
+$\F[1]=2\pi\delta$ & EP01 & EP06（对偶 + 反演）\\
+$\F[t^{n}]=2\pi i^{n}\delta^{(n)}$ & EP02 & EP06（\eqref{eq:mult-t-dist} 递推）\\
+$\F[H]=\pi\delta+\PV\frac{1}{i\omega}$ & EP03 & EP06（连续性 + 极限唯一）\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{换一种正则化，结果一样}
+
+理论必须经得起“换一条路”的检验。这一节就是检验。
+
+\subsection{高斯}
+
+\begin{equation}
+g_\sigma(t)=e^{-\sigma t^{2}/2},
+\qquad
+\widehat{g_\sigma}(\omega)=\sqrt{\frac{2\pi}{\sigma}}\;e^{-\omega^{2}/(2\sigma)} .
+\end{equation}
+
+（这个变换可以用 EP02 的微分方程法算，见附录 A.1。）
+
+总面积：
+\begin{equation}
+\int_{\R}\widehat{g_\sigma}\dd\omega=\sqrt{\frac{2\pi}{\sigma}}\cdot\sqrt{2\pi\sigma}=2\pi .
+\end{equation}
+
+$\sigma\downarrow0$ 时，$g_\sigma\to1$，而 $\widehat{g_\sigma}$ 变成一个宽度 $\sim\sqrt\sigma$、高度 $\sim\sqrt{2\pi/\sigma}$、面积恒为 $2\pi$ 的尖峰，所以
+
+\begin{equation}
+\widehat{g_\sigma}\longrightarrow2\pi\delta .
+\end{equation}
+
+这条路线完全独立于 EP01 的指数核，结论一致。
+
+\subsection{矩形窗与 sinc}
+
+\begin{equation}
+w_T=\mathbf{1}_{[-T,T]},
+\qquad
+\widehat{w_T}(\omega)=\frac{2\sin(T\omega)}{\omega} .
+\end{equation}
+
+$w_T\to1$ 于 $\Sv'$（控制函数 $|\varphi|$），所以
+
+\begin{equation}
+\widehat{w_T}\longrightarrow\F[1]=2\pi\delta
+\qquad\text{于}\ \Sv' .
+\end{equation}
+
+\begin{warnbox}[但 sinc 不能套用 EP04 的定理]
+$\dfrac{2\sin(T\omega)}{\omega}$：
+
+\begin{itemize}[leftmargin=1.4em,itemsep=0.25em]
+\item \textbf{不正}：在原点两侧无限次变号；
+\item \textbf{不绝对可积地集中}：$\displaystyle\int_{\R}\Big|\frac{2\sin(T\omega)}{\omega}\Big|\dd\omega$ 按 $\ln T$ 增长，无界；
+\item \textbf{不逐点收敛到 $\delta$}：它在每个 $\omega\neq0$ 处仍然振荡（这正是 EP01 的 $I_T$）。
+\end{itemize}
+
+所以 EP04 的“非负核 + 质量守恒 + 尾部集中”这套条件它一条都不满足。它之所以仍然收敛，靠的是\textbf{另一条逻辑}：$w_T\to1$ 于 $\Sv'$，加上 $\F$ 连续。
+
+\textbf{这句对比很重要：}EP01 说“$I_T$ 不收敛”，EP06 说“$\widehat{w_T}$ 收敛到 $2\pi\delta$”——两句话不矛盾，因为前者说的是点值/截断积分，后者说的是分布。
+\end{warnbox}
+
+\begin{ideabox}[三条路，一个终点]
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+正则化 & 频域形状 & 共同极限 \\
+\midrule
+指数 $e^{-\ep|t|}$ & Cauchy 型，永远非负 & $2\pi\delta$ \\
+高斯 $e^{-\sigma t^{2}/2}$ & 高斯型，永远非负 & $2\pi\delta$ \\
+矩形 $\mathbf{1}_{[-T,T]}$ & sinc 型，无限变号 & $2\pi\delta$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+三种完全不同的形状，同一个终点。\textbf{这就是“$\delta$ 由作用定义，不由形状定义”的最终证据。}第一集挖的坑，到这里填平。
+\end{ideabox}
+
+\section{收官：三个层次}
+
+这一集结束时，要把整条路重新走一遍，但要快，而且要用观众已经掌握的语言。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{3.2cm}L{5.0cm}Y@{}}
+\toprule
+层次 & 内容 & 一句话 \\
+\midrule
+普通积分 & $f\in\Lone$ 时 $\displaystyle\int f(t)e^{-i\omega t}\dd t$ 收敛 & “衰减够快，一切正常。”\\
+测试函数的观察方式 & 用 $\ip{T}{\varphi}$ 代替“逐点取值” & “不知道它是什么，但知道它做什么。”\\
+广义傅里叶变换 & 在 $\Sv'$ 上 $\ip{\F T}{\varphi}=\ip{T}{\F\varphi}$ & “同一个变换，更大的空间。”\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{ideabox}[最后要说的一句话]
+我们\textbf{没有}把一个发散的积分硬塞一个值。
+
+我们做的是：先把“信号”重新理解为“对探针的作用”，再在这个更大的空间里定义一个连续、可逆的傅里叶变换。
+
+在这个框架里，常数、多项式、阶跃的公式\textbf{同时}成立，而且彼此不冲突。
+
+\textbf{这不是给旧答案打补丁，这是换了一套更合适的语言。}
+\end{ideabox}
+
+\section{讲解禁区（EP06）}
+
+\begin{warnbox}[逐条对照]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.28em]
+\item 不说“对任意分布都能做傅里叶变换”。只在 $\Sv'$ 上成立（$\D'$ 上未必）。
+\item 不用 $\int e^{i\omega(t-s)}\dd\omega=2\pi\delta(t-s)$ 去证反演。
+\item 说“$\Sv$ 与 $\Sv'$”时，不要把 $\Sv$（探针）和 $\Sv'$（对象）混用。
+\item 不说“$\Sv$ 就是衰减很快的函数”，要强调\textbf{每阶导数}都快于任意负幂。
+\item 不说“$1/(1+x^{2})$ 在 $\Sv$ 里”，它只是可积。
+\item 不省略对偶公式里“无共轭、无 $1/(2\pi)$”的说明；也不要与含共轭的约定混搭。
+\item 不说“$\F$ 是 $\Sv'$ 上的酉算子”。它是同构，但配对不是内积，别用“酉”这个词。
+\item 不把 sinc 核当成非负近似核来证明；走“$w_T\to1$ + 连续性”这条路。
+\item 不说“$e^{x^{2}}$ 也能做变换，只是结果很怪”；它不在 $\Sv'$ 里。
+\item 不说“反演是显然的”；至少要给出高斯正则化的思路。
+\item 不把 \eqref{eq:Fone} 与 \eqref{eq:inversion} 的证明顺序颠倒。
+\end{enumerate}
+\end{warnbox}
+
+\begin{scriptbox}[最后 40 秒的旁白骨架]
+“回到最开始那条水平线。
+
+我们当时说，它的频谱算不出来。
+
+现在我们知道：算不出来的，是那个积分；不是那个频谱。
+
+换一种观察方式，换一个更大的空间，那条水平线依然有它的频谱——就在零频率上，权重是 $2\pi$。
+
+而我们付出的代价，只是承认一件事：
+
+一个东西是什么，可以不看它在每一点有多高，而看它对每一个问题怎么回答。”
+\end{scriptbox}
+
+\section{一页纸回顾：三条公式各靠什么成立}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.42}
+\begin{tabularx}{\textwidth}{@{}L{1.0cm}L{4.6cm}L{4.4cm}Y@{}}
+\toprule
+步骤 & 内容 & 关键工具 & 缺了它会怎样 \\
+\midrule
+1 & 定义 $\Sv$ 与 $\Sv'$ & 半范数、连续线性 & 没有能容纳常数的空间 \\
+2 & 证 $\F:\Sv\to\Sv$ 连续 & 两条微分恒等式 & 对偶定义右边无意义 \\
+3 & 高斯正则化证反演 & 高斯积分 + Fubini + 近似核 & $\F[1]=2\pi\delta$ 悬空 \\
+4 & 对偶定义 + 连续性 & $\ip{\F T}{\varphi}=\ip{T}{\F\varphi}$ & 无法把极限搬进变换 \\
+5 & 三条主结果 & $1$--$4$ 的组合 & 只能逐条“凑” \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{notebox}[一句话总结这一集的技术路线]
+\textbf{换探针（$\D\to\Sv$）$\Rightarrow$ 有定义（对偶）$\Rightarrow$ 有反演（高斯）$\Rightarrow$ 有连续性（保持极限）$\Rightarrow$ 三条结果同时落地。}
+
+五个箭头，一条都不能少。
+\end{notebox}
+
+\begin{quizbox}[EP06 自测]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.35em]
+\item 证明命题 \ref{prop:F-not-D}，并说明为什么“整函数在开集上为零则处处为零”是关键。
+\item 验证 $\omega^{m}\widehat{g}(\omega)=i^{-m}\F[g^{(m)}](\omega)$。
+\item 用 \eqref{eq:Schwartz-bound} 说明 $\F$ 把 $\Sv$ 映入 $\Sv$。
+\item 复述高斯正则化反演的四个步骤，指出 Fubini 用在哪里、近似恒等核用在哪里。
+\item 由 $\F^{2}\varphi=2\pi\varphi(-t)$ 推出 $\F[\delta]=1$ 与 $\F[1]=2\pi\delta$ 的关系。
+\item 直接由对偶定义证明 $\F[1]=2\pi\delta$（不用正则化核），并指出哪一步用了反演。
+\item 证明 $e^{x^{2}}\notin\Sv'$。
+\item 说明为什么 sinc 核不满足 EP04 的条件，却仍在 $\Sv'$ 中收敛。
+\end{enumerate}
+\end{quizbox}

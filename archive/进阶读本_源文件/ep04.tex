@@ -1,0 +1,594 @@
+\chapter{EP04｜点值都趋于零，积分为什么还在}
+
+\begin{ideabox}[这一集的一句话]
+\textbf{一个有面积的尖峰变成 $\delta$，不是因为它变“小”了，而是因为它的质量向一个点集中了。把这两件事分开，就必须先分清“逐点收敛”和“积分意义下的收敛”。}
+\end{ideabox}
+
+\section{观众的问题链}
+
+这一集是全系列唯一一次\textbf{主动停下来}，不推进结论，只审问前面用过的词。它也是从“算结果”转向“问意义”的转折点。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabularx}{\textwidth}{@{}p{0.8cm}X p{4.4cm}@{}}
+\toprule
+层 & 问题 & 观众此刻的心理 \\
+\midrule
+1 & 回放那条核：固定一个非零的点，它的值确实越来越小。 & 那它应该趋于零啊。\\
+2 & 可是它的积分一直是 $1$。 & 怎么可能？\\
+3 & 因为质量全挤到原点附近去了。 & 那到底算趋于零还是不趋于零？\\
+4 & 取决于你在问“点值”还是“面积”。 & 这两种“趋于”是不一样的？\\
+5 & 不一样。而且我们以前学过的“把极限搬进积分”，需要许可证。 & 什么许可证？\\
+6 & 控制收敛。而这条核族根本拿不到这张许可证。 & 那凭什么说它趋于 $\delta$？\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}Y@{}}
+\toprule
+观众带着什么进来 & 观众带着什么出去 \\
+\midrule
+“极限就是逐点看” & “同一个函数列可以在一种意义下趋于零、在另一种意义下趋于 $\delta$。”\\
+“积分的极限等于极限的积分” & “这句话需要公共可积控制；没有它，一切皆可能。”\\
+“$\delta$ 是某种特别尖的形状” & “任何满足‘质量守恒 + 尾部集中’的核都趋于 $\delta$，形状无所谓。”\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{重看那个尖峰：两个读数，两种结论}
+
+回到第一集的核：
+
+\begin{equation}
+K_\ep(x)=\frac{1}{\pi}\frac{\ep}{x^{2}+\ep^{2}},
+\qquad
+\int_{\R}K_\ep\dd x=1 .
+\end{equation}
+
+现在做两件不同的事。
+
+\subsection{读点值}
+
+固定 $x\neq0$：
+
+\begin{equation}
+K_\ep(x)=\frac{1}{\pi}\frac{\ep}{x^{2}+\ep^{2}}\;\longrightarrow\;0
+\qquad(\ep\downarrow0).
+\end{equation}
+
+固定 $x=0$：
+
+\begin{equation}
+K_\ep(0)=\frac{1}{\pi\ep}\;\longrightarrow\;+\infty .
+\end{equation}
+
+所以：\textbf{除原点以外，每一点都趋于零；但原点本身趋于无穷。}
+
+\subsection{读面积}
+
+\begin{equation}
+\int_{\R}K_\ep\dd x=1
+\qquad\text{对每个 }\ep>0 .
+\end{equation}
+
+而且对每个固定的 $a>0$，
+
+\begin{equation}
+\int_{-a}^{a}K_\ep\dd x=\frac{2}{\pi}\arctan\frac{a}{\ep}\;\longrightarrow\;1 .
+\end{equation}
+
+所以：\textbf{全部质量都挤进了任意小的原点邻域，一点都没漏出去。}
+
+\begin{ideabox}[这两个读数的冲突，就是这一集要解开的结]
+“几乎每一点都趋于零”说的是函数值。
+
+“总质量始终为 $1$ 且集中到一点”说的是积分。
+
+这两句话\textbf{都对}，而且并不矛盾。矛盾只出现在你把它们混成一句“这个函数列趋于零”的时候。
+
+\begin{center}
+\textbf{正确的说法是：$K_\ep\to\delta$，在“对测试函数的作用”这个意义下。}
+\end{center}
+\end{ideabox}
+
+\begin{warnbox}[一个必须避免的措辞]
+不要说“$K_\ep$ 除了原点以外处处趋于零，所以极限是零，但面积不为零，所以出现了矛盾”。
+
+这里没有矛盾，只有\textbf{用错了收敛方式}。原点是例外，而且正是它承载了全部质量；把它说成“除了一个点以外处处为零”，等于把这一集的主角删掉了。
+\end{warnbox}
+
+\section{三种收敛：它们分别在检查什么}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.4cm}Y@{}}
+\toprule
+收敛方式 & 定义 & 它在检查什么 \\
+\midrule
+逐点 & 对每个固定的 $x$，$f_n(x)\to f(x)$ & 每个点各自的行为；最弱 \\
+一致 & $\sup_x|f_n(x)-f(x)|\to0$ & 整体最大偏差；中等 \\
+分布 & 对每个固定的 $\varphi\in\D$，$\ip{T_n}{\varphi}\to\ip{T}{\varphi}$ & 对每个探针的\textbf{读数}；与点值无关 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{反例一：一致收敛也不保证积分收敛}
+
+\begin{equation}
+f_n(x)=\frac{1}{n}\,\mathbf{1}_{[0,n]}(x).
+\end{equation}
+
+$\sup_x|f_n(x)|=\dfrac1n\to0$，所以 $f_n$\textbf{一致}趋于零。但
+
+\begin{equation}
+\int_{\R}f_n(x)\dd x=\frac{1}{n}\cdot n=1
+\qquad\text{对每个 }n .
+\end{equation}
+
+\begin{ideabox}[这个反例在说什么]
+一致收敛控制的是“高度”，不控制“长度”。$f_n$ 越来越矮，同时越来越长，面积恰好保持不变。
+
+\textbf{在无界区间上，“一致收敛”不是把极限搬进积分的许可证。}这一点很多教材的入门部分会含糊过去，而它恰恰是本系列的关键。
+\end{ideabox}
+
+\subsection{反例二：逐点收敛更弱，而且可能收敛到 $\delta$}
+
+\begin{equation}
+g_n(x)=n\,\mathbf{1}_{(0,1/n)}(x).
+\end{equation}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.3em]
+\item 对每个固定的 $x\neq0$：只要 $n>1/x$，就有 $g_n(x)=0$，所以 $g_n(x)\to0$。
+\item $\int_{\R}g_n=1$ 对每个 $n$。
+\item 对任意 $\varphi\in C_c^{\infty}$（不必连续也可，只要在 $0$ 连续），
+\begin{equation}
+\ip{g_n}{\varphi}=n\int_{0}^{1/n}\varphi(x)\dd x\;\longrightarrow\;\varphi(0).
+\end{equation}
+\end{itemize}
+
+所以
+
+\begin{equation}
+g_n\to0\ \text{（逐点）},
+\qquad
+g_n\to\delta\ \text{（分布意义）}.
+\end{equation}
+
+\begin{warnbox}[这两句话必须一起说]
+如果只说“$g_n$ 逐点趋于零”，观众会以为它就是个零。
+
+如果只说“$g_n$ 趋于 $\delta$”，观众会以为 $\delta$ 与零差不多。
+
+\textbf{两句话同时为真，正是因为它们说的是两件不同的事。}这就是整集的核心，也是最难讲清的一处。
+\end{warnbox}
+
+\subsection{反例三：$K_\ep$ 连“处处逐点”都不是}
+
+$K_\ep(0)\to\infty$，所以它不满足“每点趋于零”。它属于“\textbf{除原点外}逐点趋于零”。
+
+这个细节决定了一个措辞：标题和旁白用“几乎每个点”，或直接说“除了原点”，\textbf{不要说“处处”}。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{3.6cm}L{2.6cm}L{2.6cm}Y@{}}
+\toprule
+函数列 & 逐点 & 积分 & 备注 \\
+\midrule
+$\frac1n\mathbf{1}_{[0,n]}$ & $\to0$（一致） & $=1$ & 高度减、长度增 \\
+$n\mathbf{1}_{(0,1/n)}$ & $\to0$ & $=1$ & 分布意义 $\to\delta$ \\
+$K_\ep$ & $\to0$（除 $0$） & $=1$ & 原点趋于 $\infty$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{控制收敛：许可证到底要什么}
+
+\begin{thm}[控制收敛，本系列使用的版本]\label{thm:DCT}
+设 $f_n\to f$ 几乎处处，且存在\textbf{同一个}可积函数 $g\in\Lone$，使
+\begin{equation}
+|f_n(x)|\le g(x)\qquad\text{几乎处处，对所有的 }n .
+\end{equation}
+则
+\begin{equation}
+\int_{\R}f_n\;\longrightarrow\;\int_{\R}f .
+\end{equation}
+\end{thm}
+
+\subsection{重点在“同一个”三个字}
+
+“每一项都小于某个可积函数”是不够的：那个函数必须对\textbf{所有} $n$ 同时有效。
+
+\begin{prop}\label{prop:noControl}
+核族 $\{K_\ep\}_{0<\ep<1}$ 不存在公共的 $\Lone$ 控制函数。
+\end{prop}
+
+\begin{proof}[反证]
+假设存在 $g\in\Lone$ 使 $0\le K_\ep\le g$ 对一切 $\ep$ 成立。
+
+由于 $K_\ep(x)\to0$ 对每个 $x\neq0$，由定理 \ref{thm:DCT}，
+\begin{equation}
+\int_{\R}K_\ep\dd x\longrightarrow\int_{\R}0\,\dd x=0 .
+\end{equation}
+
+但左边恒等于 $1$，矛盾。
+\end{proof}
+
+\begin{ideabox}[这个反证法本身就是一句很好的旁白]
+“如果你能找到那样一个控制函数，那么控制收敛定理就会告诉你积分趋于零。可是积分明明是 $1$。所以，那样的控制函数根本不存在。”
+
+一句话，把“为什么不能把极限搬进去”讲完了，而且没有用任何术语。
+\end{ideabox}
+
+\subsection{那 $e^{-\ep|t|}$ 呢？它明明被 $1$ 控制}
+
+$|e^{-\ep|t|}|\le1$ 确实成立。但 $1\notin\Lone(\R)$，所以定理 \ref{thm:DCT} 用不上。
+
+这就是 EP01 的困难在分析层面的精确位置：\textbf{你有控制，但控制函数不可积。}
+
+\begin{ideabox}[测试函数是怎么救场的]
+乘上一个 $\varphi\in\Sv$ 之后，
+\begin{equation}
+\big|e^{-\ep|t|}\varphi(t)\big|\le|\varphi(t)|\in\Lone .
+\end{equation}
+现在控制函数可积了，控制收敛立刻给出
+\begin{equation}
+\ip{e^{-\ep|t|}}{\varphi}=\int_{\R}e^{-\ep|t|}\varphi(t)\dd t
+\;\longrightarrow\;\int_{\R}\varphi(t)\dd t=\ip{1}{\varphi}.
+\end{equation}
+也就是 $e^{-\ep|t|}\to1$ 于 $\Sv'$。
+
+\textbf{“引入测试函数”不是形式主义，它是把不可积的控制换成可积的控制。}这句话要在 EP05 的开场再说一次。
+\end{ideabox}
+
+\section{近似恒等核：把“集中”写成条件}
+
+\subsection{定义}
+
+\begin{defn}[近似恒等核]\label{def:approx-id}
+设 $k\in\Lone$，$\int_{\R}k=1$。令
+\begin{equation}
+k_\ep(x)=\frac{1}{\ep}\,k\!\left(\frac{x}{\ep}\right),
+\qquad \ep>0 .\label{eq:dilate}
+\end{equation}
+称 $\{k_\ep\}$ 为近似恒等核（\textbf{approximate identity}）。
+\end{defn}
+
+两条性质立刻成立：
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.45em]
+\item \textbf{质量守恒}：
+\begin{equation}
+\int_{\R}k_\ep(x)\dd x=\int_{\R}k(u)\dd u=1 .
+\end{equation}
+\item \textbf{尾部集中}：对每个 $a>0$，
+\begin{equation}
+\int_{|x|>a}k_\ep(x)\dd x=\int_{|u|>a/\ep}k(u)\dd u\;\longrightarrow\;0
+\qquad(\ep\downarrow0).
+\end{equation}
+\end{enumerate}
+
+\begin{ideabox}[这两条各自管什么]
+\textbf{质量守恒}保证总权重不变，所以极限不会“变轻”。
+
+\textbf{尾部集中}保证质量不会留在外面，所以极限不会“变宽”。
+
+两者缺一不可。EP01 的 $K_\ep$、EP03 的 $\pi K_\ep$、EP06 的高斯核和 sinc 核，都是这两条的不同实现。
+\end{ideabox}
+
+\subsection{取样极限：定理与证明}
+
+\begin{thm}[取样极限]\label{thm:sampling}
+设 $k_\ep$ 如 \eqref{eq:dilate}，$\varphi$ 有界且在 $x=0$ 连续。则
+\begin{equation}
+\int_{\R}k_\ep(x)\varphi(x)\dd x\;\longrightarrow\;\varphi(0)
+\qquad(\ep\downarrow0).
+\end{equation}
+\end{thm}
+
+\begin{proof}
+由总质量为 $1$，误差可以写成
+\begin{equation}
+\int_{\R}k_\ep(x)\varphi(x)\dd x-\varphi(0)
+=\int_{\R}k_\ep(x)\big[\varphi(x)-\varphi(0)\big]\dd x .
+\end{equation}
+
+给定 $\eta>0$。由 $\varphi$ 在 $0$ 连续，存在 $a>0$ 使得 $|x|<a$ 时
+\begin{equation}
+|\varphi(x)-\varphi(0)|<\eta .
+\end{equation}
+
+把积分分成内外两部分：
+\begin{align}
+\left|\int_{\R}k_\ep(x)\big[\varphi(x)-\varphi(0)\big]\dd x\right|
+&\le\int_{|x|<a}k_\ep(x)\,\eta\dd x
++\int_{|x|\ge a}k_\ep(x)\cdot2\|\varphi\|_\infty\dd x \notag\\
+&\le \eta+2\|\varphi\|_\infty\int_{|x|\ge a}k_\ep(x)\dd x .
+\end{align}
+
+第一项用了 $\int_{|x|<a}k_\ep\le1$。
+
+现在\textbf{先固定 $a$}，让 $\ep\downarrow0$：由尾部集中，第二项 $\to0$。于是
+\begin{equation}
+\limsup_{\ep\to0}\left|\int_{\R}k_\ep\varphi-\varphi(0)\right|\le\eta .
+\end{equation}
+
+最后让 $\eta\downarrow0$，得结论。
+\end{proof}
+
+\begin{ideabox}[这是全系列最值得掌握的一个估计]
+它的结构可以背下来，因为后面还会用：
+
+\begin{center}
+\textbf{近处靠连续性}（$|\varphi(x)-\varphi(0)|<\eta$）\quad $+$\quad \textbf{远处靠尾部质量消失}（$\int_{|x|>a}k_\ep\to0$）。
+\end{center}
+
+“先固定 $a$，再让 $\ep\to0$，最后让 $\eta\to0$”这个三步顺序，是分析里非常典型的“两个小量不能同时放”的处理方式。讲的时候可以强调：\textbf{不要一次让两个东西同时趋于零。}
+\end{ideabox}
+
+\subsection{Cauchy 核的另一种更快的证明}
+
+对 $K_\ep$，换元 $x=\ep u$：
+
+\begin{equation}
+\int_{\R}K_\ep(x)\varphi(x)\dd x
+=\frac{1}{\pi}\int_{\R}\frac{\ep}{\ep^{2}+\ep^{2}u^{2}}\,\varphi(\ep u)\,\ep\dd u
+=\frac{1}{\pi}\int_{\R}\frac{\varphi(\ep u)}{1+u^{2}}\dd u .
+\end{equation}
+
+此时被积函数被
+
+\begin{equation}
+\frac{\|\varphi\|_\infty}{\pi(1+u^{2})}
+\end{equation}
+
+控制，而\textbf{这个控制函数与 $\ep$ 无关且可积}。$\varphi(\ep u)\to\varphi(0)$ 对每个 $u$。于是控制收敛直接给出
+
+\begin{equation}
+\frac{1}{\pi}\int_{\R}\frac{\varphi(\ep u)}{1+u^{2}}\dd u
+\longrightarrow\frac{\varphi(0)}{\pi}\int_{\R}\frac{\dd u}{1+u^{2}}
+=\frac{\varphi(0)}{\pi}\cdot\pi=\varphi(0).
+\end{equation}
+
+\begin{ideabox}[换元做了什么]
+它把“\textbf{不断变窄变高的核}”换成了“\textbf{固定不变的权重} $\frac{1}{\pi(1+u^{2})}$”，把变化全部转移到探针 $\varphi(\ep u)$ 身上。
+
+于是“找不到公共控制”的困难消失了：现在控制函数就在眼前。
+
+注意：我们没有对原来的 $K_\ep$ 声称存在公共控制（命题 \ref{prop:noControl} 说那不可能）。\textbf{我们换的是积分变量，不是收敛方式。}
+\end{ideabox}
+
+\section{为什么叫“近似恒等”}
+
+\subsection{卷积}
+
+定义卷积
+
+\begin{equation}
+(k*f)(x)=\int_{\R}k(x-y)f(y)\dd y=\int_{\R}k(y)f(x-y)\dd y .
+\end{equation}
+
+\begin{thm}[近似恒等]\label{thm:approx-id}
+若 $f$ 有界且在 $x$ 连续，则
+\begin{equation}
+(k_\ep*f)(x)\longrightarrow f(x)\qquad(\ep\downarrow0).
+\end{equation}
+若 $f$ 有界且一致连续，则收敛是一致的。若 $f\in L^{p}$（$1\le p<\infty$），则 $k_\ep*f\to f$ 于 $L^{p}$。
+\end{thm}
+
+证明与定理 \ref{thm:sampling} 同一套路：把 $k_\ep(y)[f(x-y)-f(x)]$ 分内外估计。
+
+\subsection{$\delta$ 就是卷积的单位元}
+
+把 $k_\ep$ 换成 $\delta$：形式上有
+
+\begin{equation}
+(\delta*f)(x)=\int_{\R}\delta(y)f(x-y)\dd y=f(x).
+\end{equation}
+
+这正是“恒等”二字的来源：\textbf{和 $\delta$ 卷积，等于什么都不做。}
+
+\begin{ideabox}[所以 $\delta$ 有两张脸]
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item \textbf{频率的脸}：$\F[\delta]=1$，它在频域上“什么都不改变”。
+\item \textbf{卷积的脸}：$\delta*f=f$，它在时域上“什么都不改变”。
+\end{itemize}
+这两张脸在 EP06 会合起来：$\delta$ 是傅里叶变换意义下的“单位”。
+\end{ideabox}
+
+\section{换一种核，为什么还是 $\delta$}
+
+\subsection{三种核，同一个极限}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.0cm}L{2.0cm}Y@{}}
+\toprule
+核 & 表达式 & 面积 & 与 $K_\ep$ 的关系 \\
+\midrule
+Cauchy（EP01） & $\dfrac{1}{\pi}\dfrac{\ep}{x^{2}+\ep^{2}}$ & $1$ & 基准 \\
+高斯 & $\dfrac{1}{\sqrt{2\pi}\,\ep}e^{-x^{2}/(2\ep^{2})}$ & $1$ & 收敛更快，尾部指数衰减 \\
+矩形 & $\dfrac{1}{2\ep}\mathbf{1}_{[-\ep,\ep]}(x)$ & $1$ & 不连续，但照样可以 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+三者都满足定义 \ref{def:approx-id} 的两条性质，所以都趋于 $\delta$：
+
+\begin{equation}
+K_\ep\to\delta,\qquad
+\rho_\ep\to\delta,\qquad
+r_\ep\to\delta
+\qquad(\text{于 }\Sv').
+\end{equation}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.5\textwidth,height=4.6cm,
+  domain=-1.5:1.5,samples=400,ymin=0,ymax=3.2,
+  xlabel={$x$},ylabel={核},
+  title={\small 三种核，$\ep=0.3$},
+  legend style={font=\scriptsize,at={(0.97,0.97)},anchor=north east,draw=none},
+  ticklabel style={font=\scriptsize},label style={font=\small}]
+\addplot[thick,mainblue] {0.3/(pi*(x^2+0.09))};
+\addplot[thick,warnred,dashed] {1/(sqrt(2*pi)*0.3)*exp(-x^2/(2*0.09))};
+\addplot[thick,okgreen,dotted,domain=-0.3:0.3,samples=2] {1/(2*0.3)};
+\legend{Cauchy,高斯,矩形}
+\end{axis}
+\end{tikzpicture}
+\caption{三种形状完全不同、总面积都为 $1$、都在 $\ep\to0$ 时趋于同一个 $\delta$。\textbf{形状不是答案，作用是答案。}}
+\end{figure}
+
+\subsection{但只有面积是 $1$ 远远不够}
+
+\begin{prop}[质量跑掉的反例]\label{prop:escaping}
+令
+\begin{equation}
+k_n(x)=\frac{1}{2}\,\mathbf{1}_{[n-1,\,n+1]}(x).
+\end{equation}
+则 $\int_{\R}k_n=1$ 对每个 $n$，但
+\begin{equation}
+\ip{k_n}{\varphi}\longrightarrow0
+\qquad\text{对每个 }\varphi\in\Sv,
+\end{equation}
+即 $k_n\to0$ 于 $\Sv'$，而不是 $\delta$。
+\end{prop}
+
+\begin{proof}
+$\varphi\in\Sv$ 时，$\sup_{x\in[n-1,n+1]}|\varphi(x)|\le\dfrac{C}{n^{2}}$（快速衰减），于是
+\begin{equation}
+|\ip{k_n}{\varphi}|\le\frac{1}{2}\int_{n-1}^{n+1}|\varphi(x)|\dd x\le\frac{C}{n^{2}}\longrightarrow0 .
+\end{equation}
+\end{proof}
+
+\begin{ideabox}[这个例子为什么让人不安，而且很重要]
+它的\textbf{总面积}一直是 $1$，但\textbf{质量跑到了无穷远}。所以“总面积守恒”这个条件，在这里完全不起作用。
+
+为什么？因为在 $\Sv'$ 里，能用来“测试”的函数都是快速衰减的。“总面积”相当于用常数 $1$ 去做测试函数——而 $1\notin\Sv$。
+
+\textbf{结论：在 $\Sv'$ 的框架里，“总质量”根本不是一个连续的测试量。}你可以有质量，但如果它跑到无穷远，任何测试函数都摸不到它。
+
+这句话在 EP06 会再次出现，并且是理解“为什么不能对任意 $\D'$ 做变换”的钥匙之一。
+\end{ideabox}
+
+\subsection{更一般的充分条件}
+
+不带非负性，也可以做。只要：
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.4em]
+\item $\displaystyle\int_{\R}k_\ep\dd x=1$（对每个 $\ep$）；
+\item $\displaystyle\sup_{\ep}\|k_\ep\|_1<\infty$（一致有界）；
+\item 对每个 $a>0$，$\displaystyle\int_{|x|>a}|k_\ep(x)|\dd x\to0$（尾部集中）。
+\end{enumerate}
+
+则 $\ip{k_\ep}{\varphi}\to\varphi(0)$。证明只需把定理 \ref{thm:sampling} 里的 $k_\ep$ 换成 $|k_\ep|$，并把 $\eta$ 项乘上一致界。
+
+\begin{warnbox}[非负性是可选项，“集中”不是]
+很多教材为了简化，只讲非负核。非负性确实让估计更干净（$\int_{|x|<a}k_\ep\le1$ 直接可用），但它不是本质条件。
+
+本质条件是：\textbf{质量不能跑，而且必须往正确的点集中。}EP06 的 sinc 核就是“不非负、不逐点收敛，但依然分布收敛”的例子，那时候这个一般版本就派上用场了。
+\end{warnbox}
+
+\section{讲解设计与数值}
+
+\begin{scriptbox}[动画要点 04-A / 04-B]
+\textbf{04-A}：同一幅图里并排放两个读数。左边标“$K_\ep(x_0)$ 的数值”，右边标“全实轴面积”。前者趋零，后者恒为 $1$。让观众同时看到两个数字。
+
+\textbf{04-B}：把数轴分成“原点附近 $|x|<a$”和“外面 $|x|\ge a$”两段，用两种颜色表示质量。内部的质量条越来越满（$\to1$），外部的越来越空（$\to0$）。
+
+\textbf{04-F（可选反例）}：把核整体向右平移，做成 $k_n$ 那样跑到无穷远。面积标签仍是 $1$，但读数趋于零。这一幕能把“面积守恒不等于收敛”钉死。
+\end{scriptbox}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{@{}L{1.3cm}L{3.2cm}L{3.2cm}L{3.0cm}Y@{}}
+\toprule
+$\ep$ & $\int_{|x|<\ep}K_\ep$ & $\int_{|x|<3\ep}K_\ep$ & 尾部 $\int_{|x|>10\ep}$ & 画面 \\
+\midrule
+$1$ & $0.50$ & $0.80$ & $0.063$ & 明显是“一条曲线” \\
+$0.3$ & $0.50$ & $0.80$ & $0.063$ & 比例不变，视觉变尖 \\
+$0.1$ & $0.50$ & $0.80$ & $0.063$ & 需要加密采样 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{notebox}[这张表在说什么]
+注意第二、三、四列\textbf{完全不随 $\ep$ 变}。这是 Cauchy 核的尺度不变性：所有比例都是固定的。
+
+所以“集中”不能靠“看某个固定区间里的质量变多”来展示——固定区间 $[-a,a]$ 里，质量确实从 $0$ 涨到 $1$，但那是 $a$ 固定、$\ep$ 变小的结果。做动画时\textbf{一定要让区间固定、让 $\ep$ 变}，而不是反过来。
+\end{notebox}
+
+\section{讲解禁区（EP04）}
+
+\begin{warnbox}[逐条对照]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.28em]
+\item 不说“$K_\ep$ 处处趋于零”。原点是例外。
+\item 不说“一致收敛就能把极限搬进积分”。给出 $f_n=\frac1n\mathbf{1}_{[0,n]}$ 这个反例。
+\item 不用“每一项都可积”代替“存在同一个可积控制函数”。
+\item 不说“面积是 $1$，所以极限就是 $\delta$”。必须加“集中”。
+\item 不说“$\delta$ 是某种特定形状的极限”。三种核已经否证了这一点。
+\item 不说“$k_n$ 那个反例说明面积守恒是错的”。面积确实守恒，错的是“面积守恒足以决定分布极限”。
+\item 不把 sinc 型核硬套进本节定理（它不非负、不绝对可积地集中）；留到 EP06。
+\item 不说“$\Sv'$ 里也能测试总质量”。常数 $1\notin\Sv$。
+\item 不把“分布收敛”讲成“某种更弱的逐点收敛”。它压根不是逐点概念。
+\item 换元证明中，不要声称原来的 $K_\ep$ 存在公共控制函数。
+\end{enumerate}
+\end{warnbox}
+
+\section{与前后集的接口}
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.45em]
+\item \textbf{回头看}：EP01 借用的取样极限，这一集给了证明。EP03 里那个“合并正负半轴再用控制收敛”的估计，和这里是同一套路。
+\item \textbf{往前看}：既然不同的核都给出同一个“作用”，那么能不能\textbf{直接把这个作用当作对象的定义}？——这就是 EP05 的全部动机。
+\end{enumerate}
+
+\begin{scriptbox}[最后 30 秒的旁白骨架]
+“我们现在知道了：$\delta$ 不是某一种特别的尖峰。
+
+指数核、高斯核、矩形核，形状差得很远，可是它们对每一个探针说的话，是一模一样的。
+
+那么，为什么不干脆\textbf{用这句话来定义 $\delta$}？
+
+下一集，我们就这么干。”
+\end{scriptbox}
+
+
+\section{本集回顾卡}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}Y@{}}
+\toprule
+项目 & 内容 \\
+\midrule
+主结果 & $\displaystyle\int_{\R}K_\ep(x)\varphi(x)\dd x\to\varphi(0)$ \\
+三种收敛 & 逐点、一致、分布；后者与点值无关 \\
+许可证 & 控制收敛，且需要\textbf{同一个}可积控制函数 \\
+两个反例 & $\frac1n\mathbf{1}_{[0,n]}$（一致趋零而积分不变）；$k_n=\frac12\mathbf{1}_{[n-1,n+1]}$（面积为 $1$ 却趋于 $0$）\\
+安全话术 & “核没有变小，是质量集中了” \\
+危险话术 & “面积是 $1$ 所以极限是 $\delta$” \\
+下一集的钩子 & 能不能直接用“作用”来定义这个极限对象？ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{quizbox}[EP04 自测]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.35em]
+\item 举出一个一致收敛但积分不收敛的函数列，并说明它为什么不违反控制收敛定理。
+\item 证明命题 \ref{prop:noControl}（核族无公共可积控制）。
+\item 用换元法证明取样极限 $\ip{K_\ep}{\varphi}\to\varphi(0)$，并指出控制函数是哪一行。
+\item 为什么 $e^{-\ep|t|}\to1$ 于 $\Sv'$，但不能直接对全实轴用控制收敛？
+\item 写出近似恒等核的三条充分条件，并说明每条各自防止什么。
+\item 证明命题 \ref{prop:escaping}，并解释“总面积为 $1$ 却不趋于 $\delta$”为何不与任何定理矛盾。
+\item 若把 $k_\ep$ 换成一个不非负的核，取样极限还成立吗？需要补上哪两条条件？请写出估计过程。
+\end{enumerate}
+\end{quizbox}

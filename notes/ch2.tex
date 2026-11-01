@@ -1,0 +1,409 @@
+\chapter{Polynomials and the Derivatives of \texorpdfstring{$\delta$}{delta}}
+\label{ch:polynomial}
+
+\begin{quote}
+\itshape
+If the constant has a spectrum, so does $t$, and so does every polynomial. The answers involve
+$\delta'$, $\delta''$, and so on. Before those symbols can mean anything, differentiation has to be
+defined for objects that are not functions---and the only definition available is the one that
+integration by parts suggests.
+\end{quote}
+
+\section{The obstacle, computed}
+
+Take $f(t)=t$. Truncating symmetrically and integrating by parts with $u=t$,
+$\dd v=e^{-i\omega t}\dd t$,
+\begin{equation}
+\int_{-T}^{T}t\,e^{-i\omega t}\dd t
+=\left[\frac{t\,e^{-i\omega t}}{-i\omega}\right]_{-T}^{T}
++\frac{1}{i\omega}\int_{-T}^{T}e^{-i\omega t}\dd t
+=\frac{2T\cos(\omega T)}{i\omega}+\frac{2\sin(\omega T)}{\omega^{2}} .
+\label{eq:t-truncated}
+\end{equation}
+The first term oscillates with an amplitude that grows linearly in $T$. The failure is therefore
+strictly worse than for the constant, where the amplitude was bounded. For $t^{n}$ one gets an
+amplitude of order $T^{n}$.
+
+So no amount of truncation will help. The way forward is not analytic but algebraic: obtain the
+transform of $t$ from the transform of $1$ by a rule, and postpone the justification of the rule to
+Chapter~\ref{ch:tespered}.
+
+\section{The distributional derivative}
+
+\begin{definition}[distributional derivative]\label{def:distderiv}
+Let $T$ be a continuous linear functional on $C_{c}^{\infty}(\R)$ (a distribution; see
+Chapter~\ref{ch:dist}). Its derivative $T'$ is defined by
+\begin{equation}
+\ip{T'}{\varphi}:=-\ip{T}{\varphi'},
+\qquad
+\ip{T^{(n)}}{\varphi}:=(-1)^{n}\ip{T}{\varphi^{(n)}} .
+\label{eq:distderiv}
+\end{equation}
+\end{definition}
+
+The definition is forced by the following observation.
+
+\begin{proposition}[compatibility]\label{prop:compat}
+Let $f\in C^{1}(\R)$ with $f'\in\Lonloc$, and let $T_{f}$ denote the distribution
+$\varphi\mapsto\int f\varphi$. Then $T_{f}'=T_{f'}$.
+\end{proposition}
+
+\begin{proof}
+For $\varphi\in C_{c}^{\infty}$, integration by parts on the support of $\varphi$ (which is compact,
+so the boundary terms vanish) gives
+\begin{equation}
+\int_{\R}f'(t)\varphi(t)\dd t=-\int_{\R}f(t)\varphi'(t)\dd t
+=-\ip{T_{f}}{\varphi'}=\ip{T_{f}'}{\varphi}. \qedhere
+\end{equation}
+\end{proof}
+
+Thus \eqref{eq:distderiv} extends the classical derivative wherever the latter exists, and it makes
+sense even where no pointwise derivative exists. Two further properties are immediate and will be
+used repeatedly: the map $T\mapsto T'$ is linear, and it is continuous with respect to distributional
+convergence (Proposition~\ref{prop:derivcont}).
+
+\begin{example}[the derivatives of $\delta$]\label{ex:deltan}
+Applying Definition~\ref{def:distderiv} to $\ip{\delta}{\varphi}=\varphi(0)$,
+\begin{equation}
+\ip{\delta'}{\varphi}=-\ip{\delta}{\varphi'}=-\varphi'(0),
+\qquad
+\ip{\delta''}{\varphi}=(-1)^{2}\ip{\delta}{\varphi''}=\varphi''(0),
+\end{equation}
+and in general
+\begin{equation}
+\ip{\delta^{(n)}}{\varphi}=(-1)^{n}\varphi^{(n)}(0).
+\label{eq:deltan}
+\end{equation}
+So $\delta$ reads off the value at the origin, $\delta'$ reads off (minus) the slope there,
+$\delta''$ reads off the curvature. They are different questions about the same point, not
+successively sharper peaks.
+\end{example}
+
+\begin{remark}[the sign is not decoration]
+The factor $(-1)^{n}$ is the boundary term of the integration by parts. Dropping it produces
+$\F[t]=-2\pi i\delta'$ instead of $2\pi i\delta'$ and propagates through every formula in this
+chapter. It is safer to remember where it comes from than to remember whether it is there.
+\end{remark}
+
+\section{Multiplication by \texorpdfstring{$t$}{t} and differentiation in \texorpdfstring{$\omega$}{omega}}
+
+\begin{lemma}[differentiation under the integral]\label{lem:diffint}
+Let $f\in\Sw(\R)$. Then $\fh$ is differentiable and
+\begin{equation}
+\frac{\dd}{\dd\omega}\fh(\omega)=\int_{\R}(-it)f(t)e^{-i\omega t}\dd t .
+\label{eq:diffint}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Fix $\omega$ and let $h\neq0$. Then
+\begin{equation}
+\frac{\fh(\omega+h)-\fh(\omega)}{h}
+=\int_{\R}f(t)\,\frac{e^{-i(\omega+h)t}-e^{-i\omega t}}{h}\dd t .
+\end{equation}
+The integrand converges pointwise to $-it\,f(t)e^{-i\omega t}$. To apply dominated convergence,
+note that by the mean value theorem the difference quotient is bounded in modulus by
+$|t|\,|f(t)|$, which is integrable because $f\in\Sw$. Hence the limit may be taken inside the
+integral.
+\end{proof}
+
+\begin{theorem}[multiplication by $t$]\label{thm:multt}
+For $f\in\Sw$,
+\begin{equation}
+\F[tf](\omega)=i\,\frac{\dd}{\dd\omega}\fh(\omega).
+\label{eq:multt}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:diffint},
+$\frac{\dd}{\dd\omega}\fh=-i\int_{\R}tf(t)e^{-i\omega t}\dd t=-i\F[tf](\omega)$. Multiplying by
+$i$ gives \eqref{eq:multt}.
+\end{proof}
+
+\begin{theorem}[differentiation in $t$]\label{thm:derivt}
+For $f\in\Sw$,
+\begin{equation}
+\F[f'](\omega)=i\omega\,\fh(\omega).
+\label{eq:derivt}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Integrating by parts,
+\begin{equation}
+\int_{\R}f'(t)e^{-i\omega t}\dd t
+=\big[f(t)e^{-i\omega t}\big]_{-\infty}^{\infty}
++i\omega\int_{\R}f(t)e^{-i\omega t}\dd t .
+\end{equation}
+The boundary term vanishes because $f$ decays faster than any power and $|e^{-i\omega t}|=1$.
+\end{proof}
+
+\begin{remark}[the two rules point in opposite directions]
+\eqref{eq:multt} multiplies in time and differentiates in frequency; \eqref{eq:derivt}
+differentiates in time and multiplies in frequency. Confusing them is the most common error in this
+subject. A quick check that catches the confusion: applying the transform to a Gaussian should not
+change the Gaussian's decay rate in a way that contradicts either identity.
+\end{remark}
+
+\section{From the constant to every polynomial}
+
+\begin{theorem}\label{thm:tn}
+For $n=0,1,2,\dots$,
+\begin{equation}
+\F[t^{\,n}]=2\pi i^{\,n}\delta^{(n)}(\omega).
+\label{eq:tn}
+\end{equation}
+Consequently, for a polynomial $p(t)=\sum_{n=0}^{N}a_{n}t^{n}$,
+\begin{equation}
+\F[p](\omega)=2\pi\sum_{n=0}^{N}a_{n}i^{\,n}\delta^{(n)}(\omega).
+\label{eq:poly}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Induction on $n$. For $n=0$ the statement is $\F[1]=2\pi\delta$, which is \eqref{eq:F1}. Suppose
+the formula holds for $n$. Then $t^{n+1}=t\cdot t^{n}$, and by \eqref{eq:multt} applied
+(distributionally, see \eqref{eq:multt-dist}) to $t^{n}$,
+\begin{equation}
+\F[t^{n+1}]=i\frac{\dd}{\dd\omega}\F[t^{n}]
+=i\frac{\dd}{\dd\omega}\big(2\pi i^{\,n}\delta^{(n)}\big)
+=2\pi i^{\,n+1}\delta^{(n+1)} .
+\end{equation}
+Linearity gives \eqref{eq:poly}.
+\end{proof}
+
+The first few cases, written out, are worth having in view:
+\begin{equation}
+\F[t]=2\pi i\,\delta',\qquad
+\F[t^{2}]=-2\pi\,\delta'',\qquad
+\F[t^{3}]=-2\pi i\,\delta''',\qquad
+\F[t^{4}]=2\pi\,\delta^{(4)} .
+\end{equation}
+The alternation of the coefficients is exactly the alternation of $i^{\,n}$.
+
+\begin{remark}[what has not been done]
+Equation \eqref{eq:tn} is not obtained by substituting a polynomial into a convergent integral;
+\eqref{eq:t-truncated} shows that this would fail. It is obtained by an algebraic rule, whose
+legitimacy rests on the definition of $\F$ on distributions (Chapter~\ref{ch:tespered}). Until that
+chapter, \eqref{eq:tn} is a computation consistent with all the evidence available, and it is flagged
+as such.
+\end{remark}
+
+\section{Support, and what lives at a single point}
+
+\begin{definition}[support]\label{def:support}
+A distribution $T$ \emph{vanishes on an open set} $U$ if $\ip{T}{\varphi}=0$ for every
+$\varphi\in C_{c}^{\infty}$ with $\supp\varphi\subset U$. The \emph{support} $\supp T$ is the
+complement of the largest open set on which $T$ vanishes.
+\end{definition}
+
+\begin{proposition}\label{prop:suppdelta}
+$\supp\delta^{(n)}=\{0\}$ for every $n\ge0$.
+\end{proposition}
+
+\begin{proof}
+If $\varphi$ vanishes in a neighbourhood of $0$, then $\varphi^{(n)}(0)=0$, and by \eqref{eq:deltan}
+$\ip{\delta^{(n)}}{\varphi}=0$. Hence $\delta^{(n)}$ vanishes on $\R\setminus\{0\}$, so its support
+is contained in $\{0\}$. It is not empty, since $\ip{\delta^{(n)}}{\varphi}\neq0$ for a suitable
+$\varphi$ supported near $0$.
+\end{proof}
+
+The converse is more informative than the proposition itself: a distribution supported at a single
+point must be a finite combination of $\delta$ and its derivatives. This is the precise content of
+the phrase ``a polynomial has spectrum concentrated at zero frequency''.
+
+\begin{theorem}[structure of point-supported distributions]\label{thm:support0}
+If $T$ is a distribution with $\supp T\subseteq\{0\}$, then there exist an integer $N\ge0$ and
+constants $c_{0},\dots,c_{N}$ such that
+\begin{equation}
+T=\sum_{n=0}^{N}c_{n}\delta^{(n)} .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $m$ be the order of $T$ near the origin: by the continuity of $T$ there are $C<\infty$ and
+$m\in\mathbb{N}$ with
+\begin{equation}
+|\ip{T}{\psi}|\le C\max_{0\le j\le m}\|\psi^{(j)}\|_{\infty}
+\qquad\text{whenever }\supp\psi\subset[-2,2].
+\label{eq:order}
+\end{equation}
+Choose $N\ge m$ and $\chi\in C_{c}^{\infty}$ with $\chi\equiv1$ on $[-1,1]$. For
+$\varphi\in C_{c}^{\infty}$, Taylor's formula with integral remainder gives
+\begin{equation}
+\varphi(x)=\sum_{n=0}^{N}\frac{\varphi^{(n)}(0)}{n!}x^{n}+x^{N+1}\psi(x),
+\qquad
+\psi(x)=\int_{0}^{1}\frac{(1-s)^{N}}{N!}\varphi^{(N+1)}(sx)\dd s ,
+\end{equation}
+and $\psi$ is smooth. Multiply by $\chi$ and split:
+\begin{equation}
+\varphi=\underbrace{\chi\sum_{n=0}^{N}\frac{\varphi^{(n)}(0)}{n!}x^{n}}_{=:P}
++\underbrace{x^{N+1}\psi\chi}_{=:R}.
+\end{equation}
+Now $P$ is a polynomial vanishing outside $[-2,2]$ after multiplication by $\chi$, and $R$ vanishes
+to order $N+1\ge m+1$ at the origin, so by \eqref{eq:order} $\ip{T}{R}=0$. Therefore
+\begin{equation}
+\ip{T}{\varphi}=\ip{T}{P}
+=\sum_{n=0}^{N}\frac{\varphi^{(n)}(0)}{n!}\ip{T}{\chi x^{n}}
+=\sum_{n=0}^{N}\tilde c_{n}\,\varphi^{(n)}(0)
+=\sum_{n=0}^{N}\big((-1)^{n}\tilde c_{n}\big)\ip{\delta^{(n)}}{\varphi},
+\end{equation}
+using \eqref{eq:deltan}. Setting $c_{n}=(-1)^{n}\tilde c_{n}$ finishes the proof.
+\end{proof}
+
+\begin{corollary}\label{cor:support-poly}
+The spectrum of a polynomial is supported at $\{0\}$, and it is a finite combination of
+$\delta^{(n)}$; Theorem~\ref{thm:tn} exhibits the coefficients.
+\end{corollary}
+
+\begin{remark}[a check by differential equation, and its limits]
+If $p$ has degree $N$ then $p^{(N+1)}=0$, so by \eqref{eq:derivt} in its distributional form,
+\begin{equation}
+(i\omega)^{N+1}\widehat p=0 ,
+\qquad\text{i.e.}\qquad
+\omega^{N+1}\widehat p=0 .
+\end{equation}
+Proposition~\ref{prop:keromega} below then shows that $\widehat p$ is a combination of
+$\delta,\delta',\dots,\delta^{(N)}$. This recovers the support statement but \emph{not} the
+coefficients: the differential equation is compatible with any choice of the $c_{n}$. The
+coefficients come from the recursion \eqref{eq:tn}, and only from it.
+\end{remark}
+
+\begin{proposition}\label{prop:keromega}
+Let $T$ be a distribution with $\omega T=0$, where $\omega T$ denotes multiplication by the
+function $\omega\mapsto\omega$. Then $T=c\,\delta$ for some constant $c$.
+\end{proposition}
+
+\begin{proof}
+Choose $\chi\in C_{c}^{\infty}$ with $\chi\equiv1$ near $0$. For $\varphi\in C_{c}^{\infty}$ define
+\begin{equation}
+\psi(\omega)=\frac{\varphi(\omega)-\varphi(0)\chi(\omega)}{\omega},
+\end{equation}
+which is smooth (the numerator vanishes at $0$ together with its first derivative) and compactly
+supported. Hence $\varphi=\varphi(0)\chi+\omega\psi$ and
+\begin{equation}
+\ip{T}{\varphi}=\varphi(0)\ip{T}{\chi}+\ip{\omega T}{\psi}
+=c\,\varphi(0)+0=c\ip{\delta}{\varphi},
+\end{equation}
+with $c=\ip{T}{\chi}$.
+\end{proof}
+
+\begin{remark}
+The same argument shows why nothing larger can occur: $\omega\delta'=-\delta\neq0$, so a term
+$\delta'$ would destroy the relation $\omega T=0$. Only $\delta$ itself is annihilated by
+multiplication by $\omega$.
+\end{remark}
+
+\section{Smooth approximations to \texorpdfstring{$\delta'$}{delta prime}}
+
+It is useful to see $\delta'$ as a limit of ordinary functions, because the picture explains both
+the sign and the failure of ``area'' as a descriptive tool.
+
+Differentiate the Cauchy kernel $K_{\ep}$ of \eqref{eq:Keps}:
+\begin{equation}
+K_{\ep}'(x)=\frac{1}{\pi}\cdot\frac{-2\ep x}{(x^{2}+\ep^{2})^{2}}
+=-\frac{2\ep x}{\pi\,(x^{2}+\ep^{2})^{2}} .
+\label{eq:Kprime}
+\end{equation}
+
+\begin{proposition}\label{prop:Kprime}
+For every $\ep>0$:
+\begin{enumerate}
+\item $K_{\ep}'$ vanishes only at $0$, is positive for $x<0$ and negative for $x>0$;
+\item its extrema occur at $x=\pm\ep/\sqrt3$, where the value is
+$\dfrac{9}{8\sqrt3\,\pi\ep^{2}}$;
+\item $\displaystyle\int_{\R}K_{\ep}'(x)\dd x=0$;
+\item $\displaystyle\int_{\R}|K_{\ep}'(x)|\dd x=\frac{2}{\pi\ep}\to\infty$;
+\item for every bounded continuous $\varphi$,
+$\ip{K_{\ep}'}{\varphi}=-\ip{K_{\ep}}{\varphi'}\to-\varphi'(0)=\ip{\delta'}{\varphi}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) is clear from \eqref{eq:Kprime}. (ii) Differentiating the logarithmic derivative of
+$-x/(x^{2}+\ep^{2})^{2}$ gives the condition $\ep^{2}-3x^{2}=0$; substituting yields
+$9/(8\sqrt3\pi\ep^{2})$. (iii) $K_{\ep}'$ is the derivative of a function vanishing at $\pm\infty$,
+so its integral is $K_{\ep}(\infty)-K_{\ep}(-\infty)=0$. (iv) By symmetry and the substitution
+$u=x/\ep$,
+\begin{equation}
+\int_{\R}|K_{\ep}'|\dd x
+=2\int_{0}^{\infty}\frac{2\ep x}{\pi(x^{2}+\ep^{2})^{2}}\dd x
+=\frac{4\ep}{\pi}\cdot\frac{1}{2\ep^{2}}
+=\frac{2}{\pi\ep}.
+\end{equation}
+(v) Integration by parts, justified because $K_{\ep}$ is smooth and decays, gives
+$\ip{K_{\ep}'}{\varphi}=-\ip{K_{\ep}}{\varphi'}$, and $\varphi'\in C_{b}$ is bounded and continuous,
+so Theorem~\ref{thm:sampling} applies to $\varphi'$.
+\end{proof}
+
+Part (iii) is the point. A nonnegative kernel representing $\delta$ is characterized by unit mass
+concentrating at the origin; there is no analogous description of $\delta'$, because the total
+signed mass is zero identically. What survives is the \emph{shape} of the two lobes, and the shape
+encodes exactly one number: the derivative of the test function at the origin.
+
+Part (v) also shows that differentiation is compatible with distributional limits: differentiating a
+convergent family produces a convergent family. This will be stated generally in
+Proposition~\ref{prop:derivcont}.
+
+\section{Worked examples}
+
+\begin{example}\label{ex:poly1}
+Compute $\F[3-2t+t^{2}]$. By linearity and Theorem~\ref{thm:tn},
+\begin{equation}
+\F[3]-2\F[t]+\F[t^{2}]
+=3\cdot2\pi\delta-2\cdot 2\pi i\,\delta'-2\pi\,\delta''
+=6\pi\delta-4\pi i\,\delta'-2\pi\,\delta'' .
+\end{equation}
+Consistency check: $3+t^{2}$ is real and even, and contributes the real even part
+$6\pi\delta-2\pi\delta''$; $-2t$ is real and odd and contributes the purely imaginary odd part
+$-4\pi i\delta'$. This is the symmetry statement of Proposition~\ref{prop:symmetries}, in
+distributional form.
+\end{example}
+
+\begin{example}\label{ex:delta-prime-test}
+Let $\varphi(x)=e^{-x^{2}}+xe^{-x^{2}}$. Then
+\begin{equation}
+\varphi(0)=1,\qquad
+\varphi'(x)=e^{-x^{2}}\big(1-2x-2x^{2}\big),\qquad
+\varphi'(0)=1,\qquad
+\varphi''(0)=-2 .
+\end{equation}
+Hence
+\begin{equation}
+\ip{\delta}{\varphi}=1,\qquad
+\ip{\delta'}{\varphi}=-1,\qquad
+\ip{\delta''}{\varphi}=-2 .
+\end{equation}
+\end{example}
+
+\begin{example}\label{ex:ladder}
+The identities
+\begin{equation}
+x\,\delta=0,\qquad
+x\,\delta'=-\delta,\qquad
+x\,\delta^{(n)}=-n\,\delta^{(n-1)}
+\label{eq:xdeltan}
+\end{equation}
+are proved in Chapter~\ref{ch:dist}. Granting them for a moment, they explain the structure found in
+Proposition~\ref{prop:keromega}: multiplication by $\omega$ lowers the order of $\delta^{(n)}$ by
+one, so only $\delta^{(0)}$ survives annihilation.
+\end{example}
+
+\section{Summary of the chapter}
+
+\begin{enumerate}
+\item Polynomials cannot be substituted into \eqref{eq:ftpair}; the truncation grows like $T^{n}$.
+\item Differentiation of distributions is defined by transferring the derivative to the test
+function, at the price of $(-1)^{n}$ (Definition~\ref{def:distderiv}).
+\item Multiplication by $t$ in time corresponds to differentiation in frequency
+(Theorem~\ref{thm:multt}); differentiation in time corresponds to multiplication by $i\omega$
+(Theorem~\ref{thm:derivt}).
+\item The recursion gives $\F[t^{n}]=2\pi i^{n}\delta^{(n)}$
+(Theorem~\ref{thm:tn}), and linearity extends it to all polynomials.
+\item A distribution supported at the origin is a finite combination of $\delta^{(n)}$
+(Theorem~\ref{thm:support0}); this is what ``support at zero frequency'' means.
+\item Differentiating the approximating kernel yields $\delta'$ as a distributional limit with two
+lobes, zero total mass, and divergent total variation
+(Proposition~\ref{prop:Kprime}).
+\end{enumerate}

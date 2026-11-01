@@ -1,0 +1,31 @@
+name: Build notes
+
+on:
+  push:
+    paths:
+      - 'notes/**'
+      - '.github/workflows/build-notes.yml'
+  pull_request:
+    paths:
+      - 'notes/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: notes
+          root_file: main.tex
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: The-Other-Side-of-the-Fourier-Transform
+          path: notes/main.pdf
+          if-no-files-found: error

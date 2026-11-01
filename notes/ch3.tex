@@ -1,0 +1,446 @@
+\chapter{The Step Function, the Principal Value, and the Missing \texorpdfstring{$\delta$}{delta}}
+\label{ch:step}
+
+\begin{quote}
+\itshape
+The derivative rules give an equation for the spectrum of the step, and the equation has infinitely
+many solutions. The loss of information is not an accident of the method: multiplication by
+$\omega$ annihilates $\delta$, exactly as differentiation in time annihilates constants. Recovering
+the missing term requires a new object, the Cauchy principal value, and an independent computation.
+\end{quote}
+
+\section{The derivative of a step}
+
+Let
+\begin{equation}
+H(t)=\begin{cases}0,&t<0,\\ 1,& t>0,\end{cases}
+\label{eq:H}
+\end{equation}
+with the value at $0$ left unspecified. The choice at a single point will be irrelevant, and
+Chapter~\ref{ch:dist} explains why.
+
+\begin{proposition}\label{prop:Hprime}
+As a distribution, $H'=\delta$.
+\end{proposition}
+
+\begin{proof}
+For $\varphi\in C_{c}^{\infty}$,
+\begin{equation}
+\ip{H'}{\varphi}=-\ip{H}{\varphi'}=-\int_{0}^{\infty}\varphi'(t)\dd t
+=-\big[\varphi(t)\big]_{0}^{\infty}=-\big(0-\varphi(0)\big)=\varphi(0)=\ip{\delta}{\varphi}.
+\end{equation}
+The boundary at $+\infty$ vanishes because $\varphi$ is compactly supported; the boundary at $0$
+produces $\varphi(0)$.
+\end{proof}
+
+The mechanism is worth stating separately, since it is the source of every $\delta$ in applications.
+
+\begin{proposition}[piecewise smooth functions]\label{prop:jump}
+Let $f$ be $C^{1}$ except at points $a_{j}$ accumulating only at infinity, with jumps
+$J_{j}=f(a_{j}^{+})-f(a_{j}^{-})$ and a classical derivative $f'_{\mathrm{cl}}$ off the jump set.
+Then
+\begin{equation}
+Df=f'_{\mathrm{cl}}+\sum_{j}J_{j}\,\delta_{a_{j}},
+\label{eq:jump}
+\end{equation}
+where $\delta_{a}(\varphi)=\varphi(a)$.
+\end{proposition}
+
+\begin{proof}
+Split the integral $\int f\varphi'$ over the intervals between the jumps and integrate by parts on
+each. The interior terms reassemble into $-\int f'_{\mathrm{cl}}\varphi$, and each jump $a_{j}$
+contributes $\big(f(a_{j}^{+})-f(a_{j}^{-})\big)\varphi(a_{j})=J_{j}\ip{\delta_{a_{j}}}{\varphi}$.
+\end{proof}
+
+\begin{example}\label{ex:abs}
+$D|t|=\sgn t$ and $D^{2}|t|=2\delta$. The first has a jump of size $2$ in the derivative of
+$|t|$ at the origin; the second differentiates that jump.
+\end{example}
+
+\section{Applying the differentiation rule}
+
+By \eqref{eq:derivt}, applied to $H$ in the distributional sense and to $H'=\delta$,
+\begin{equation}
+i\omega\,\hf(\omega)=\F[H'](\omega)=\F[\delta](\omega)=1 .
+\label{eq:iomegaH}
+\end{equation}
+Read off naively this suggests $\hf(\omega)=1/(i\omega)$. There are two independent reasons why
+that cannot be the end of the story.
+
+\begin{enumerate}
+\item $1/\omega$ is not locally integrable at $0$: $\int_{0}^{1}\omega^{-1}\dd\omega=\infty$. It
+therefore does not define a distribution by integration, and ``divide by $\omega$'' is not an
+operation available in this setting.
+\item Even granting a meaning to $1/\omega$ near the origin, the equation $i\omega\,\hf=1$ does not
+determine $\hf$: if $U$ is one solution then $U+c\delta$ is another, because multiplication by
+$\omega$ annihilates $\delta$.
+\end{enumerate}
+
+\begin{proposition}\label{prop:omega-delta}
+$\omega\delta=0$, that is, $\ip{\omega\delta}{\varphi}=\ip{\delta}{\omega\varphi}=0$ for every
+test function $\varphi$.
+\end{proposition}
+
+\begin{proof}
+By definition of multiplication by a smooth function,
+$\ip{\omega\delta}{\varphi}=\ip{\delta}{\omega\varphi}=0\cdot\varphi(0)=0$.
+\end{proof}
+
+\begin{remark}[the same loss in both domains]
+In the time domain, differentiating kills constants: $(H+C)'=H'$ for every $C$. In the frequency
+domain, multiplying by $\omega$ kills $\delta$: $\omega(U+c\delta)=\omega U$ for every $c$. These are
+one phenomenon viewed twice. The differentiation rule can therefore only determine the part of the
+spectrum away from $\omega=0$; whatever mass sits exactly at zero frequency is invisible to it.
+\end{remark}
+
+\section{The principal value}
+
+The function $1/\omega$ has a non-integrable singularity at the origin, but symmetric truncation
+removes it. That observation defines a distribution.
+
+\begin{definition}[Cauchy principal value]\label{def:PV}
+For $\varphi\in C_{c}^{\infty}(\R)$ set
+\begin{equation}
+\left\langle\PV\frac{1}{\omega},\varphi\right\rangle
+:=\lim_{a\downarrow0}\int_{|\omega|>a}\frac{\varphi(\omega)}{\omega}\dd\omega .
+\label{eq:PVdef}
+\end{equation}
+\end{definition}
+
+The limit can be computed in closed form by pairing the two half lines.
+
+\begin{lemma}\label{lem:PVform}
+For every $\varphi\in C_{c}^{\infty}(\R)$ and every $a>0$,
+\begin{equation}
+\int_{|\omega|>a}\frac{\varphi(\omega)}{\omega}\dd\omega
+=\int_{a}^{\infty}\frac{\varphi(x)-\varphi(-x)}{x}\dd x .
+\label{eq:PVpaired}
+\end{equation}
+Consequently
+\begin{equation}
+\left\langle\PV\frac{1}{\omega},\varphi\right\rangle
+=\int_{0}^{\infty}\frac{\varphi(x)-\varphi(-x)}{x}\dd x .
+\label{eq:PVint}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+In the integral over $\omega<-a$ substitute $\omega=-x$ and add the two pieces.
+\end{proof}
+
+The point of \eqref{eq:PVpaired} is the numerator: $\varphi(x)-\varphi(-x)$ vanishes at $x=0$ at
+first order, so dividing by $x$ leaves a bounded integrand. Each half line separately would
+diverge; the pair does not.
+
+\begin{theorem}[existence]\label{thm:PVexists}
+The functional \eqref{eq:PVint} is well defined on $C_{c}^{\infty}(\R)$ and is a distribution.
+\end{theorem}
+
+\begin{proof}
+Let $\varphi\in C_{c}^{\infty}$ and let $K$ be a compact interval containing its support. Split
+$\int_{0}^{\infty}$ at $x=1$.
+
+For $0<x\le1$, the mean value theorem gives
+\begin{equation}
+|\varphi(x)-\varphi(-x)|\le 2x\sup_{|y|\le1}|\varphi'(y)| ,
+\qquad\text{hence}\qquad
+\left|\frac{\varphi(x)-\varphi(-x)}{x}\right|\le 2\|\varphi'\|_{\infty,[-1,1]} ,
+\end{equation}
+which is integrable on $(0,1]$.
+
+For $x\ge1$, compact support gives $\varphi(\pm x)=0$ once $x$ exceeds the support radius, so the
+integrand vanishes there; in any case $|\varphi(x)-\varphi(-x)|\le 2\|\varphi\|_{\infty}$ and
+$1/x$ is integrable on $[1,\infty)$ intersected with the support after bounding.
+
+Linearity is clear. Continuity follows from the displayed estimate together with the bound on
+$[1,\infty)$, which together give
+\begin{equation}
+\left|\left\langle\PV\tfrac{1}{\omega},\varphi\right\rangle\right|
+\le C_{K}\Big(\|\varphi'\|_{\infty,[-1,1]}+\|\varphi\|_{\infty}\Big). \qedhere
+\end{equation}
+\end{proof}
+
+\begin{remark}[the symmetry is part of the definition]\label{rem:PVasym}
+It is not true that any way of removing the singularity gives the same answer. Consider the
+asymmetric truncation that keeps $a<|\omega|<1$ on the right and $b<|\omega|<1$ on the left, with
+$a,b\downarrow0$. By \eqref{eq:PVpaired} and a split at $b$,
+\begin{equation}
+\int_{a<|\omega|<1}\frac{\varphi(\omega)}{\omega}\dd\omega
+=\int_{a}^{1}\frac{\varphi(x)-\varphi(-x)}{x}\dd x+\int_{a}^{b}\frac{\varphi(-x)}{x}\dd x ,
+\end{equation}
+and the second term equals $\varphi(0)\log(b/a)+o(1)$. Hence the limit exists only when
+$b/a\to1$, and then equals the principal value; otherwise the answer differs by
+$\varphi(0)\log(b/a)$. The principal value is a specific symmetric limit, not the assertion that
+the singularity does not matter.
+\end{remark}
+
+Two elementary properties are needed later.
+
+\begin{proposition}\label{prop:PVprops}
+$\PV\frac{1}{\omega}$ is an odd distribution, and
+\begin{equation}
+\omega\,\PV\frac{1}{\omega}=1 .
+\label{eq:omegaPV}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Oddness follows from \eqref{eq:PVint}: replacing $\varphi$ by its reflection reverses the sign of the
+integrand. For \eqref{eq:omegaPV}, use the definition of multiplication by $\omega$ and
+\eqref{eq:PVint} with $\omega\varphi$ in place of $\varphi$:
+\begin{equation}
+\left\langle\omega\PV\tfrac{1}{\omega},\varphi\right\rangle
+=\left\langle\PV\tfrac{1}{\omega},\omega\varphi\right\rangle
+=\int_{0}^{\infty}\frac{x\varphi(x)-(-x)\varphi(-x)}{x}\dd x
+=\int_{0}^{\infty}\big(\varphi(x)+\varphi(-x)\big)\dd x=\int_{\R}\varphi . \qedhere
+\end{equation}
+\end{proof}
+
+\section{The regularized step, computed}
+
+The natural regularization of $H$ is one-sided: decay only where $H$ is nonzero. Set
+\begin{equation}
+H_{\ep}(t)=H(t)e^{-\ep t},\qquad \ep>0 .
+\label{eq:Heps}
+\end{equation}
+
+\begin{theorem}\label{thm:Heps}
+For every $\ep>0$ and $\omega\in\R$,
+\begin{equation}
+\F[H_{\ep}](\omega)=\frac{1}{\ep+i\omega}
+=\frac{\ep}{\ep^{2}+\omega^{2}}-i\,\frac{\omega}{\ep^{2}+\omega^{2}} .
+\label{eq:Hepssplit}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Directly,
+\begin{equation}
+\int_{0}^{\infty}e^{-(\ep+i\omega)t}\dd t
+=\left[\frac{e^{-(\ep+i\omega)t}}{-(\ep+i\omega)}\right]_{0}^{\infty}
+=\frac{1}{\ep+i\omega},
+\end{equation}
+the upper boundary vanishing because $\ep>0$; then rationalize the denominator.
+\end{proof}
+
+\begin{remark}[why one-sided]
+With the two-sided regularization $e^{-\ep|t|}$ the limit is $1$
+(Chapter~\ref{ch:constant}); with the one-sided one it is $H$. The shape of the decay determines the
+limit object, not merely the speed of convergence. This is the first place where the choice of
+regularization carries information.
+\end{remark}
+
+The two terms of \eqref{eq:Hepssplit} have to be treated separately: the real part is even and
+concentrates, the imaginary part is odd and must be paired across the origin.
+
+\section{The two limits}
+
+\begin{theorem}[real part]\label{thm:realpart}
+\begin{equation}
+\frac{\ep}{\ep^{2}+\omega^{2}}\longrightarrow\pi\delta(\omega)
+\qquad(\ep\downarrow0),
+\label{eq:realpart}
+\end{equation}
+the limit being taken in the sense of test functions.
+\end{theorem}
+
+\begin{proof}
+Since $\dfrac{\ep}{\ep^{2}+\omega^{2}}=\pi K_{\ep}$ with $K_{\ep}$ as in \eqref{eq:Keps}, and since
+$\ip{K_{\ep}}{\varphi}\to\varphi(0)$ for every bounded continuous $\varphi$
+(Theorem~\ref{thm:sampling}), one gets
+$\ip{\pi K_{\ep}}{\varphi}\to\pi\varphi(0)=\ip{\pi\delta}{\varphi}$.
+\end{proof}
+
+The coefficient $\pi$ is the total mass:
+\begin{equation}
+\int_{\R}\frac{\ep}{\ep^{2}+\omega^{2}}\dd\omega=\pi ,
+\label{eq:masspi}
+\end{equation}
+independently of $\ep$. Whenever a family of even functions concentrates, its limit is the mass
+times $\delta$; this is the single most useful heuristic in the subject, and here it is
+exactly what the theorem says.
+
+\begin{theorem}[imaginary part]\label{thm:imagpart}
+\begin{equation}
+\frac{\omega}{\ep^{2}+\omega^{2}}\longrightarrow\PV\frac{1}{\omega}
+\qquad(\ep\downarrow0).
+\label{eq:imagpart}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $\varphi\in C_{c}^{\infty}$. Pair the half lines by substituting $\omega=-x$ in the negative
+one:
+\begin{equation}
+\int_{\R}\frac{\omega}{\ep^{2}+\omega^{2}}\varphi(\omega)\dd\omega
+=\int_{0}^{\infty}\frac{x}{\ep^{2}+x^{2}}\big[\varphi(x)-\varphi(-x)\big]\dd x .
+\label{eq:imagsplit}
+\end{equation}
+We apply dominated convergence to \eqref{eq:imagsplit} and must exhibit a dominating function
+independent of $\ep$.
+
+\emph{Near the origin}, for $0<x\le1$, use $x/(\ep^{2}+x^{2})\le1/x$ together with the mean value
+estimate $|\varphi(x)-\varphi(-x)|\le2x\sup_{|y|\le1}|\varphi'|$:
+\begin{equation}
+\left|\frac{x}{\ep^{2}+x^{2}}\big[\varphi(x)-\varphi(-x)\big]\right|
+\le 2\sup_{|y|\le1}|\varphi'(y)| ,
+\end{equation}
+a constant, hence integrable on $(0,1]$.
+
+\emph{Far from the origin}, for $x\ge1$, the same inequality $x/(\ep^{2}+x^{2})\le1/x$ combined
+with compact support gives a bound $C/x$ on a bounded interval, hence integrable on $[1,\infty)$.
+
+For each fixed $x>0$, $x/(\ep^{2}+x^{2})\to1/x$ as $\ep\downarrow0$. Dominated convergence in
+\eqref{eq:imagsplit} therefore yields
+\begin{equation}
+\int_{\R}\frac{\omega}{\ep^{2}+\omega^{2}}\varphi(\omega)\dd\omega
+\longrightarrow\int_{0}^{\infty}\frac{\varphi(x)-\varphi(-x)}{x}\dd x
+=\left\langle\PV\frac{1}{\omega},\varphi\right\rangle ,
+\end{equation}
+which is \eqref{eq:imagpart}.
+\end{proof}
+
+\begin{remark}[why the two regions must be separated]
+The kernel $\omega/(\ep^{2}+\omega^{2})$ is small near the origin and small at infinity, with a
+maximum of $1/(2\ep)$ at $\omega=\pm\ep$. A single global estimate cannot capture both ends; the
+split at $x=1$ makes the near part bounded by the oscillation of $\varphi$ and the far part bounded
+by the decay of $\varphi$. This ``control near the singular point by smoothness, control at
+infinity by decay'' is the standard pattern, and it recurs verbatim in
+Chapter~\ref{ch:limits}.
+\end{remark}
+
+\section{The spectrum of the step}
+
+Combining Theorems~\ref{thm:Heps}, \ref{thm:realpart} and \ref{thm:imagpart}, and using
+$1/i=-i$,
+\begin{equation}
+\F[H](\omega)=\pi\delta(\omega)-i\,\PV\frac{1}{\omega}
+=\pi\delta(\omega)+\PV\frac{1}{i\omega} .
+\label{eq:FH}
+\end{equation}
+
+The coefficient $\pi$ in front of $\delta$ deserves an independent verification, since it was
+obtained from a computation rather than from a structural argument.
+
+\begin{theorem}[symmetry determines the coefficient]\label{thm:symcoef}
+Let $c\in\C$ and suppose $\F[H]=c\,\delta-i\,\PV\frac{1}{\omega}$. Then $c=\pi$.
+\end{theorem}
+
+\begin{proof}
+As distributions, $H(t)+H(-t)=1$: the identity holds for every $t\neq0$, and the value at a single
+point does not affect the distribution. Applying $\F$ and using
+$\F[f(-\cdot)](\omega)=\fh(-\omega)$,
+\begin{equation}
+\hf(\omega)+\hf(-\omega)=2\pi\delta(\omega).
+\label{eq:Hsym}
+\end{equation}
+Substituting the ansatz and using that $\PV\frac{1}{\omega}$ is odd while $\delta$ is even,
+\begin{equation}
+\big(c\delta-i\PV\tfrac{1}{\omega}\big)+\big(c\delta+i\PV\tfrac{1}{\omega}\big)=2c\,\delta .
+\end{equation}
+Comparing with \eqref{eq:Hsym} gives $2c=2\pi$, hence $c=\pi$.
+\end{proof}
+
+\begin{corollary}[the sign function]\label{cor:sgn}
+\begin{equation}
+\F[\sgn t](\omega)=-2i\,\PV\frac{1}{\omega}=\frac{2}{i}\,\PV\frac{1}{\omega} .
+\label{eq:sgn}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Since $H=\tfrac12+\tfrac12\sgn$ and $\F[1]=2\pi\delta$,
+\begin{equation}
+\F[\sgn t]=2\Big(\F[H]-\tfrac12\F[1]\Big)
+=2\big(\pi\delta-i\PV\tfrac{1}{\omega}-\pi\delta\big)
+=-2i\,\PV\tfrac{1}{\omega}. \qedhere
+\end{equation}
+\end{proof}
+
+\begin{remark}[why no $\delta'$ can be added]
+The equation $i\omega\hf=1$ is compatible with adding $c\delta$, since $\omega\delta=0$, but not
+with adding $\delta'$, since $\omega\delta'=-\delta\neq0$
+(\eqref{eq:xdeltan}). Proposition~\ref{prop:keromega} makes this precise: the solutions of
+$\omega T=1$ differ exactly by multiples of $\delta$. So \eqref{eq:FH} is the general solution, and
+the only question was the value of $c$, settled by \eqref{eq:Hsym}.
+\end{remark}
+
+\section{Boundary values}
+
+The computation \eqref{eq:Hepssplit} also produces the standard notation of mathematical physics.
+For $\ep\downarrow0$,
+\begin{equation}
+\frac{1}{x\pm i0}:=\lim_{\ep\downarrow0}\frac{1}{x\pm i\ep}
+=\PV\frac{1}{x}\mp i\pi\,\delta(x),
+\label{eq:boundary}
+\end{equation}
+where the limit is distributional. The notation is a shorthand for the limit, not a substitution of
+a complex zero.
+
+To see the sign in \eqref{eq:FH} by this route, note that
+\begin{equation}
+\frac{1}{\ep+i\omega}=\frac{-i}{\omega-i\ep}\longrightarrow\frac{-i}{\omega-i0}
+=-i\Big(\PV\frac{1}{\omega}+i\pi\delta\Big)=\pi\delta-i\,\PV\frac{1}{\omega},
+\end{equation}
+which reproduces \eqref{eq:FH}. The two minus signs---one from $1/i=-i$, one from the lower sign in
+\eqref{eq:boundary}---cancel in the $\delta$ term and add in the $\PV$ term; this is the most
+common place for a sign error to enter, and it is worth doing the computation twice.
+
+\section{The transform of the principal value}
+
+One more table entry can be obtained for free from what has already been proved, and it illustrates how
+the reflection identity \eqref{eq:F2} is used in practice.
+
+\begin{proposition}\label{prop:PVtransform}
+In $\Sw'$,
+\begin{equation}
+\F\Big[\PV\frac{1}{t}\Big](\omega)=-i\pi\,\sgn\omega .
+\label{eq:PVtransform}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Apply $\F^{2}T=2\pi\,T(-\cdot)$ to $T=\sgn t$. By \eqref{eq:sgn},
+$\F[\sgn t]=-2i\PV(1/\omega)$, so
+\begin{equation}
+\F\Big[\F[\sgn t]\Big]=\F\Big[-2i\,\PV\frac{1}{\omega}\Big]=-2i\,\F\Big[\PV\frac{1}{\omega}\Big]
+\end{equation}
+while the reflection identity gives
+$\F^{2}[\sgn t]=2\pi\,\sgn(-t)=-2\pi\,\sgn t$. Equating,
+\begin{equation}
+-2i\,\F\Big[\PV\frac{1}{\omega}\Big]=-2\pi\,\sgn\omega ,
+\qquad\text{hence}\qquad
+\F\Big[\PV\frac{1}{\omega}\Big]=\frac{\pi}{i}\,\sgn\omega=-i\pi\,\sgn\omega . \qedhere
+\end{equation}
+\end{proof}
+
+\begin{remark}[a consistency check on the factor]
+The answer must be odd and purely imaginary, because $\PV(1/t)$ is odd and real; it is. A sharper
+check is to apply $\F$ once more and use \eqref{eq:F2}. On one hand
+\begin{equation}
+\F\Big[\F\Big[\PV\frac{1}{t}\Big]\Big]=\F\big[-i\pi\,\sgn\omega\big]=-i\pi\cdot\big(-2i\big)\PV\frac{1}{\omega}
+=-2\pi\,\PV\frac{1}{\omega},
+\end{equation}
+using \eqref{eq:sgn}; on the other hand \eqref{eq:F2} gives
+$2\pi\,\PV\frac{1}{-t}=-2\pi\,\PV\frac{1}{t}$. The two agree, as they must, and the factor
+$\pi$ is consistent with \eqref{eq:Fcos}.
+\end{remark}
+
+\section{Summary of the chapter}
+
+\begin{enumerate}
+\item $H'=\delta$, and more generally each jump of size $J$ contributes $J\delta$ to the
+distributional derivative (Propositions~\ref{prop:Hprime}, \ref{prop:jump}).
+\item The differentiation rule yields $i\omega\hf=1$, which does not determine $\hf$ because
+$\omega\delta=0$ (Proposition~\ref{prop:omega-delta}).
+\item $1/\omega$ is not locally integrable; its symmetric regularization is the principal value,
+which is a well-defined distribution (Theorems~\ref{thm:PVexists}) with
+$\omega\PV\frac{1}{\omega}=1$.
+\item The asymmetric truncation shows that the symmetry in the definition is essential
+(Remark~\ref{rem:PVasym}).
+\item Regularizing the step one-sidedly and separating real and imaginary parts gives
+$\pi\delta$ and $-i\PV\frac{1}{\omega}$ (Theorems~\ref{thm:realpart}, \ref{thm:imagpart}).
+\item The coefficient $\pi$ is forced by $H(t)+H(-t)=1$ (Theorem~\ref{thm:symcoef}).
+\item Consequently $\F[H]=\pi\delta+\PV\frac{1}{i\omega}$ and
+$\F[\sgn t]=-2i\PV\frac{1}{\omega}$.
+\end{enumerate}

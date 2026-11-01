@@ -1,0 +1,650 @@
+\chapter{EP03｜阶跃、主值与那个多出来的 $\delta$}
+
+\begin{ideabox}[这一集的一句话]
+\textbf{微分规则只能定出“除掉零频率以外”的那一部分频谱。零频率那一项在乘 $\omega$ 的时候被抹掉了，所以必须另外补回来。}
+\end{ideabox}
+
+\section{观众的问题链}
+
+前两集里，$\delta$ 一直是“结论里出现的符号”。这一集它第一次变成“必须被解释的麻烦”：微分规则给了我们一个方程，而这个方程\textbf{有无穷多个解}。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabularx}{\textwidth}{@{}p{0.8cm}X p{4.4cm}@{}}
+\toprule
+层 & 问题 & 观众此刻的心理 \\
+\midrule
+1 & 一个信号突然从 $0$ 跳到 $1$，它的导数是什么？ & 除了跳的那一下，别处都平，应该是零吧。\\
+2 & 用平滑近似看，导数越来越集中在那一下。 & 所以导数是一个冲激？\\
+3 & 既然如此，能不能用“时间求导 = 乘 $i\omega$”反推出阶跃的频谱？ & 这看起来很顺。\\
+4 & 得到 $i\omega\widehat H=1$，只差除以 $i\omega$ 了。 & 那就除啊。\\
+5 & 不能除。左边除以 $\omega$ 在原点有奇性，右边还要提防“乘 $\omega$ 会抹掉 $\delta$”。 & 等等，哪里来的 $\delta$？\\
+6 & 因为 $\omega\delta=0$。所以这个方程的解不唯一。 & 那我们丢了什么信息？\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}Y@{}}
+\toprule
+观众带着什么进来 & 观众带着什么出去 \\
+\midrule
+“求导规则很好用” & “规则会丢信息；丢的那部分正好是零频率项。”\\
+把 $\PV$ 看成“忽略奇点的小技巧” & “$\PV$ 是一种规定了对称方式的极限，它本身就是严格的对象。”\\
+以为 $\F[H]$ 可以直接除出来 & “必须再做一次独立计算（正则化），才能定出那个 $\pi$。”\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{阶跃与冲激：$H'=\delta$}
+
+\subsection{阶跃的定义，以及为什么 $H(0)$ 无所谓}
+
+\begin{equation}
+H(t)=\begin{cases}0,&t<0,\\[2pt] 1,&t>0.\end{cases}
+\end{equation}
+
+$t=0$ 处的取值可以任选（$0$、$1/2$、$1$ 都行），因为它只影响一个点，而积分看不见一个点。
+
+\begin{prop}\label{prop:Hprime}
+作为分布，$H'=\delta$。
+\end{prop}
+
+\begin{proof}
+对任意 $\varphi\in C_c^{\infty}$，由分布导数的定义与分部积分，
+\begin{equation}
+\ip{H'}{\varphi}
+=-\ip{H}{\varphi'}
+=-\int_{0}^{\infty}\varphi'(t)\dd t
+=-\big[\varphi(t)\big]_{0}^{\infty}
+=-\big(0-\varphi(0)\big)=\varphi(0)=\ip{\delta}{\varphi} .
+\end{equation}
+边界项消失是因为 $\varphi$ 紧支撑：$t\to\infty$ 时 $\varphi=0$；$t=0$ 处出现的是 $-\varphi(0)$，正好贡献出 $\delta$。
+\end{proof}
+
+\begin{ideabox}[这段证明在讲什么]
+\textbf{一个跳跃，在求导之后变成一个点质量。}跳跃的“高度”就是 $\delta$ 的“权重”。
+
+这不是近似，而是精确的分布等式。它的全部内容就是：如果你把 $\varphi$ 从 $0$ 积分到 $\infty$，得到的是 $-\varphi(0)$——而“$-\varphi(0)$”正是 $\delta$ 的招牌动作。
+\end{ideabox}
+
+\subsection{用平滑近似建立直觉}
+
+取越来越陡的平滑阶跃（例如 $H_n(t)=\frac{1}{2}\big(1+\tanh(nt)\big)$，或 $\frac{1}{\pi}\arctan(nt)+\frac12$）。它们的导数
+
+\begin{equation}
+H_n'(t)=\frac{n}{2}\,\mathrm{sech}^{2}(nt)
+\end{equation}
+
+是一个非负的峰，峰值 $\sim n/2$，宽度 $\sim1/n$，总面积恒为 $1$。
+
+\begin{scriptbox}[动画要点 03-A]
+左边：阶跃从缓变陡。右边：它的导数从“缓坡”变成“窄峰”。
+
+关键标注：\textbf{总面积始终为 $1$}。观众应当看到“跳变强度没有变，只是集中了”。
+
+最后一句旁白：“跳变高度是 $1$，所以这个冲激的权重是 $1$。”
+\end{scriptbox}
+
+\subsection{一般规则（可以不说，但你必须知道）}
+
+若 $f$ 分段 $C^{1}$，在点 $a_j$ 处有跳跃 $J_j=f(a_j+)-f(a_j-)$，则
+
+\begin{equation}
+Df=f'_{\text{经典}}+\sum_{j}J_j\,\delta_{a_j} .\label{eq:jump}
+\end{equation}
+
+也就是说：\textbf{分布导数 = 各段内部的光滑导数 + 每个跳跃贡献的一个 $\delta$。}
+
+例：$|t|$ 在 $0$ 处跳跃的“导数”是符号函数，再求导得到 $2\delta$：
+
+\begin{equation}
+D|t|=\sgn t,
+\qquad
+D^{2}|t|=2\delta .
+\end{equation}
+
+这个例子很好用：它能一次性展示“分段光滑”“跳跃”“$\delta$ 的系数”三件事。
+
+\section{能不能直接除以 $i\omega$}
+
+\subsection{一步一步套规则}
+
+由 \eqref{eq:two-rules} 的第二条，$\F[H']=i\omega\hf$。左边是 $\F[\delta]=1$。所以
+
+\begin{equation}
+i\omega\,\hf(\omega)=1 .\label{eq:iomegaH}
+\end{equation}
+
+看上去只差一步：
+
+\begin{equation}
+\hf(\omega)\overset{?}{=}\frac{1}{i\omega}.
+\end{equation}
+
+\begin{warnbox}[这一步有三个洞]
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.3em]
+\item \textbf{$1/\omega$ 在原点不可积。}$\int_{0}^{1}\frac{\dd\omega}{\omega}=\infty$。所以“$\frac{1}{i\omega}$”根本不是一个局部可积函数，不能直接当分布用。
+\item \textbf{方程有无穷多解。}因为 $\omega\delta=0$，所以若 $U$ 是解，$U+c\delta$ 也是解。
+\item \textbf{“除”这个动作本身在分布里没有定义。}你不能对等式两边同时除以 $\omega$——$\omega$ 不是数，是乘子。
+\end{enumerate}
+\end{warnbox}
+
+\subsection{关键观察：乘 $\omega$ 会抹掉 $\delta$}
+
+\begin{equation}
+\ip{\omega T}{\varphi}:=\ip{T}{\omega\varphi}.
+\end{equation}
+
+取 $T=\delta$：
+
+\begin{equation}
+\ip{\omega\delta}{\varphi}=\ip{\delta}{\omega\varphi}=0\cdot\varphi(0)=0 .
+\end{equation}
+
+所以
+
+\begin{equation}
+\boxed{\ \omega\,\delta=0\ }.\label{eq:omegadelta0}
+\end{equation}
+
+\begin{ideabox}[这就解释了“信息在哪里丢的”]
+时域求导会丢掉常数：$(H+C)'=H'$。不管你加多大的常数，导数都一样。
+
+频域乘 $\omega$ 会丢掉 $\delta$：$\omega(U+c\delta)=\omega U$。不管你加多大的 $\delta$，乘完都一样。
+
+这两件事是同一件事的两面：\textbf{微分规则只能确定“非零频率”的部分，零频率那一项被乘 $\omega$ 消掉了。}
+
+所以 $i\omega\hf=1$ 这句话，只能告诉我们 $\hf$ 在 $\omega\neq0$ 时的样子。至于 $\omega=0$ 上堆了多少权重，这个方程\textbf{完全不知情}。
+\end{ideabox}
+
+\section{主值：怎么给 $1/\omega$ 一个身份}
+
+\subsection{为什么不能直接积分}
+
+$1/\omega$ 在原点附近不是局部可积的：$\int_{0}^{1}|\frac{1}{\omega}|\dd\omega=\infty$。所以
+
+\begin{equation}
+\varphi\longmapsto\int_{\R}\frac{\varphi(\omega)}{\omega}\dd\omega
+\end{equation}
+
+对一般的 $\varphi$ 没有定义（正负两边的无穷大可能互相抵消，也可能不抵消，取决于你怎么取极限）。
+
+\subsection{定义：对称地挖掉原点}
+
+\begin{defn}[Cauchy 主值]\label{def:PV}
+对 $\varphi\in C_c^{\infty}(\R)$，定义
+\begin{equation}
+\left\langle\PV\frac{1}{\omega},\varphi\right\rangle
+:=\lim_{a\downarrow0}\int_{|\omega|>a}\frac{\varphi(\omega)}{\omega}\dd\omega
+=\int_{0}^{\infty}\frac{\varphi(x)-\varphi(-x)}{x}\dd x .\label{eq:PVdef}
+\end{equation}
+\end{defn}
+
+第二个等式值得单独解释，因为它是所有计算的起点：
+
+\begin{equation}
+\int_{|\omega|>a}\frac{\varphi(\omega)}{\omega}\dd\omega
+=\int_{a}^{\infty}\frac{\varphi(x)}{x}\dd x+\int_{-\infty}^{-a}\frac{\varphi(\omega)}{\omega}\dd\omega
+=\int_{a}^{\infty}\frac{\varphi(x)-\varphi(-x)}{x}\dd x .
+\end{equation}
+
+\begin{ideabox}[为什么要合并成正负一对]
+因为 $\varphi(x)-\varphi(-x)$ 在 $x=0$ 处\textbf{一阶消失}：它是 $O(x)$。除以 $x$ 之后还是有界的。
+
+而单独的 $\varphi(x)/x$ 是 $O(1/x)$，会发散。合并之后就没事了。
+
+\textbf{主值的全部内容就是这一句：把正负两边凑成一对，让奇性自己抵消。}
+\end{ideabox}
+
+\subsection{存在性：两个估计}
+
+\begin{prop}\label{prop:PVexists}
+\eqref{eq:PVdef} 中的积分对任意 $\varphi\in\Sv$ 收敛，且 $\PV\frac1\omega$ 是 $\Sv$ 上的连续线性泛函。
+\end{prop}
+
+\begin{proof}[证明]
+分两段。
+
+\textbf{近处}（$0<x\le1$）：由中值定理，
+\begin{equation}
+|\varphi(x)-\varphi(-x)|\le 2x\sup_{|y|\le1}|\varphi'(y)|,
+\end{equation}
+所以
+\begin{equation}
+\left|\frac{\varphi(x)-\varphi(-x)}{x}\right|\le 2\sup_{|y|\le1}|\varphi'(y)| ,
+\end{equation}
+在 $(0,1]$ 上可积。
+
+\textbf{远处}（$x\ge1$）：由 $\varphi$ 快速衰减（例如 $|\varphi(x)|\le C/x^{2}$），
+\begin{equation}
+\left|\frac{\varphi(x)-\varphi(-x)}{x}\right|\le\frac{C}{x^{3}},
+\end{equation}
+在 $[1,\infty)$ 上可积。
+
+两段都收敛，故积分存在。连续性由上面两个估计给出的半范数控制直接得到。
+\end{proof}
+
+\subsection{对称性不能省}
+
+这一点必须讲，否则观众会以为 $\PV$ 只是“随便忽略奇点”。
+
+取不对称的截断：正半边挖掉 $(-\infty,-b)$ 之外的部分，负半边挖掉 $(-a,a)$，让 $a,b\to0$ 但比例不同。计算给出
+
+\begin{equation}
+\int_{a<|\omega|<1}\frac{\varphi(\omega)}{\omega}\dd\omega
+=\int_{a}^{1}\frac{\varphi(x)-\varphi(-x)}{x}\dd x
++\int_{a}^{b}\frac{\varphi(-x)}{x}\dd x .
+\end{equation}
+
+第二项约为 $\varphi(0)\ln\frac{b}{a}$。于是：
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.3em]
+\item 若 $b/a\to1$（对称），第二项 $\to0$，回到主值。
+\item 若 $b/a\to\lambda\neq1$，结果比主值多出 $\varphi(0)\ln\lambda$——\textbf{极限变了}。
+\end{itemize}
+
+\begin{warnbox}[结论]
+$\PV$ 不是“忽略奇点”，而是“\textbf{规定了一种特定的、对称的逼近方式}”。换一种方式，得到的就不是同一个分布。
+\end{warnbox}
+
+\subsection{记号与性质}
+
+\begin{equation}
+\PV\frac{1}{i\omega}=\frac{1}{i}\,\PV\frac{1}{\omega}=-i\,\PV\frac{1}{\omega}.
+\end{equation}
+
+$\PV\frac{1}{\omega}$ 是\textbf{实、奇}的分布；乘 $-i$ 之后变成\textbf{纯虚、奇}的分布。这个对称性后面会用来独立检查 $\pi$ 这个系数。
+
+\section{一次完整的计算：单边指数正则化}
+
+\subsection{取外壳}
+
+$H$ 从 $0$ 开始并停住，所以它的自然正则化是“在正半轴上加指数衰减”：
+
+\begin{equation}
+H_\ep(t)=H(t)\,e^{-\ep t},\qquad \ep>0 .
+\end{equation}
+
+它逐点趋于 $H$。
+
+\begin{notebox}[为什么不用双边指数]
+双边指数 $e^{-\ep|t|}$ 的极限是 $1$（EP01）。单边指数 $H(t)e^{-\ep t}$ 的极限是 $H$。
+
+\textbf{衰减的“形状”决定了极限对象。}这句话是本集与上一集的分水岭。
+\end{notebox}
+
+\subsection{积分}
+
+\begin{equation}
+\F[H_\ep](\omega)=\int_{0}^{\infty}e^{-\ep t}e^{-i\omega t}\dd t
+=\int_{0}^{\infty}e^{-(\ep+i\omega)t}\dd t
+=\frac{1}{\ep+i\omega}.\label{eq:Heps}
+\end{equation}
+
+边界项消失是因为 $\ep>0$（上端）与积分从 $0$ 开始（下端）。
+
+\subsection{拆成实部与虚部}
+
+\begin{equation}
+\frac{1}{\ep+i\omega}
+=\frac{\ep-i\omega}{(\ep+i\omega)(\ep-i\omega)}
+=\frac{\ep-i\omega}{\ep^{2}+\omega^{2}}
+=\underbrace{\frac{\ep}{\ep^{2}+\omega^{2}}}_{\text{实部，偶}}
+\;-\;i\underbrace{\frac{\omega}{\ep^{2}+\omega^{2}}}_{\text{虚部，奇}} .\label{eq:Hepssplit}
+\end{equation}
+
+\begin{scriptbox}[动画要点 03-D]
+左面板：实部 $\dfrac{\ep}{\ep^{2}+\omega^{2}}$，一个非负的偶峰，面积 $\pi$。
+
+右面板：虚部 $-\dfrac{\omega}{\ep^{2}+\omega^{2}}$，一条穿过原点的奇曲线。
+
+两个面板共享 $\ep$。$\ep$ 变小时，实部变成尖峰，虚部在原点附近越来越陡。
+\end{scriptbox}
+
+\subsection{实部的极限}
+
+注意
+
+\begin{equation}
+\frac{\ep}{\ep^{2}+\omega^{2}}=\pi\cdot\frac{1}{\pi}\frac{\ep}{\ep^{2}+\omega^{2}}=\pi K_\ep(\omega),
+\end{equation}
+
+而 $K_\ep\to\delta$（EP01 的结果，EP04 证明）。所以
+
+\begin{equation}
+\frac{\ep}{\ep^{2}+\omega^{2}}\longrightarrow\pi\delta(\omega).\label{eq:realpart}
+\end{equation}
+
+\begin{ideabox}[$\pi$ 是从哪里来的]
+不是猜的，是\textbf{面积}算出来的：
+\begin{equation}
+\int_{\R}\frac{\ep}{\ep^{2}+\omega^{2}}\dd\omega
+=\left[\arctan\frac{\omega}{\ep}\right]_{-\infty}^{\infty}=\pi .
+\end{equation}
+这一族函数的总面积恒为 $\pi$，所以它的极限是 $\pi\delta$。
+
+\textbf{记住这个“面积 = 系数”的经验法则。}它会在 EP06 反复出现。
+\end{ideabox}
+
+\subsection{虚部的极限}
+
+要证明
+
+\begin{equation}
+\frac{\omega}{\ep^{2}+\omega^{2}}\longrightarrow\PV\frac{1}{\omega}
+\qquad(\ep\downarrow0).
+\end{equation}
+
+\begin{proof}[证明：合并正负半轴]
+对 $\varphi\in\Sv$，
+\begin{equation}
+\int_{\R}\frac{\omega}{\ep^{2}+\omega^{2}}\varphi(\omega)\dd\omega
+=\int_{0}^{\infty}\frac{x}{\ep^{2}+x^{2}}\big[\varphi(x)-\varphi(-x)\big]\dd x .
+\end{equation}
+（把 $\omega<0$ 的部分用 $\omega=-x$ 换元，与正半轴合并。）
+
+现在验证控制收敛定理的条件。
+
+\textbf{$0<x\le1$：}由 $x/(\ep^{2}+x^{2})\le 1/x$ 与中值估计，
+\begin{equation}
+\left|\frac{x}{\ep^{2}+x^{2}}\big[\varphi(x)-\varphi(-x)\big]\right|
+\le\frac{1}{x}\cdot2x\sup_{|y|\le1}|\varphi'(y)|
+=2\sup_{|y|\le1}|\varphi'(y)| .
+\end{equation}
+这是一个与 $\ep$ 无关的常数，在 $(0,1]$ 上可积。
+
+\textbf{$x\ge1$：}由 $x/(\ep^{2}+x^{2})\le1/x$ 与 Schwartz 衰减，
+\begin{equation}
+\left|\frac{x}{\ep^{2}+x^{2}}\big[\varphi(x)-\varphi(-x)\big]\right|\le\frac{C}{x^{3}},
+\end{equation}
+在 $[1,\infty)$ 上可积，也与 $\ep$ 无关。
+
+于是存在一个\textbf{与 $\ep$ 无关的}可积控制函数，而逐点地 $\dfrac{x}{\ep^{2}+x^{2}}\to\dfrac{1}{x}$。控制收敛给出
+\begin{equation}
+\int_{\R}\frac{\omega}{\ep^{2}+\omega^{2}}\varphi(\omega)\dd\omega
+\longrightarrow\int_{0}^{\infty}\frac{\varphi(x)-\varphi(-x)}{x}\dd x
+=\left\langle\PV\frac{1}{\omega},\varphi\right\rangle .
+\end{equation}
+\end{proof}
+
+\begin{ideabox}[这个证明值得在视频里“演”一遍]
+它是全系列唯一一处“标准的分析估计”，也是最值得让观众看一眼“数学长什么样”的地方。
+
+不必讲全部细节，只需要展示那个\textbf{分段}的动作：
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item 近处：用中值定理把 $\varphi(x)-\varphi(-x)$ 估成 $2x\|\varphi'\|_\infty$，与 $\ep$ 无关。
+\item 远处：用快速衰减估成 $C/x^{3}$。
+\item 中间：让 $\ep\to0$，$x/(\ep^{2}+x^{2})\to1/x$。
+\end{itemize}
+“近处靠连续性、远处靠衰减”——这句口诀在 EP04 还会出现，而且是同一个套路。
+\end{ideabox}
+
+\subsection{合起来}
+
+把 \eqref{eq:realpart} 与上一小节的结果代回 \eqref{eq:Hepssplit}：
+
+\begin{equation}
+\F[H](\omega)=\pi\delta(\omega)-i\,\PV\frac{1}{\omega}
+=\pi\delta(\omega)+\PV\frac{1}{i\omega} .\label{eq:FH}
+\end{equation}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{4.2cm}L{3.4cm}Y@{}}
+\toprule
+项 & 极限 & 来自时域的什么性质 \\
+\midrule
+实部 $\dfrac{\ep}{\ep^{2}+\omega^{2}}$ & $\pi\delta$ & $H$ 的“一直等于 $1$”那一半（偶部分）\\
+虚部 $-\dfrac{\omega}{\ep^{2}+\omega^{2}}$ & $-i\PV\dfrac{1}{\omega}$ & $H$ 的“从 $0$ 跳到 $1$”那个奇性 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{用对称性独立检查 $\pi$}
+
+这一步很重要，因为它是\textbf{不看计算}就能验证系数的方法。
+
+\subsection{时域的对称关系}
+
+作为分布，
+
+\begin{equation}
+H(t)+H(-t)=1 .\label{eq:Hsym}
+\end{equation}
+
+（$t\neq0$ 时逐点成立；$t=0$ 只影响一个点，无妨。）
+
+\subsection{频域的对应}
+
+反射性质：$\F[f(-t)](\omega)=\fh(-\omega)$。所以对 \eqref{eq:Hsym} 两边做变换：
+
+\begin{equation}
+\hf(\omega)+\hf(-\omega)=2\pi\delta(\omega).\label{eq:Hfreqsym}
+\end{equation}
+
+现在把候选答案写成
+
+\begin{equation}
+\hf(\omega)=-i\,\PV\frac{1}{\omega}+c\,\delta(\omega)
+\end{equation}
+
+（这里 $c$ 未知）。代进 \eqref{eq:Hfreqsym}：
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.3em]
+\item 奇的部分：$\PV\frac{1}{\omega}$ 是奇的，所以 $-i\PV\frac1\omega$ 与它的反射\textbf{正好抵消}。
+\item 偶的部分：$\delta(-\omega)=\delta(\omega)$，所以 $c\delta$ 变成 $2c\delta$。
+\end{itemize}
+
+于是
+
+\begin{equation}
+2c\,\delta=2\pi\,\delta
+\qquad\Longrightarrow\qquad
+c=\pi .
+\end{equation}
+
+\begin{ideabox}[这一步为什么值得单独讲]
+因为它把“$\pi$”从一个算出来的数字，变成一个\textbf{可以被逻辑逼出来}的必然结果。
+
+观众会觉得：原来不是“算错了才凑出 $\pi$”，而是“对称性要求它必须是 $\pi$”。
+
+这种“用另一条路验证”的段落，在全系列里应该至少出现三次（EP03 的 $\pi$、EP06 的 $2\pi$、EP06 的 $F^2=2\pi$ 反射）。
+\end{ideabox}
+
+\subsection{顺带得到符号函数的变换}
+
+由 $H=\frac12+\frac12\sgn$，
+
+\begin{equation}
+\F[\sgn t]=2\Big(\hf-\tfrac12\F[1]\Big)=2\big(\pi\delta-i\PV\tfrac1\omega-\pi\delta\big)
+=-2i\,\PV\frac{1}{\omega} .\label{eq:sgn}
+\end{equation}
+
+\section{为什么歧义恰好只有 $c\delta$}
+
+上一节我们“假设”了答案形如 $-i\PV\frac1\omega+c\delta$。凭什么？
+
+\begin{prop}\label{prop:ambiguity}
+若 $T\in\Sv'$ 满足 $\omega T=0$，则 $T=c\,\delta$ 对某个常数 $c$。
+\end{prop}
+
+\begin{proof}[证明：把 $\varphi$ 拆成“常数部分 + 乘 $\omega$ 的部分”]
+取 $\chi\in C_c^{\infty}$ 满足 $\chi\equiv1$ 于 $|x|\le1$。对任意 $\varphi\in\Sv$，令
+\begin{equation}
+\psi(\omega):=\frac{\varphi(\omega)-\varphi(0)\chi(\omega)}{\omega}.
+\end{equation}
+
+验证 $\psi\in\Sv$：
+\begin{itemize}[leftmargin=1.4em,itemsep=0.2em]
+\item 分子在 $\omega=0$ 处为零，且一阶消失（因为 $\chi(0)=1$，$\chi'(0)=0$ 可以取到），所以商可以光滑延拓到 $0$。
+\item 远处 $\chi\equiv0$，$\psi=\varphi/\omega$，除以 $\omega$ 只会让衰减更快。
+\end{itemize}
+
+于是
+
+\begin{equation}
+\varphi(\omega)=\varphi(0)\chi(\omega)+\omega\,\psi(\omega),
+\end{equation}
+
+作用 $T$：
+
+\begin{equation}
+\ip{T}{\varphi}=\varphi(0)\ip{T}{\chi}+\ip{\omega T}{\psi}
+=\varphi(0)\ip{T}{\chi}+0
+=c\,\varphi(0)=c\ip{\delta}{\varphi},
+\end{equation}
+
+其中 $c:=\ip{T}{\chi}$。所以 $T=c\delta$。
+\end{proof}
+
+\begin{warnbox}[为什么不能再加 $\delta'$]
+因为 $\omega\delta'=-\delta\neq0$。加一个 $\delta'$ 会破坏 $\omega T=0$ 这个条件。
+
+这一句要讲：\textbf{能满足“乘 $\omega$ 之后为零”的对象，最小的一族就是 $c\delta$；$\delta'$ 太重了，乘 $\omega$ 消不掉。}（顺带由 $x\delta^{(n)}=-n\delta^{(n-1)}$，见 EP05。）
+\end{warnbox}
+
+\section{边界值公式（拓展，可放补充材料）}
+
+式 \eqref{eq:Heps} 还给出一个在数学物理里极常用的写法：
+
+\begin{equation}
+\frac{1}{x\pm i0}:=\lim_{\ep\downarrow0}\frac{1}{x\pm i\ep}
+=\PV\frac{1}{x}\mp i\pi\,\delta(x).\label{eq:boundary}
+\end{equation}
+
+这里 $\pm i0$ 是“$\ep\downarrow0$ 的分布极限”的记号，\textbf{不是}把复数零代进分母。
+
+\begin{notebox}[符号核对：为什么是 $-\dfrac{i}{\omega-i0}$]
+\begin{equation}
+\frac{1}{\ep+i\omega}
+=\frac{-i}{\omega-i\ep}
+\;\longrightarrow\;
+\frac{-i}{\omega-i0}
+=-i\Big(\PV\frac{1}{\omega}+i\pi\delta\Big)
+=\pi\delta-i\,\PV\frac{1}{\omega}.
+\end{equation}
+第一行用了 $\ep+i\omega=i(\omega-i\ep)$；最后一步用了 \eqref{eq:boundary} 中取“$-$”号的那一支。
+
+\textbf{这个负号非常容易错。}如果你算出的结果是 $-\pi\delta$，多半就是在这里把 $i$ 与 $-i$ 弄反了。
+\end{notebox}
+
+\section{数值与动画}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{@{}L{1.4cm}L{3.6cm}L{3.8cm}L{2.6cm}Y@{}}
+\toprule
+$\ep$ & 实部峰值 $1/\ep$ & 实部面积 & 虚部极值 $\mp1/(2\ep)$ & 备注 \\
+\midrule
+$1$ & $1$ & $\pi$ & $\mp0.5$ & 纵轴 $\pm1$ \\
+$0.5$ & $2$ & $\pi$ & $\mp1$ & 纵轴 $\pm2$ \\
+$0.2$ & $5$ & $\pi$ & $\mp2.5$ & 纵轴 $\pm5$ \\
+$0.1$ & $10$ & $\pi$ & $\mp5$ & 采样加密 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.46\textwidth,height=4.4cm,
+  domain=-5:5,samples=400,ymin=0,ymax=2.2,
+  xlabel={$\omega$},ylabel={实部},
+  title={\small 实部：面积恒为 $\pi$},
+  ticklabel style={font=\scriptsize},label style={font=\small}]
+\addplot[thick,mainblue] {0.5/(0.25+x^2)};
+\end{axis}
+\end{tikzpicture}\hfill
+\begin{tikzpicture}
+\begin{axis}[width=0.46\textwidth,height=4.4cm,
+  domain=-5:5,samples=400,ymin=-1.2,ymax=1.2,
+  xlabel={$\omega$},ylabel={虚部},
+  title={\small 虚部：奇的，面积为零},
+  ticklabel style={font=\scriptsize},label style={font=\small},
+  axis lines=middle]
+\addplot[thick,warnred] {-x/(0.25+x^2)};
+\end{axis}
+\end{tikzpicture}
+\caption{$\ep=0.5$ 时 $\F[H_\ep]$ 的实部与虚部。实部贡献 $\pi\delta$，虚部贡献 $-i\PV(1/\omega)$。}
+\end{figure}
+
+\begin{warnbox}[主值动画的两条纪律]
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.3em]
+\item 必须\textbf{对称}地删去原点两侧的区间。画成“只挖掉正半边”或“两边挖得不一样宽”，观众学到的就是错的。
+\item 不要把正负两侧的积分分别标成有限数再加起来。两侧各自都是发散的；有意义的是\textbf{合并之后}的极限。
+\end{enumerate}
+\end{warnbox}
+
+\section{讲解禁区（EP03）}
+
+\begin{warnbox}[逐条对照]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.28em]
+\item 不说“$H(0)$ 取哪个值决定了 $\delta$ 的系数”。
+\item 不说“$1/(i\omega)$ 就是答案”，必须先处理原点奇性。
+\item 不说“$\PV$ 就是忽略奇点”；要说“对称地删去原点邻域”。
+\item 不把正负两个发散积分分别求值后相加。
+\item 不说“$i\omega\widehat H=1$ 唯一确定 $\widehat H$”。
+\item 不说“加了常数 $C$ 的阶跃频谱还是同一个”（时域平移/加常数会改零频项）。
+\item 不把 $\PV(1/(i\omega))$ 的符号写成 $+i\PV(1/\omega)$（正确是 $-i$）。
+\item 不说“$\pi$ 是凑出来的”；给出面积论证或对称性论证。
+\item 不说“$H'=\delta$ 说明 $H$ 在通常意义下可导”。
+\item 不在没有声明广义意义的情况下写 $\F[H]$ 的等式。
+\item 不用“跳变处无穷大”这种描述代替“跳跃强度为 $1$ 的 $\delta$ 贡献”。
+\end{enumerate}
+\end{warnbox}
+
+\section{与前后集的接口}
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.45em]
+\item \textbf{回头看}：这一集把 EP01 的 $K_\ep$、EP02 的 $H'=\delta$ 全部用上了。它同时暴露了前两集一直含糊的那件事——“求极限”到底是哪种极限。
+\item \textbf{往前看}：这里的每一句“趋于”都是\textbf{对测试函数的作用}在趋于。这已经是在用分布收敛了，只是还没给它名字。EP04 停下来问名字，EP05 给它定义。
+\end{enumerate}
+
+\begin{scriptbox}[最后 30 秒的旁白骨架]
+“到这里，我们手里有三个结果，每一个都用到了一种‘趋于’。
+
+常数的频谱趋于一个尖峰；阶跃的频谱趋于一个尖峰加一个奇怪的 $1/\omega$；$\delta$ 的导数趋于两叶的东西。
+
+可我们一直在说‘趋于’，却从来没说清楚是哪一种趋于。
+
+下一集，我们停下来，只问这一个问题。”
+\end{scriptbox}
+
+
+\section{本集回顾卡}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}Y@{}}
+\toprule
+项目 & 内容 \\
+\midrule
+主结果 & $\F[H]=\pi\delta(\omega)+\PV\dfrac{1}{i\omega}$ \\
+关键歧义 & $\omega\delta=0$，所以 $i\omega\widehat H=1$ 的解不唯一 \\
+主值 & 对称挖去原点邻域；不对称截断会差 $\varphi(0)\ln(b/a)$ \\
+正则化 & $\dfrac{1}{\ep+i\omega}=\dfrac{\ep}{\ep^{2}+\omega^{2}}-i\dfrac{\omega}{\ep^{2}+\omega^{2}}$ \\
+安全话术 & “微分规则只确定非零频率那一部分” \\
+危险话术 & “$\PV$ 就是忽略奇点”“除以 $i\omega$ 就完了” \\
+下一集的钩子 & 我们说的这些“趋于”，究竟是哪一种？ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{quizbox}[EP03 自测]
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.35em]
+\item 把 $H(0)$ 改成 $1/2$，证明它的分布导数仍然是 $\delta$。
+\item 验证 $i\omega\widehat H=1$：用 \eqref{eq:FH} 代进去，说明 $\omega\delta=0$ 与 $\omega\PV(1/\omega)=1$ 各起什么作用。
+\item 为什么 $i\omega\widehat H=1$ 不能唯一确定 $\widehat H$？给出两个不同的解。
+\item 用 \eqref{eq:PVdef} 计算 $\left\langle\PV\frac1\omega,\varphi\right\rangle$，其中 $\varphi(\omega)=(1+\omega)e^{-\omega^{2}}$。（提示：先算 $\varphi(x)-\varphi(-x)$；答案 $\sqrt{\pi}$。）
+\item 写出不对称截断的极限，并说明它与 $\PV$ 相差 $\varphi(0)\ln(b/a)$。
+\item 由 $\F[H]$ 推出 $\F[\sgn t]$，检查它是纯虚、奇。
+\item 用 \eqref{eq:boundary} 与 $\dfrac{1}{\ep+i\omega}=\dfrac{-i}{\omega-i\ep}$ 重新验证 $\F[H]$ 的符号。
+\end{enumerate}
+\end{quizbox}

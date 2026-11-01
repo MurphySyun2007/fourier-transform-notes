@@ -1,0 +1,287 @@
+\chapter{Limits, Integrals, and Approximate Identities}
+\label{ch:limits}
+
+\begin{quote}
+\itshape
+Everything so far has used the word ``tends'' without saying in which sense. This chapter supplies
+the analysis: three inequivalent notions of convergence, one theorem that licenses the interchange
+of limit and integral, and a complete proof that any kernel family with unit mass concentrating at a
+point samples continuous functions at that point.
+\end{quote}
+
+\section{Three modes of convergence}
+
+Let $f_{n},f$ be functions on $\R$ and let $T_{n},T$ be distributions.
+
+\begin{definition}\label{def:modes}
+\begin{enumerate}
+\item $f_{n}\to f$ \emph{pointwise} if $f_{n}(x)\to f(x)$ for each fixed $x$.
+\item $f_{n}\to f$ \emph{uniformly} if $\sup_{x}|f_{n}(x)-f(x)|\to0$.
+\item $T_{n}\to T$ \emph{in the distributional sense} if $\ip{T_{n}}{\varphi}\to\ip{T}{\varphi}$ for
+each fixed test function $\varphi$.
+\end{enumerate}
+\end{definition}
+
+The three are not ordered by strength in the way one might hope, and on an unbounded domain none of
+them controls the behaviour of integrals.
+
+\begin{example}[uniform convergence does not preserve the integral]\label{ex:uniform}
+Let $f_{n}(x)=n^{-1}\mathbf{1}_{[0,n]}(x)$. Then $\sup_{x}|f_{n}(x)|=1/n\to0$, so $f_{n}\to0$
+uniformly, while
+\begin{equation}
+\int_{\R}f_{n}(x)\dd x=\frac{1}{n}\cdot n=1
+\qquad\text{for every }n .
+\end{equation}
+The functions become shorter and longer at the same rate; the area is constant.
+\end{example}
+
+\begin{example}[pointwise convergence is compatible with a delta limit]\label{ex:delta-limit}
+Let $g_{n}(x)=n\,\mathbf{1}_{(0,1/n)}(x)$. For fixed $x\neq0$ one has $g_{n}(x)=0$ as soon as
+$n>1/x$, so $g_{n}\to0$ pointwise. Nevertheless, for $\varphi$ continuous at $0$,
+\begin{equation}
+\ip{g_{n}}{\varphi}=n\int_{0}^{1/n}\varphi(x)\dd x\longrightarrow\varphi(0),
+\end{equation}
+that is, $g_{n}\to\delta$ distributionally. The same sequence tends to $0$ pointwise and to
+$\delta$ in the distributional sense; the two statements are about different objects.
+\end{example}
+
+\begin{remark}
+For the Cauchy kernel the pointwise statement has to be qualified once more: $K_{\ep}(x)\to0$ for
+$x\neq0$, but $K_{\ep}(0)=1/(\pi\ep)\to\infty$. Statements of the form ``the kernel tends to zero
+everywhere'' are therefore false, and the exception at the origin is precisely the carrier of the
+mass.
+\end{remark}
+
+\section{When may a limit enter an integral?}
+
+\begin{theorem}[dominated convergence]\label{thm:DCT}
+Let $f_{n}\to f$ almost everywhere. Suppose there is a single $g\in\Lone$ with
+$|f_{n}(x)|\le g(x)$ almost everywhere, for all $n$. Then
+\begin{equation}
+\int_{\R}f_{n}\longrightarrow\int_{\R}f .
+\end{equation}
+\end{theorem}
+
+The hypothesis that is usually misread is the phrase \emph{a single} $g$: a different bound for each
+$n$ is not enough.
+
+\begin{proposition}[no common dominator for the Cauchy kernels]\label{prop:nodominator}
+There is no $g\in\Lone$ with $K_{\ep}\le g$ for all $\ep\in(0,1)$.
+\end{proposition}
+
+\begin{proof}
+Suppose such a $g$ exists. Since $K_{\ep}(x)\to0$ for each $x\neq0$, dominated convergence gives
+$\int K_{\ep}\to0$. But $\int K_{\ep}=1$ for every $\ep$, a contradiction.
+\end{proof}
+
+\begin{remark}[what the test function buys]
+The family $e^{-\ep|t|}$ is dominated by the constant $1$, which is not integrable; so
+Theorem~\ref{thm:DCT} does not apply to $\int e^{-\ep|t|}\dd t$ over the whole line. Multiply by a
+test function, however, and
+\begin{equation}
+\big|e^{-\ep|t|}\varphi(t)\big|\le|\varphi(t)|\in\Lone ,
+\end{equation}
+a bound independent of $\ep$ and integrable. Dominated convergence then gives
+$\ip{e^{-\ep|\cdot|}}{\varphi}\to\ip{1}{\varphi}$ for every $\varphi\in\Sw$.
+
+The introduction of test functions is therefore not a formality: it is the operation that replaces a
+non-integrable dominating function by an integrable one. This single observation is the technical
+reason the whole theory is built on pairings.
+\end{remark}
+
+\section{Approximate identities}
+
+\begin{definition}\label{def:approxid}
+Let $k\in\Lone$ with $\int_{\R}k=1$. For $\ep>0$ put
+\begin{equation}
+k_{\ep}(x)=\frac{1}{\ep}\,k\!\left(\frac{x}{\ep}\right).
+\label{eq:dilate-k}
+\end{equation}
+The family $(k_{\ep})_{\ep>0}$ is called an \emph{approximate identity}.
+\end{definition}
+
+\begin{lemma}[mass and tails]\label{lem:mass-tail}
+For every $\ep>0$, $\int_{\R}k_{\ep}=1$. For every $a>0$,
+\begin{equation}
+\int_{|x|>a}k_{\ep}(x)\dd x=\int_{|u|>a/\ep}k(u)\dd u\longrightarrow0
+\qquad(\ep\downarrow0).
+\label{eq:tail}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The first statement is the substitution $x=\ep u$. For the second, the same substitution converts the
+left side into the tail of the fixed integrable function $k$ over the expanding set
+$\{|u|>a/\ep\}$; the tails of an integrable function vanish.
+\end{proof}
+
+\begin{theorem}[sampling]\label{thm:sampling-general}
+Let $(k_{\ep})$ be an approximate identity and let $\varphi$ be bounded and continuous at $0$. Then
+\begin{equation}
+\int_{\R}k_{\ep}(x)\varphi(x)\dd x\longrightarrow\varphi(0).
+\label{eq:sampling-general}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Because the total mass is $1$, the difference is
+\begin{equation}
+\int_{\R}k_{\ep}\varphi-\varphi(0)=\int_{\R}k_{\ep}(x)\big[\varphi(x)-\varphi(0)\big]\dd x .
+\end{equation}
+Let $\eta>0$. Continuity at $0$ gives $a>0$ such that $|x|<a$ implies
+$|\varphi(x)-\varphi(0)|<\eta$. Splitting at $|x|=a$ and using $k_{\ep}\ge0$ and
+$\|k_{\ep}\|_{1}=1$,
+\begin{equation}
+\left|\int_{\R}k_{\ep}\varphi-\varphi(0)\right|
+\le\eta\int_{|x|<a}k_{\ep}+\int_{|x|\ge a}k_{\ep}\,2\|\varphi\|_{\infty}
+\le\eta+2\|\varphi\|_{\infty}\int_{|x|\ge a}k_{\ep}.
+\end{equation}
+Now fix $a$ and let $\ep\downarrow0$; the last term tends to $0$ by \eqref{eq:tail}. Hence the
+superior limit is at most $\eta$, for every $\eta>0$.
+\end{proof}
+
+\begin{remark}[the structure of the estimate]
+The proof uses two different mechanisms in two different regions: near the origin the smallness of
+$\varphi(x)-\varphi(0)$ comes from \emph{continuity}, and far from the origin the smallness of the
+remaining mass comes from \emph{integrability}. The parameter $a$ is fixed before $\ep$ is sent to
+zero, and $\eta$ is sent to zero last. Reversing this order of quantifiers is the standard way to
+produce a wrong proof.
+\end{remark}
+
+For the specific Cauchy kernel a change of variable gives a shorter argument, and the comparison is
+instructive.
+
+\begin{proposition}\label{prop:cauchy-sub}
+For bounded continuous $\varphi$,
+\begin{equation}
+\int_{\R}K_{\ep}(x)\varphi(x)\dd x=\frac{1}{\pi}\int_{\R}\frac{\varphi(\ep u)}{1+u^{2}}\dd u
+\longrightarrow\varphi(0).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Substitute $x=\ep u$. The integrand is dominated by
+$\|\varphi\|_{\infty}/(\pi(1+u^{2}))$, which does not involve $\ep$ and is integrable; for each fixed
+$u$, $\varphi(\ep u)\to\varphi(0)$. Dominated convergence applies, and
+$\frac{1}{\pi}\int(1+u^{2})^{-1}\dd u=1$.
+\end{proof}
+
+The two proofs differ in what is held fixed. In Theorem~\ref{thm:sampling-general} the kernel varies
+and the test function is fixed; in Proposition~\ref{prop:cauchy-sub} the kernel is rescaled into a
+fixed weight and the variation is transferred to the test function. Only the second one produces a
+dominating function, which is why the first one needs the two-region estimate instead.
+
+\section{Convolution and the identity element}
+
+\begin{definition}
+For suitable $k,f$,
+\begin{equation}
+(k*f)(x)=\int_{\R}k(x-y)f(y)\dd y=\int_{\R}k(y)f(x-y)\dd y .
+\end{equation}
+\end{definition}
+
+\begin{theorem}\label{thm:conv}
+Let $(k_{\ep})$ be an approximate identity and let $f$ be bounded and continuous at $x$. Then
+$(k_{\ep}*f)(x)\to f(x)$. If $f$ is bounded and uniformly continuous, the convergence is uniform;
+if $f\in L^{p}(\R)$ with $1\le p<\infty$, then $k_{\ep}*f\to f$ in $L^{p}$.
+\end{theorem}
+
+\begin{proof}[Proof of the pointwise statement]
+Apply Theorem~\ref{thm:sampling-general} to the function $y\mapsto f(x-y)$, which is bounded and
+continuous at $y=0$:
+\begin{equation}
+(k_{\ep}*f)(x)-f(x)=\int_{\R}k_{\ep}(y)\big[f(x-y)-f(x)\big]\dd y\longrightarrow0 . \qedhere
+\end{equation}
+\end{proof}
+
+\begin{proposition}[$\delta$ is the identity]\label{prop:delta-identity}
+Formally and, once $\delta$ is a distribution, rigorously,
+\begin{equation}
+(\delta*f)(x)=\int_{\R}\delta(y)f(x-y)\dd y=f(x).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By the defining property of $\delta$ applied to the test function $y\mapsto f(x-y)$.
+\end{proof}
+
+So the phrase ``approximate identity'' is literal: convolution with $k_{\ep}$ approximates the
+identity map on functions, and $\delta$ is that map.
+
+\section{How much of the structure is needed}
+
+\begin{proposition}[general sufficient conditions]\label{prop:general-kernels}
+Let $(k_{\ep})_{\ep>0}\subset\Lone$ satisfy
+\begin{enumerate}
+\item $\displaystyle\int_{\R}k_{\ep}=1$ for every $\ep$;
+\item $\displaystyle\sup_{\ep}\|k_{\ep}\|_{1}<\infty$;
+\item $\displaystyle\int_{|x|>a}|k_{\ep}(x)|\dd x\to0$ for every $a>0$.
+\end{enumerate}
+Then $\ip{k_{\ep}}{\varphi}\to\varphi(0)$ for every bounded continuous $\varphi$.
+\end{proposition}
+
+\begin{proof}
+Repeat the proof of Theorem~\ref{thm:sampling-general} with $k_{\ep}$ replaced by $|k_{\ep}|$; the
+near term is bounded by $\eta\sup_{\ep}\|k_{\ep}\|_{1}$ and the far term by
+$2\|\varphi\|_{\infty}\int_{|x|\ge a}|k_{\ep}|$, which tends to $0$.
+\end{proof}
+
+Nonnegativity is thus a convenience, not a necessity.
+
+\begin{proposition}[mass can escape]\label{prop:escaping}
+Let $k_{n}=\tfrac12\mathbf{1}_{[n-1,n+1]}$. Then $\int_{\R}k_{n}=1$ for every $n$, but
+$\ip{k_{n}}{\varphi}\to0$ for every $\varphi\in\Sw$; that is, $k_{n}\to0$, not $\delta$.
+\end{proposition}
+
+\begin{proof}
+For $\varphi\in\Sw$ one has $\sup_{|x-n|\le1}|\varphi(x)|=O(n^{-2})$ by rapid decay, hence
+\begin{equation}
+|\ip{k_{n}}{\varphi}|\le\frac{1}{2}\int_{n-1}^{n+1}|\varphi(x)|\dd x=O(n^{-2})\longrightarrow0 .
+\end{equation}
+\end{proof}
+
+\begin{remark}[why this does not contradict mass conservation]
+The total mass is conserved, but it escapes to infinity. In the topology of $\Sw'$ the only
+continuous tests are against rapidly decaying functions, and the constant function $1$ is not one of
+them. Consequently ``total mass'' is not a continuous functional on $\Sw'$, and a family may conserve
+mass while converging to zero. This is not a pathology to be avoided; it is the reason the theory
+must be formulated with test functions rather than with total integrals.
+\end{remark}
+
+\begin{remark}[the sinc kernels are outside this theorem]
+The kernels
+\begin{equation}
+\widehat{w_{T}}(\omega)=\frac{2\sin(T\omega)}{\omega},
+\qquad w_{T}=\mathbf{1}_{[-T,T]},
+\end{equation}
+have total mass $2\pi$ and converge to $2\pi\delta$, but they satisfy none of the hypotheses above:
+they change sign infinitely often, and $\int|\widehat{w_{T}}|$ grows like $\log T$. Their convergence
+is proved in Chapter~\ref{ch:tespered} by a different route, using the continuity of $\F$ on
+$\Sw'$. The existence of this example is the reason Proposition~\ref{prop:general-kernels} is stated
+as a sufficient, not a necessary, condition.
+\end{remark}
+
+\section{Summary of the chapter}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.2cm}p{9.6cm}@{}}
+\toprule
+Statement & Content \\
+\midrule
+Three modes & pointwise, uniform, distributional; none implies control of integrals
+(Examples~\ref{ex:uniform}, \ref{ex:delta-limit}) \\
+Licence & dominated convergence, with a \emph{single} integrable bound
+(Theorem~\ref{thm:DCT}) \\
+Obstruction & no integrable bound exists for $K_{\ep}$
+(Proposition~\ref{prop:nodominator}) \\
+Sampling & unit mass plus tail concentration implies $\ip{k_{\ep}}{\varphi}\to\varphi(0)$
+(Theorem~\ref{thm:sampling-general}) \\
+Identity & $\delta*f=f$ (Proposition~\ref{prop:delta-identity}) \\
+Necessity & nonnegativity is optional, concentration is not
+(Proposition~\ref{prop:general-kernels}) \\
+Escape & unit mass alone allows convergence to $0$
+(Proposition~\ref{prop:escaping}) \\
+\bottomrule
+\end{tabular}
+\end{center}
